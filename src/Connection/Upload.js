@@ -1,6 +1,6 @@
 import axios from "axios";
-let url = "http://localhost:3001";
-// let url = 'https://hftcapi.herokuapp.com';
+// let url = "http://localhost:3001";
+let url = "https://finiksbackend.herokuapp.com";
 
 const uploadData = async (data, callBack) => {
   console.log(data);

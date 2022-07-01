@@ -153,6 +153,10 @@ export default function Createlist({ handleUpdateData }) {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setList({
+        ...list,
+        voters: [],
+      });
       setSearching(false);
       setFoundVoters(0);
     }
@@ -206,7 +210,7 @@ export default function Createlist({ handleUpdateData }) {
 
   return (
     <div>
-      {console.log(selectedListLength)}
+      {console.log(list)}
 
       <button
         style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
@@ -424,7 +428,7 @@ export default function Createlist({ handleUpdateData }) {
                                     <button
                                       onClick={
                                         list?.listName?.length > 1 &&
-                                        list.voters.length > 1 &&
+                                        list.voters.length >= 1 &&
                                         handleSaveList
                                       }
                                       className={`btn text-danger ${
