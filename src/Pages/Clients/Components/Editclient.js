@@ -459,7 +459,7 @@ export default function FormDialog({ data, handleUpdate }) {
                 class="form-control"
                 id="exampleInputPassword1"
                 name="startDate"
-                value={values.startDate}
+                value={values.startDate.split("T")[0]}
                 onChange={handleChange}
               />
             </div>
@@ -470,7 +470,7 @@ export default function FormDialog({ data, handleUpdate }) {
                 class="form-control"
                 id="exampleInputPassword1"
                 name="endDate"
-                value={values.endDate}
+                value={values.endDate.split("T")[0]}
                 onChange={handleChange}
               />
             </div>
