@@ -10,19 +10,29 @@ import Editvoter from "./Editvoter";
 
 export default function Finikstable({ data }) {
   console.log(data);
+  const [voterData, setVoterData] = React.useState();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = (data) => {
+    if (open === false) {
+      setVoterData(data);
+    }
+
+    setOpen(!open);
+  };
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Voter_ID</TableCell>
-            <TableCell align="right">Voter</TableCell>
-            <TableCell align="right">Party</TableCell>
-            <TableCell align="right">Age</TableCell>
-            <TableCell align="right">Sex</TableCell>
-            <TableCell align="right">State</TableCell>
-            <TableCell align="right">Geo Location</TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell align="">Voter</TableCell>
+            <TableCell align="">Party</TableCell>
+            <TableCell align="">Age</TableCell>
+            <TableCell align="">Sex</TableCell>
+            <TableCell align="">State</TableCell>
+            <TableCell align="">Geo Location</TableCell>
+            <TableCell align=""></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,50 +44,60 @@ export default function Finikstable({ data }) {
                 <TableCell component="th" scope="row">
                   {voter.VOTER_ID}
                 </TableCell>
-                <TableCell className="text-danger" align="right">
-                  {voter.FIRSTNAME} {voter.LASTNAME}
+                <TableCell className="text-danger" align="">
+                  {/* <Editvoter
+                    data={voter}
+                    buttonName={`${voter.FIRSTNAME} ${voter.LASTNAME}`}
+                    
+                  /> */}
+                  <button
+                    className="text-danger btn btn-sm"
+                    onClick={() => handleClickOpen(voter)}
+                  >
+                    {voter.FIRSTNAME} {voter.LASTNAME}
+                  </button>
                 </TableCell>
                 {voter.PARTY_CODE ? (
                   <>
                     {voter.PARTY_CODE === "A" && (
-                      <TableCell align="right">American Independent</TableCell>
+                      <TableCell align="">American Independent</TableCell>
                     )}
                     {voter.PARTY_CODE === "B" && (
-                      <TableCell align="right">Constitution Party</TableCell>
+                      <TableCell align="">Constitution Party</TableCell>
                     )}
                     {voter.PARTY_CODE === "C" && (
-                      <TableCell align="right">Consumer</TableCell>
+                      <TableCell align="">Consumer</TableCell>
                     )}
                     {voter.PARTY_CODE === "D" && (
-                      <TableCell align="right">Democrat</TableCell>
+                      <TableCell align="">Democrat</TableCell>
                     )}
                     {voter.PARTY_CODE === "E" && (
-                      <TableCell align="right">Inferred Democrat</TableCell>
+                      <TableCell align="">Inferred Democrat</TableCell>
                     )}
                     {voter.PARTY_CODE === "F" && (
-                      <TableCell align="right">Reform </TableCell>
+                      <TableCell align="">Reform </TableCell>
                     )}
                     {voter.PARTY_CODE === "G" && (
-                      <TableCell align="right">Green</TableCell>
+                      <TableCell align="">Green</TableCell>
                     )}
                     {voter.PARTY_CODE === "H" && (
-                      <TableCell align="right">Liberal</TableCell>
+                      <TableCell align="">Liberal</TableCell>
                     )}
                     {voter.PARTY_CODE === "I" && (
-                      <TableCell align="right">Independent</TableCell>
+                      <TableCell align="">Independent</TableCell>
                     )}
                     {voter.PARTY_CODE === "J" && (
-                      <TableCell align="right">UMOJA</TableCell>
+                      <TableCell align="">UMOJA</TableCell>
                     )}
                     {voter.PARTY_CODE === "K" && (
-                      <TableCell align="right">Independent NM Party</TableCell>
+                      <TableCell align="">Independent NM Party</TableCell>
                     )}
                     {voter.PARTY_CODE === "L" && (
-                      <TableCell align="right"> Libertarian</TableCell>
+                      <TableCell align=""> Libertarian</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "N" && (
-                      <TableCell align="right">
+                      <TableCell align="">
                         {" "}
                         None/Non-Partisan/No Party/No
                         Preference/Undeclared/Declined to
@@ -85,61 +105,79 @@ export default function Finikstable({ data }) {
                       </TableCell>
                     )}
                     {voter.PARTY_CODE === "O" && (
-                      <TableCell align="right"> Other</TableCell>
+                      <TableCell align=""> Other</TableCell>
                     )}
                     {voter.PARTY_CODE === "P" && (
-                      <TableCell align="right"> Peace and Freedom</TableCell>
+                      <TableCell align=""> Peace and Freedom</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "R" && (
-                      <TableCell align="right"> Republican</TableCell>
+                      <TableCell align=""> Republican</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "S" && (
-                      <TableCell align="right"> Inferred Republican</TableCell>
+                      <TableCell align=""> Inferred Republican</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "T" && (
-                      <TableCell align="right"> Right to Life</TableCell>
+                      <TableCell align=""> Right to Life</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "U" && (
-                      <TableCell align="right"> Unknown</TableCell>
+                      <TableCell align=""> Unknown</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "V" && (
-                      <TableCell align="right"> Conservative</TableCell>
+                      <TableCell align=""> Conservative</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "W" && (
-                      <TableCell align="right"> Natural Law</TableCell>
+                      <TableCell align=""> Natural Law</TableCell>
                     )}
 
                     {voter.PARTY_CODE === "Z" && (
-                      <TableCell align="right"> Independance</TableCell>
+                      <TableCell align=""> Independance</TableCell>
                     )}
 
                     {voter.PARTY_CODE === undefined ||
                       null ||
-                      ("" && <TableCell align="right"></TableCell>)}
+                      ("" && <TableCell align=""></TableCell>)}
                   </>
                 ) : (
-                  <TableCell align="right">Blank</TableCell>
+                  <TableCell align="">Blank</TableCell>
                 )}
 
-                <TableCell align="right">{voter.AGE}</TableCell>
-                <TableCell align="right">{voter.SEX}</TableCell>
-                <TableCell align="right">{voter.STATE}</TableCell>
-                <TableCell className="text-danger" align="right">
+                <TableCell align="">{voter.AGE}</TableCell>
+                <TableCell align="">{voter.SEX}</TableCell>
+                <TableCell align="">{voter.STATE}</TableCell>
+                <TableCell className="text-danger" align="">
                   {voter.LATITUDE} {voter.LONGITUDE}
                 </TableCell>
 
-                <TableCell align="right">
-                  <Editvoter data={voter} />
+                <TableCell align="">
+                  <button
+                    style={{
+                      color: "white",
+                      backgroundColor: "#d12e2f",
+                      width: "88px",
+                      height: "36px",
+                    }}
+                    className="btn"
+                    onClick={() => handleClickOpen(voter)}
+                  >
+                    Edit
+                  </button>
                 </TableCell>
               </TableRow>
             );
           })}
+          {voterData && (
+            <Editvoter
+              data={voterData}
+              handleClickOpen={handleClickOpen}
+              open={open}
+            />
+          )}
         </TableBody>
       </Table>
     </TableContainer>

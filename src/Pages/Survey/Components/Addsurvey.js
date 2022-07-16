@@ -35,7 +35,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Taginfo({ data }) {
+export default function Taginfo({ data, handleUpdate }) {
   const [open, setOpen] = React.useState(false);
   //   const [usersData, setUsersData] = React.useState();
   //   const [answers, setAnswers] = React.useState(["Yes", "No", "Maybe"]);
@@ -54,6 +54,8 @@ export default function Taginfo({ data }) {
     surveyAnswer: ["Yes", "No", "Maybe"],
     active: true,
     color: { name: "Orange", code: "#FF914D" },
+    campaignId: window.localStorage.getItem("id"),
+    campaignName: window.localStorage.getItem("username"),
   });
   const [selectedAns, setSelectedAns] = React.useState();
 
@@ -121,8 +123,11 @@ export default function Taginfo({ data }) {
         surveyAnswer: ["Yes", "No", "Maybe"],
         active: true,
         color: { name: "Orange", code: "#FF914D" },
+        campaignId: window.localStorage.getItem("id"),
+        campaignName: window.localStorage.getItem("username"),
       });
       handleClose();
+      handleUpdate();
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,

@@ -37,6 +37,10 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
             <TableCell align="right">Phone</TableCell>
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Voters Influnced</TableCell>
+            <TableCell align="right">Doors Knocked</TableCell>
+            <TableCell align="right">Voters Surveyed</TableCell>
+            <TableCell align="right">Voters Messaged</TableCell>
+            <TableCell align="right">Phones Called</TableCell>
             <TableCell align="right">Date Added</TableCell>
 
             <TableCell align="right"></TableCell>
@@ -58,6 +62,18 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
                 <TableCell align="right">{list?.email}</TableCell>
                 <TableCell align="right">
                   {list?.votersInfluenced ? list.votersInfluenced : 0}
+                </TableCell>
+                <TableCell align="right">
+                  {list?.doorsKnocked ? list.doorsKnocked : 0}
+                </TableCell>
+                <TableCell align="right">
+                  {list?.votersSurveyed ? list.votersSurveyed : 0}
+                </TableCell>
+                <TableCell align="right">
+                  {list?.votersMessaged ? list.votersMessaged : 0}
+                </TableCell>
+                <TableCell align="right">
+                  {list?.phonesCalled ? list.phonesCalled : 0}
                 </TableCell>
                 <TableCell align="right">{list?.dateJoined}</TableCell>
 

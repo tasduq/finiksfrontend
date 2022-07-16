@@ -22,36 +22,31 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Editvoter({ data }) {
+export default function Editvoter({ data, buttonName, open, handleClickOpen }) {
   console.log(data);
-  const [open, setOpen] = React.useState(false);
-  const [tags, setTags] = React.useState([
-    ...data.customTags,
-    ...data.adminTags,
-  ]);
+  // const [open, setOpen] = React.useState(false);
+  const [tags, setTags] = React.useState([...data?.voterTags]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(false);
+  // };
 
   const handleSelectedImage = (image) => {
     console.log(image);
   };
 
   React.useEffect(() => {
-    setTags([...data.customTags, ...data.adminTags]);
+    setTags([...data?.voterTags]);
   }, []);
 
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open full-screen dialog
-      </Button> */}
-      <button
+      {console.log(tags)}
+      {/* <button
         style={{
           color: "white",
           backgroundColor: "#d12e2f",
@@ -61,13 +56,13 @@ export default function Editvoter({ data }) {
         className="btn"
         onClick={handleClickOpen}
       >
-        Edit
-      </button>
+        {buttonName}
+      </button> */}
 
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={handleClickOpen}
         TransitionComponent={Transition}
       >
         <AppBar
@@ -78,7 +73,7 @@ export default function Editvoter({ data }) {
             <IconButton
               edge="start"
               //   color=""
-              onClick={handleClose}
+              onClick={handleClickOpen}
               aria-label="close"
               style={{ color: "black" }}
             >
@@ -88,7 +83,7 @@ export default function Editvoter({ data }) {
             {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Sound
             </Typography> */}
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={handleClickOpen}>
               Close
             </Button>
           </Toolbar>
@@ -100,17 +95,22 @@ export default function Editvoter({ data }) {
               purpose="Information for Voters - Tags"
             />
             <div
-              className="shadow px-2 py-4"
+              className="shadow px-4 py-4"
               style={{
                 backgroundColor: "#FFFFFF",
                 height: "auto",
                 borderRadius: "12px",
               }}
             >
-              {/* <p style={{ color: "#d12e2f" }}>
+              <button
+                className="btn"
+                style={{ color: "#d12e2f", marginLeft: "-20px" }}
+                onClick={handleClickOpen}
+              >
                 <i class="fas fa-angle-left mx-2"></i> Back
-              </p> */}
-              <div className="row">
+              </button>
+
+              <div className="row mt-2">
                 <div className="col-12 col-md-4 text-left">
                   <div className="d-flex justify-content-between">
                     <h5>
@@ -124,7 +124,12 @@ export default function Editvoter({ data }) {
                       )}{" "}
                     </h5>
                     <button
-                      style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#d12e2f",
+                        width: "88px",
+                        height: "36px",
+                      }}
                       className="btn btn-sm"
                       disabled
                     >
@@ -135,16 +140,17 @@ export default function Editvoter({ data }) {
                   <div className="d-flex justify-content-between mt-2">
                     <h5>
                       Finiks Tags :{" "}
-                      {data.adminTags || data.customTags ? (
-                        <span className="text-danger">
-                          {data.adminTags.length + data.customTags.length}
-                        </span>
-                      ) : (
-                        <span className="text-danger">0</span>
-                      )}{" "}
+                      <span className="text-danger">
+                        {data.voterTags.length > 0 ? data.voterTags.length : 0}
+                      </span>
                     </h5>
                     <button
-                      style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
+                      style={{
+                        color: "#FFFFFF",
+                        backgroundColor: "#d12e2f",
+                        width: "88px",
+                        height: "36px",
+                      }}
                       className="btn btn-sm"
                       disabled
                     >
@@ -250,15 +256,20 @@ export default function Editvoter({ data }) {
                   <div className="shadow">
                     <div
                       className="shadow-sm p-3  d-flex justify-content-center align-items-center"
-                      style={{ height: "90px" }}
+                      style={{ height: "110px" }}
                     >
                       <Avatar
-                        sx={{ bgcolor: "#FF914D", width: 40, height: 40 }}
-                        className="mx-2"
+                        sx={{ bgcolor: "#FF914D", width: 79, height: 79 }}
+                        className="mr-2"
                       >
                         {data.FIRSTNAME[0]}
                       </Avatar>
-                      <h5>{data.FIRSTNAME + " " + data.LASTNAME}</h5>
+                      <h5
+                        className="mr-4"
+                        style={{ fontWeight: "bold", fontSize: "25px" }}
+                      >
+                        {data.FIRSTNAME + " " + data.LASTNAME}
+                      </h5>
                     </div>
                     <div
                       style={{ backgroundColor: "#f6f6f6", height: "auto" }}
@@ -272,100 +283,98 @@ export default function Editvoter({ data }) {
                           ? data.lastInfluenced
                           : "Not Influnced Yet"}
                       </h5>
-                      <p className="text-muted">
-                        1 Bag End , The Shire , Middle Eartch 10232
-                      </p>
+                      <p className="text-muted">{data.ADDRESS}</p>
                       <div className="d-flex justify-content-between text-muted text-center ">
-                        <p className="mx-2">
+                        <p
+                          style={{ borderRight: "1px solid #707070" }}
+                          className="pr-3"
+                        >
                           {data.SEX === "M" ? "Male" : "Female"}
                         </p>
-                        <p className="mx-2">{data.AGE} Years Old</p>
+                        <p
+                          style={{ borderRight: "1px solid #707070" }}
+                          className="pr-3"
+                        >
+                          {data.AGE} Years Old
+                        </p>
                         {data.PARTY_CODE === "A" && (
-                          <p align="right">American Independent</p>
+                          <p align="">American Independent</p>
                         )}
                         {data.PARTY_CODE === "B" && (
-                          <p align="right">Constitution Party</p>
+                          <p align="">Constitution Party</p>
                         )}
-                        {data.PARTY_CODE === "C" && (
-                          <p align="right">Consumer</p>
-                        )}
-                        {data.PARTY_CODE === "D" && (
-                          <p align="right">Democrat</p>
-                        )}
+                        {data.PARTY_CODE === "C" && <p align="">Consumer</p>}
+                        {data.PARTY_CODE === "D" && <p align="">Democrat</p>}
                         {data.PARTY_CODE === "E" && (
-                          <p align="right">Inferred Democrat</p>
+                          <p align="">Inferred Democrat</p>
                         )}
-                        {data.PARTY_CODE === "F" && (
-                          <p align="right">Reform </p>
-                        )}
-                        {data.PARTY_CODE === "G" && <p align="right">Green</p>}
-                        {data.PARTY_CODE === "H" && (
-                          <p align="right">Liberal</p>
-                        )}
-                        {data.PARTY_CODE === "I" && (
-                          <p align="right">Independent</p>
-                        )}
-                        {data.PARTY_CODE === "J" && <p align="right">UMOJA</p>}
+                        {data.PARTY_CODE === "F" && <p align="">Reform </p>}
+                        {data.PARTY_CODE === "G" && <p align="">Green</p>}
+                        {data.PARTY_CODE === "H" && <p align="">Liberal</p>}
+                        {data.PARTY_CODE === "I" && <p align="">Independent</p>}
+                        {data.PARTY_CODE === "J" && <p align="">UMOJA</p>}
                         {data.PARTY_CODE === "K" && (
-                          <p align="right">Independent NM Party</p>
+                          <p align="">Independent NM Party</p>
                         )}
                         {data.PARTY_CODE === "L" && (
-                          <p align="right"> Libertarian</p>
+                          <p align=""> Libertarian</p>
                         )}
 
                         {data.PARTY_CODE === "N" && (
-                          <p align="right">
+                          <p align="">
                             {" "}
                             None/Non-Partisan/No Party/No
                             Preference/Undeclared/Declined to
                             State/Undecided/Unaffiliated
                           </p>
                         )}
-                        {data.PARTY_CODE === "O" && <p align="right"> Other</p>}
+                        {data.PARTY_CODE === "O" && <p align=""> Other</p>}
                         {data.PARTY_CODE === "P" && (
-                          <p align="right"> Peace and Freedom</p>
+                          <p align=""> Peace and Freedom</p>
                         )}
 
-                        {data.PARTY_CODE === "R" && (
-                          <p align="right"> Republican</p>
-                        )}
+                        {data.PARTY_CODE === "R" && <p align=""> Republican</p>}
 
                         {data.PARTY_CODE === "S" && (
-                          <p align="right"> Inferred Republican</p>
+                          <p align=""> Inferred Republican</p>
                         )}
 
-                        {data.PARTY_CODE === "T" && (
-                          <p align="right"> Right to Life</p>
-                        )}
+                        {data.PARTY_CODE === "T" && <p align=""> to Life</p>}
 
-                        {data.PARTY_CODE === "U" && (
-                          <p align="right"> Unknown</p>
-                        )}
+                        {data.PARTY_CODE === "U" && <p align=""> Unknown</p>}
 
                         {data.PARTY_CODE === "V" && (
-                          <p align="right"> Conservative</p>
+                          <p align=""> Conservative</p>
                         )}
 
                         {data.PARTY_CODE === "W" && (
-                          <p align="right"> Natural Law</p>
+                          <p align=""> Natural Law</p>
                         )}
 
                         {data.PARTY_CODE === "Z" && (
-                          <p align="right"> Independance</p>
+                          <p align=""> Independance</p>
                         )}
 
                         {data.PARTY_CODE === undefined ||
                           null ||
-                          ("" && <p align="right"></p>)}
+                          ("" && <p align=""></p>)}
                       </div>
+
                       {tags.length > 0 && (
-                        <div className="d-flex justify-content-between">
+                        <div className="row px-2">
                           {tags.map((tag) => {
-                            return <Tag value={tag} />;
+                            return (
+                              <div className="text-center mb-1">
+                                <Tag value={tag} />
+                              </div>
+                            );
                           })}
                         </div>
                       )}
-                      {tags.length === 0 && <Tag value="No Tags" />}
+
+                      {tags.length === 0 && (
+                        <Tag value={{ tagName: "No Tags Found" }} />
+                      )}
                     </div>
                     <div className="p-3">
                       <h5

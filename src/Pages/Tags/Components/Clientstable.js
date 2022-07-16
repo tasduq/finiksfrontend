@@ -11,6 +11,14 @@ import { ToastContainer, toast } from "react-toastify";
 // import Editlist from "./Editlist";
 
 export default function Clientstable({ data, dSelect, handleDSelect }) {
+  const [openTags, setOpenTags] = React.useState(false);
+  const [clientTagsList, setClientTagsList] = React.useState();
+
+  const handleOpenTags = (list) => {
+    console.log(list);
+    setClientTagsList(list);
+    setOpenTags(!openTags);
+  };
   console.log(data);
   //   const handleDelete = async (data) => {
   //     console.log(data);
@@ -54,15 +62,38 @@ export default function Clientstable({ data, dSelect, handleDSelect }) {
                 </TableCell>
                 <TableCell align="right">{list?.tags?.length}</TableCell>
                 <TableCell align="right">
-                  <Clienttagspage
+                  {/* <Clienttagspage
                     dSelect={dSelect}
                     handleDSelect={handleDSelect}
                     data={list}
-                  />
+                  /> */}
+                  <button
+                    style={{
+                      width: "150px",
+                      height: "36px",
+                      backgroundColor: "#D12E2F",
+                      color: "white",
+                    }}
+                    className="btn "
+                    // onClick={() => handleInfo(list._id)}
+                    onClick={() => handleOpenTags(list)}
+                  >
+                    View
+                  </button>
                 </TableCell>
               </TableRow>
             );
           })}
+          {openTags && (
+            <Clienttagspage
+              data={clientTagsList}
+              open={openTags}
+              handleOpenTags={handleOpenTags}
+              dSelect={dSelect}
+              handleDSelect={handleDSelect}
+              selectButtonDisabled={true}
+            />
+          )}
         </TableBody>
       </Table>
     </TableContainer>

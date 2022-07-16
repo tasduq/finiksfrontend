@@ -8,9 +8,29 @@ import { ToastContainer, toast } from "react-toastify";
 const Clients = () => {
   const [clients, setClients] = useState();
   const [update, setUpdate] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [searched, setSearched] = useState();
 
   const handleUpdate = () => {
     setUpdate(true);
+  };
+
+  const handleSearch = (evt) => {
+    if (evt.target.value.length > 0) {
+      setSearching(true);
+      let yoo;
+      setSearchValue(evt.target.value);
+      yoo = clients.filter((client) => {
+        return client.campaignName
+          .toLowerCase()
+          .includes(evt.target.value.toLowerCase());
+      });
+      setSearched(yoo);
+    } else {
+      setSearching(false);
+      setSearchValue(evt.target.value);
+    }
   };
 
   useEffect(() => {
@@ -66,12 +86,14 @@ const Clients = () => {
                           // boxShadow: "0px 3px 10px #00000029",
                           // borderRadius: "15px",
                         }}
+                        value={searchValue}
+                        onChange={handleSearch}
                       ></input>
                     </div>
                     <br />
                     <div>
                       <Tableclients
-                        data={clients}
+                        data={searching === true ? searched : clients}
                         handleUpdate={handleUpdate}
                       />
                     </div>

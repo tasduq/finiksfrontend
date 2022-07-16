@@ -49,4 +49,28 @@ const mergeTags = async (data) => {
   return res;
 };
 
-export { addTag, getTags, getTagInfo, getTagsByClients, mergeTags, editTag };
+const getClientTags = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/tags/getclienttags`, data);
+
+  console.log(res);
+  return res;
+};
+
+const deleteTag = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/tags/deletetag`, data);
+  console.log(res);
+  return res;
+};
+
+export {
+  addTag,
+  getTags,
+  getTagInfo,
+  getTagsByClients,
+  mergeTags,
+  editTag,
+  getClientTags,
+  deleteTag,
+};

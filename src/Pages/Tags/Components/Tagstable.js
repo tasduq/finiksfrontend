@@ -8,6 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Taginfo from "./Taginfo";
 import { ToastContainer, toast } from "react-toastify";
 import Edittag from "./Edittag";
+import Confirmdelete from "../../../Components/Confirmdelete";
+import { deleteTag } from "../../../Connection/Tags";
 
 export default function Tagstable({
   data,
@@ -15,6 +17,7 @@ export default function Tagstable({
   dSelect,
   handleDSelect,
   handleUpdate,
+  selectButtonDisabled,
 }) {
   const [selectedTags, setSelectedTags] = React.useState([]);
   console.log(data);
@@ -55,9 +58,27 @@ export default function Tagstable({
     handleSelected(yoo);
   };
 
+  const handleDelete = async (id) => {
+    console.log(id);
+    const res = await deleteTag({ id: id });
+    console.log(res);
+    if (res.data.success === true) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      handleUpdate();
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+
   React.useEffect(() => {
     setSelectedTags([]);
-    handleDSelect();
+    if (handleDSelect) {
+      handleDSelect();
+    }
   }, [dSelect === true]);
 
   return (
@@ -72,7 +93,10 @@ export default function Tagstable({
             <TableCell align="right">Active</TableCell>
             <TableCell align="center">View</TableCell>
             <TableCell align="center">Edit</TableCell>
-            <TableCell align="center">Select To Merge</TableCell>
+            {selectButtonDisabled !== true && (
+              <TableCell align="center">Select To Merge</TableCell>
+            )}
+            <TableCell align="center">Delete</TableCell>
           </TableRow>
         </TableHead>
 
@@ -81,6 +105,13 @@ export default function Tagstable({
             return (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                style={{
+                  backgroundColor: `${
+                    selectedTags[0] === list._id || selectedTags[1] === list._id
+                      ? "#D12E2F"
+                      : ""
+                  }`,
+                }}
                 // onClick={() => handleClick(list)}
               >
                 <TableCell component="th" scope="row">
@@ -114,7 +145,29 @@ export default function Tagstable({
                   <Edittag handleUpdate={handleUpdate} data={list} />
                 </TableCell>
                 <TableCell align="right">
-                  <button
+                  {selectButtonDisabled !== true && (
+                    <button
+                      style={{
+                        width: "150px",
+                        height: "36px",
+                        backgroundColor: "#D12E2F",
+                        color: "white",
+                      }}
+                      className="btn "
+                      onClick={
+                        selectedTags[0] === list._id ||
+                        selectedTags[1] === list._id
+                          ? () => handleUnSelect(list._id)
+                          : () => handleSelect(list._id)
+                      }
+                    >
+                      {selectedTags[0] === list._id ||
+                      selectedTags[1] === list._id
+                        ? "Un Select"
+                        : "Select"}
+                    </button>
+                  )}
+                  {/* <button
                     style={{
                       width: "150px",
                       height: "36px",
@@ -133,7 +186,7 @@ export default function Tagstable({
                     selectedTags[1] === list._id
                       ? "Un Select"
                       : "Select"}
-                  </button>
+                  </button> */}
 
                   {/* {selectedTags.includes(list._id) === true && (
                     <button
@@ -149,6 +202,10 @@ export default function Tagstable({
                       Select
                     </button>
                   )} */}
+                </TableCell>
+                <TableCell align="right">
+                  {console.log(list._id)}
+                  <Confirmdelete handleDelete={handleDelete} data={list._id} />
                 </TableCell>
               </TableRow>
             );

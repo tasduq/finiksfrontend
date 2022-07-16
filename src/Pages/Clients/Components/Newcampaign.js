@@ -14,11 +14,18 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import validator from "validator";
 import { register } from "../../../Connection/Auth";
+import { getDistricts } from "../../../Connection/Clients";
 import { ToastContainer, toast } from "react-toastify";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function FormDialog({ handleUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [districtsCount, setDistrictsCount] = React.useState([]);
+  const [counties, setCounties] = React.useState([]);
+  const [countiesCommission, setCountiesCommission] = React.useState([]);
+  const [city, setCity] = React.useState([]);
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -27,9 +34,12 @@ export default function FormDialog({ handleUpdate }) {
     endDate: "",
     election: "",
     state: "",
-    district: "",
+    district: [],
     level: "",
     role: "camapaignManager",
+    county: [],
+    city: [],
+    countyCommission: [],
   });
 
   const handleClickOpen = () => {
@@ -46,6 +56,285 @@ export default function FormDialog({ handleUpdate }) {
       ...values,
       [name]: value,
     });
+  };
+
+  const handleChangeLevel = async (evt) => {
+    // setValues({
+    //   ...values,
+    //   level: evt.target.value,
+    // });
+
+    if (evt.target.value === "Federal - Senate") {
+      setValues({
+        ...values,
+        district: [],
+        county: [],
+        city: [],
+        level: evt.target.value,
+        countyCommission: [],
+      });
+    }
+
+    if (evt.target.value === "") {
+      setValues({
+        ...values,
+        district: [],
+        county: [],
+        city: [],
+        level: evt.target.value,
+      });
+    }
+
+    if (evt.target.value === "Federal - House") {
+      setValues({
+        ...values,
+        level: evt.target.value,
+        district: [],
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+      let res = await getDistricts({
+        field: "CONG_DIST",
+        state: values.state,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setDistrictsCount(res.data.districts);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+
+    if (evt.target.value === "State - Statewide") {
+      setValues({
+        ...values,
+        district: [],
+        level: evt.target.value,
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+    }
+
+    if (evt.target.value === "State - Senate") {
+      setValues({
+        ...values,
+        level: evt.target.value,
+        district: [],
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+      let res = await getDistricts({
+        field: "ST_UP_HOUS",
+        state: values.state,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setDistrictsCount(res.data.districts);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+
+    if (evt.target.value === "State - House") {
+      setValues({
+        ...values,
+        level: evt.target.value,
+        district: [],
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+      let res = await getDistricts({
+        field: "ST_LO_HOUS",
+        state: values.state,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setDistrictsCount(res.data.districts);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+
+    if (evt.target.value === "County - County Wide") {
+      setValues({
+        ...values,
+        level: evt.target.value,
+        district: [],
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+      let res = await getDistricts({
+        field: "AI_COUNTY_NAME",
+        state: values.state,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setCounties(res.data.districts);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+
+    if (evt.target.value === "County - County Commision") {
+      setValues({
+        ...values,
+        level: evt.target.value,
+        district: [],
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+      let res = await getDistricts({
+        field: "AI_COUNTY_NAME",
+        state: values.state,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setCounties(res.data.districts);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+
+    if (evt.target.value === "City - City Wide") {
+      setValues({
+        ...values,
+        level: evt.target.value,
+        district: [],
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
+      let res = await getDistricts({
+        field: "MUNICIPALITY",
+        state: values.state,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setCity(res.data.districts);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    }
+  };
+
+  const handleChangeDistrict = (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
+
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setValues(
+      // On autofill we get a stringified value.
+      {
+        ...values,
+        district: typeof value === "number" ? value.split(",") : value,
+      }
+    );
+  };
+
+  const handleChangeCounty = async (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
+
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setValues(
+      // On autofill we get a stringified value.
+      {
+        ...values,
+        county: typeof value === "string" ? value.split(",") : value,
+        countyCommission: value.length === 0 ? [] : values.countyCommission,
+      }
+    );
+
+    // if (value?.length === 0) {
+    //   setValues(
+    //     // On autofill we get a stringified value.
+    //     {
+    //       ...values,
+    //       countyCommission: [],
+    //     }
+    //   );
+    // }
+
+    let res = await getDistricts({
+      field: "CNTY_COMM",
+      state: values.county,
+      fieldTwoName: "AI_COUNTY_NAME",
+    });
+
+    console.log(res);
+    if (res.data.success === true) {
+      setCountiesCommission(res.data.districts);
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+
+  const handleChangeCountyCommission = (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
+
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setValues(
+      // On autofill we get a stringified value.
+      {
+        ...values,
+        countyCommission: typeof value === "number" ? value.split(",") : value,
+      }
+    );
+  };
+
+  const handleChangeCity = (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
+
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setValues(
+      // On autofill we get a stringified value.
+      {
+        ...values,
+        city: typeof value === "string" ? value.split(",") : value,
+      }
+    );
   };
 
   const handleValidate = () => {
@@ -74,6 +363,21 @@ export default function FormDialog({ handleUpdate }) {
       });
       handleClose();
       handleUpdate();
+      setValues({
+        email: "",
+        password: "",
+        campaignName: "",
+        startDate: "",
+        endDate: "",
+        election: "",
+        state: "",
+        district: [],
+        level: "",
+        role: "camapaignManager",
+        county: [],
+        city: [],
+        countyCommission: [],
+      });
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -83,9 +387,7 @@ export default function FormDialog({ handleUpdate }) {
 
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
+      {console.log(values)}
       <button
         style={{
           backgroundColor: "#d12e2f",
@@ -179,13 +481,17 @@ export default function FormDialog({ handleUpdate }) {
               onChange={handleChange}
               name="election"
             >
-              <MenuItem value="primary">Primary</MenuItem>
-              <MenuItem value="general">General</MenuItem>
+              <MenuItem value="Primary">Primary</MenuItem>
+              <MenuItem value="General">General</MenuItem>
             </Select>
           </FormControl>
           <br />
           <br />
-          <FormControl fullWidth size="small">
+          <FormControl
+            fullWidth
+            size="small"
+            disabled={values.election.length > 0 ? false : true}
+          >
             <InputLabel id="demo-simple-select-label">State</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -197,18 +503,22 @@ export default function FormDialog({ handleUpdate }) {
               name="state"
               //   onChange={handleChange}
             >
-              <MenuItem value="Alabama">Alabama</MenuItem>
+              {/* <MenuItem value="Alabama">Alabama</MenuItem>
               <MenuItem value="Alaska">Alaska</MenuItem>
               <MenuItem value="Arizona">Arizona</MenuItem>
               <MenuItem value="Arkansas">Arkansas</MenuItem>
               <MenuItem value="California">California</MenuItem>
-              <MenuItem value="Colorada">Colorada</MenuItem>
-              <MenuItem value="Florida">Florida</MenuItem>
+              <MenuItem value="Colorada">Colorada</MenuItem> */}
+              <MenuItem value="FL">Florida</MenuItem>
             </Select>
           </FormControl>
           <br />
           <br />
-          <FormControl fullWidth size="small">
+          <FormControl
+            fullWidth
+            size="small"
+            disabled={values.state.length > 0 ? false : true}
+          >
             <InputLabel id="demo-simple-select-label">Level</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -217,11 +527,12 @@ export default function FormDialog({ handleUpdate }) {
               label="Level"
               //   onChange={handleChange}
               value={values.level}
-              onChange={handleChange}
+              onChange={handleChangeLevel}
               name="level"
             >
-              <MenuItem value="Fedral - Senate">Fedral - Senate</MenuItem>
-              <MenuItem value="Fedral - House">Fedral - House</MenuItem>
+              <MenuItem value="">Un Select</MenuItem>
+              <MenuItem value="Federal - Senate">Federal - Senate</MenuItem>
+              <MenuItem value="Federal - House">Federal - House</MenuItem>
               <MenuItem value="State - Statewide">State - Statewide</MenuItem>
               <MenuItem value="State - Senate">State - Senate</MenuItem>
               <MenuItem value="State - House">State - House</MenuItem>
@@ -234,21 +545,183 @@ export default function FormDialog({ handleUpdate }) {
               <MenuItem value="City - City Wide">City - City Wide</MenuItem>
             </Select>
           </FormControl>
+          {(values.level === "County - County Wide" ||
+            values.level === "County - County Commision") && (
+            <>
+              <br />
+              <br />
+
+              <FormControl
+                fullWidth
+                size="small"
+                // disabled={
+                //   values.level.length < 1 ||
+                //   values.level === "Federal - Senate" ||
+                //   values.level === "State - Statewide" ||
+                //   values.level === "County - County Wide" ||
+                //   values.level === "City - City Wide" < 0
+                //     ? true
+                //     : false
+                // }
+              >
+                <InputLabel id="demo-simple-select-label">County</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  multiple
+                  //   value={age}
+                  label="District"
+                  //   onChange={handleChange}
+                  value={values.county}
+                  onChange={handleChangeCounty}
+                  name="County"
+                  renderValue={(selected) => selected.join(", ")}
+                >
+                  {counties.map((val) => {
+                    return (
+                      <MenuItem key={val} value={val}>
+                        <Checkbox checked={values.county.indexOf(val) > -1} />
+                        <ListItemText primary={val} />
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </>
+          )}
+
+          {(values.level === "County - County Wide" ||
+            values.level === "County - County Commision") &&
+            values.county?.length > 0 && (
+              <>
+                <br />
+                <br />
+
+                <FormControl
+                  fullWidth
+                  size="small"
+                  // disabled={
+                  //   values.level.length < 1 ||
+                  //   values.level === "Federal - Senate" ||
+                  //   values.level === "State - Statewide" ||
+                  //   values.level === "County - County Wide" ||
+                  //   values.level === "City - City Wide" < 0
+                  //     ? true
+                  //     : false
+                  // }
+                >
+                  <InputLabel id="demo-simple-select-label">
+                    County Commission
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    multiple
+                    //   value={age}
+                    label="County Commission"
+                    //   onChange={handleChange}
+                    value={values.countyCommission}
+                    onChange={handleChangeCountyCommission}
+                    name="County"
+                    renderValue={(selected) => selected.join(", ")}
+                  >
+                    {countiesCommission.map((val) => {
+                      return (
+                        <MenuItem key={val} value={val}>
+                          <Checkbox
+                            checked={values.countyCommission.indexOf(val) > -1}
+                          />
+                          <ListItemText primary={val} />
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </>
+            )}
+
+          {values.level === "City - City Wide" && (
+            <>
+              <br />
+              <br />
+
+              <FormControl
+                fullWidth
+                size="small"
+                // disabled={
+                //   values.level.length < 1 ||
+                //   values.level === "Federal - Senate" ||
+                //   values.level === "State - Statewide" ||
+                //   values.level === "County - County Wide" ||
+                //   values.level === "City - City Wide" < 0
+                //     ? true
+                //     : false
+                // }
+              >
+                <InputLabel id="demo-simple-select-label">
+                  Municipality
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  multiple
+                  //   value={age}
+                  label="Municipality"
+                  //   onChange={handleChange}
+                  value={values.city}
+                  onChange={handleChangeCity}
+                  name="County"
+                  renderValue={(selected) => selected.join(", ")}
+                >
+                  {city.map((val) => {
+                    return (
+                      <MenuItem key={val} value={val}>
+                        <Checkbox checked={values.city.indexOf(val) > -1} />
+                        <ListItemText primary={val} />
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </>
+          )}
+
           <br />
           <br />
-          <FormControl fullWidth size="small">
+          <FormControl
+            fullWidth
+            size="small"
+            disabled={
+              values.level.length < 1 ||
+              values.level === "Federal - Senate" ||
+              values.level === "State - Statewide" ||
+              values.level === "County - County Wide" ||
+              values.level === "City - City Wide"
+                ? true
+                : false
+            }
+          >
             <InputLabel id="demo-simple-select-label">District</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              multiple
               //   value={age}
               label="District"
               //   onChange={handleChange}
               value={values.district}
-              onChange={handleChange}
+              onChange={handleChangeDistrict}
               name="district"
+              renderValue={(selected) => selected.join(", ")}
             >
-              <MenuItem value="N/A">N/A</MenuItem>
+              {districtsCount.map((val) => {
+                return (
+                  <MenuItem key={val} value={val}>
+                    <Checkbox checked={values.district.indexOf(val) > -1} />
+                    <ListItemText primary={val} />
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </DialogContent>

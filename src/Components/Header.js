@@ -8,11 +8,14 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import Profile from "../Assets/profile.jpeg";
+import { useAuth } from "../Context/Auth-Context";
+import Createscript from "../Pages/Phonebanking/Components/Createscript";
 
-const settings = ["Settings", "Contacts", "Scripts", "Surveys", "Tags"];
+const settings = ["Settings", "Contacts"];
 const Header = ({ name, purpose }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { logout, role } = useAuth();
   console.log("props");
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -67,23 +70,64 @@ const Header = ({ name, purpose }) => {
                   <i class="fas fa-angle-right text-danger ml-5"></i>
                 </MenuItem>
               ))}
-              <MenuItem
-                className="d-flex justify-content-between px-4"
-                // key={setting}
-                // onClick={handleCloseUserMenu}
-              >
-                <Link to="/upload">
-                  <Typography className="" textAlign="center">
-                    Upload Data
-                  </Typography>
-                </Link>
+              {role !== "superadmin" && (
+                <MenuItem
+                  className="d-flex justify-content-between px-4"
+                  // key={setting}
+                  // onClick={handleCloseUserMenu}
+                >
+                  <Createscript
+                    // handleScripts={(scripts) => setScripts(scripts)}
+                    buttonName={{ name: "Scripts", color: "text-dark" }}
+                  />
+                  <i class="fas fa-angle-right text-danger ml-5"></i>
+                </MenuItem>
+              )}
 
-                <i class="fas fa-upload text-danger ml-5"></i>
-              </MenuItem>
+              <Link to="/surveys">
+                <MenuItem
+                  className="d-flex justify-content-between px-4"
+                  // key={setting}
+                  // onClick={handleCloseUserMenu}
+                >
+                  <Typography className="text-dark" textAlign="center">
+                    Surveys
+                  </Typography>
+                  <i class="fas fa-angle-right text-danger ml-5"></i>
+                </MenuItem>
+              </Link>
+              <Link to="/tags">
+                <MenuItem
+                  className="d-flex justify-content-between px-4"
+                  // key={setting}
+                  // onClick={handleCloseUserMenu}
+                >
+                  <Typography className="text-dark" textAlign="center">
+                    Tags
+                  </Typography>
+                  <i class="fas fa-angle-right text-danger ml-5"></i>
+                </MenuItem>
+              </Link>
+              {role === "superadmin" && (
+                <MenuItem
+                  className="d-flex justify-content-between px-4"
+                  // key={setting}
+                  // onClick={handleCloseUserMenu}
+                >
+                  <Link to="/upload">
+                    <Typography className="text-dark" textAlign="center">
+                      Upload Data
+                    </Typography>
+                  </Link>
+
+                  <i class="fas fa-upload text-danger ml-5"></i>
+                </MenuItem>
+              )}
+
               <MenuItem
                 className="d-flex justify-content-between px-4"
                 // key={setting}
-                // onClick={handleCloseUserMenu}
+                onClick={() => logout(role)}
               >
                 <Typography className="text-danger" textAlign="center">
                   Log out

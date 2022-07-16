@@ -11,9 +11,9 @@ const Tag = ({ value }) => {
         color: "white",
         borderRadius: "50px",
       }}
-      className="p-2  text-center"
+      className="p-2 mx-1  text-center"
     >
-      {value}
+      {value.tagName}
     </div>
   );
 };

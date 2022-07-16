@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Header from "../../../Components/Header";
-
 import Logo from "../../../Assets/logoword.png";
 import Scripttable from "./Scripttable";
 import Createnewscript from "./Createnewscript";
@@ -21,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Createscript({ handleScripts }) {
+export default function Createscript({ handleScripts, buttonName }) {
   const [open, setOpen] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
   const [foundScripts, setFoundScripts] = React.useState();
@@ -80,13 +79,21 @@ export default function Createscript({ handleScripts }) {
         Open full-screen dialog
       </Button> */}
 
-      <button
+      {/* <button
         style={{ color: "#d12e2f" }}
         className="btn btm-sm "
         onClick={handleClickOpen}
       >
-        Create New
-      </button>
+        {buttonName}
+      </button> */}
+      <Typography
+        style={{ color: "#d12e2f" }}
+        className={buttonName.color}
+        onClick={handleClickOpen}
+        textAlign="center"
+      >
+        {buttonName.name}
+      </Typography>
 
       <Dialog
         fullScreen

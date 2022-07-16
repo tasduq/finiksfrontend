@@ -10,19 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 // import Editlist from "./Editlist";
 import Viewsurveypage from "./Viewsurveypage";
 
-export default function Surveystable({ data }) {
-  const [selectedTags, setSelectedTags] = React.useState([]);
-  const [openSurveyPage, setOpenSurveyPage] = React.useState(false);
-  const [surveyPageData, setSurveyPageData] = React.useState();
-
-  const handleClickOpenSurveyPage = (data) => {
-    if (data.campaignOwnerId !== undefined) {
-      setSurveyPageData(data);
-    }
-
-    setOpenSurveyPage(!openSurveyPage);
-  };
-
+export default function Viewsurveytable({ data, handleSelected, selected }) {
+  // const [selectedTags, setSelectedTags] = React.useState([]);
   console.log(data);
   //   const handleDelete = async (data) => {
   //     console.log(data);
@@ -61,27 +50,55 @@ export default function Surveystable({ data }) {
   //     handleSelected(yoo);
   //   };
 
+  // const [selectedTags, setSelectedTags] = React.useState([]);
+
+  const handleSelect = (id) => {
+    console.log(id);
+    // if (selectedTags.length < 2) {
+    // setSelectedTags([...selectedTags, id]);
+    handleSelected(id, "select");
+    // } else {
+    //   toast.error("Cannot select more than 2", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    // }
+  };
+
+  const handleUnSelect = (id) => {
+    console.log(id);
+    // let yoo = selected.filter((tag) => {
+    //   return tag !== id;
+    // });
+    // console.log(yoo);
+    // setSelectedTags(yoo);
+    handleSelected(id, "unselect");
+  };
+
   React.useEffect(() => {}, []);
 
   return (
     <TableContainer>
-      {console.log(data)}
+      {console.log(data, selected)}
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Campaign Name</TableCell>
             <TableCell align="right">Survey</TableCell>
             <TableCell align="right">Description</TableCell>
-            <TableCell align="right"># of Responses</TableCell>
-            <TableCell align="center">Script</TableCell>
-            <TableCell align="center">View</TableCell>
+            <TableCell align="right">SubUser</TableCell>
+            <TableCell align="right">Voter</TableCell>
+            <TableCell align="right">Response</TableCell>
+            <TableCell align="center">Geo Location</TableCell>
+            <TableCell align="center">Date</TableCell>
+            <TableCell align="right">Time</TableCell>
+            <TableCell align="right"></TableCell>
             {/* <TableCell align="center">Edit</TableCell>
             <TableCell align="center">Select To Merge</TableCell> */}
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {data?.surveyQuestions?.map((list) => {
+          {data?.surveyData?.map((list) => {
             return (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -91,11 +108,16 @@ export default function Surveystable({ data }) {
                   {data?.campaignName}
                 </TableCell>
                 <TableCell align="right">{list?.surveyName}</TableCell>
-                <TableCell align="right">{list?.surveyPreview}</TableCell>
-                <TableCell align="right">{list?.responses}</TableCell>
-
                 <TableCell align="right">{list?.surveyQuestion}</TableCell>
+                <TableCell align="right">{list?.subUserName}</TableCell>
+                <TableCell align="right">{list?.voterName}</TableCell>
+                <TableCell align="right">{list?.answer}</TableCell>
+
+                <TableCell align="right">{list?.geoLocation}</TableCell>
+                <TableCell align="right">{list?.date}</TableCell>
+                <TableCell align="right">{list?.time}</TableCell>
                 <TableCell align="right">
+                  {" "}
                   <button
                     style={{
                       width: "150px",
@@ -104,18 +126,21 @@ export default function Surveystable({ data }) {
                       color: "white",
                     }}
                     className="btn "
-                    // onClick={() => handleInfo(list._id)}
-                    onClick={() =>
-                      handleClickOpenSurveyPage({
-                        survey: list,
-                        campaignOwnerId: data.campaignOwnerId,
-                        campaignName: data.campaignName,
-                      })
+                    onClick={
+                      selected.includes(list.voterId.toString())
+                        ? () => handleUnSelect(list.voterId)
+                        : () => handleSelect(list.voterId)
                     }
                   >
-                    View
+                    {selected.includes(list.voterId.toString())
+                      ? "Un Select"
+                      : "Select"}
                   </button>
                 </TableCell>
+
+                {/* <TableCell align="right">
+                  <Viewsurveypage data={list} />
+                </TableCell> */}
 
                 {/* <TableCell align="right">
                   <button
@@ -157,13 +182,6 @@ export default function Surveystable({ data }) {
               </TableRow>
             );
           })}
-          {surveyPageData && (
-            <Viewsurveypage
-              data={surveyPageData}
-              open={openSurveyPage}
-              handleClickOpen={handleClickOpenSurveyPage}
-            />
-          )}
         </TableBody>
       </Table>
     </TableContainer>

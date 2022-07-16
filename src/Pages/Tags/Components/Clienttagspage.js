@@ -19,27 +19,57 @@ import Tagstable from "./Tagstable";
 import Logo from "../../../Assets/logoword.png";
 import { getAristotleData } from "../../../Connection/Aristotle";
 import { ToastContainer, toast } from "react-toastify";
-import { getTagInfo } from "../../../Connection/Tags";
+import { getClientTags } from "../../../Connection/Tags";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Clienttagspage({ data, dSelect, handleDSelect }) {
-  const [open, setOpen] = React.useState(false);
+export default function Clienttagspage({
+  data,
+  dSelect,
+  handleDSelect,
+  getDataFromServer,
+  open,
+  handleOpenTags,
+  selectButtonDisabled,
+}) {
+  // const [open, setOpen] = React.useState(false);
   const [clientData, setClientData] = React.useState();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleOpenTags = () => {
+  //   setOpen(false);
+  // };
 
   React.useEffect(() => {
     setClientData(data);
-  }, []);
+    if (getDataFromServer === true) {
+      console.log(data, "i a data");
+      const handleGetData = async () => {
+        console.log("i am running");
+        let res = await getClientTags({ id: data });
+        console.log(res);
+        if (res.data.success) {
+          setClientData({
+            tags: res.data.clientData,
+            campaignName:
+              res.data.clientData.length > 0
+                ? res.data.clientData[0].ownerName
+                : "Campaign Name Not Found",
+          });
+        } else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      };
+      handleGetData();
+    }
+  }, [data]);
 
   return (
     <div>
@@ -54,14 +84,14 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
         }}
         className="btn "
         // onClick={() => handleInfo(list._id)}
-        onClick={handleClickOpen}
+        onClick={handleOpenTags}
       >
         View
       </button>
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={handleOpenTags}
         TransitionComponent={Transition}
       >
         <AppBar
@@ -72,7 +102,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
             <IconButton
               edge="start"
               //   color=""
-              onClick={handleClose}
+              onClick={handleOpenTags}
               aria-label="close"
               style={{ color: "black" }}
             >
@@ -82,7 +112,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
             {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Sound
             </Typography> */}
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={handleOpenTags}>
               Close
             </Button>
           </Toolbar>
@@ -90,7 +120,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
         <div>
           <div className="mt-5 container">
             <Header
-              name={`Tags - ${data?.campaignName}`}
+              name={`Tags - ${clientData?.campaignName}`}
               purpose="Ability to Edit , Merge , record campaign Tags"
             />
             <div
@@ -101,7 +131,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
                 borderRadius: "12px",
               }}
             >
-              <p onClick={handleClose} style={{ color: "#d12e2f" }}>
+              <p onClick={handleOpenTags} style={{ color: "#d12e2f" }}>
                 <i class="fas fa-angle-left mx-2"></i> Back
               </p>
               {clientData === undefined && (
@@ -114,6 +144,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
                   dSelect={dSelect}
                   handleDSelect={handleDSelect}
                   data={clientData.tags}
+                  selectButtonDisabled={selectButtonDisabled}
                 />
               )}
 

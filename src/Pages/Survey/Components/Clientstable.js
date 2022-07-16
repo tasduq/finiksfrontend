@@ -11,6 +11,14 @@ import { ToastContainer, toast } from "react-toastify";
 // import Editlist from "./Editlist";
 
 export default function Clientstable({ data, dSelect, handleDSelect }) {
+  const [openSurvey, setOpenSurvey] = React.useState(false);
+  const [clientSurveyList, setClientSurveyList] = React.useState();
+
+  const handleOpenSurvey = (list) => {
+    console.log(list);
+    setClientSurveyList(list);
+    setOpenSurvey(!openSurvey);
+  };
   console.log(data);
   //   const handleDelete = async (data) => {
   //     console.log(data);
@@ -52,11 +60,13 @@ export default function Clientstable({ data, dSelect, handleDSelect }) {
                 <TableCell component="th" scope="row">
                   {list?.campaignName}
                 </TableCell>
-                <TableCell align="right">{list?.surveyTaken.length}</TableCell>
-                {console.log(list)}
+                <TableCell align="right">
+                  {list?.surveyQuestions?.length}
+                </TableCell>
+                {/* {console.log(list)} */}
                 <TableCell align="right">
                   {
-                    list?.surveyTaken?.reduce((first, second) => {
+                    list?.surveyQuestions?.reduce((first, second) => {
                       console.log(first, second);
                       return {
                         ...second,
@@ -66,11 +76,30 @@ export default function Clientstable({ data, dSelect, handleDSelect }) {
                   }
                 </TableCell>
                 <TableCell align="right">
-                  <Clientssurveyspage data={list} />
+                  <button
+                    style={{
+                      width: "150px",
+                      height: "36px",
+                      backgroundColor: "#D12E2F",
+                      color: "white",
+                    }}
+                    className="btn "
+                    // onClick={() => handleInfo(list._id)}
+                    onClick={() => handleOpenSurvey(list)}
+                  >
+                    View
+                  </button>
                 </TableCell>
               </TableRow>
             );
           })}
+          {openSurvey && (
+            <Clientssurveyspage
+              data={clientSurveyList}
+              open={openSurvey}
+              handleOpenSurvey={handleOpenSurvey}
+            />
+          )}
         </TableBody>
       </Table>
     </TableContainer>

@@ -37,10 +37,21 @@ const getTeam = async (data) => {
   return res;
 };
 
+const getCampaignTeammembers = async (data) => {
+  console.log(data);
+  let res = await axios.post(
+    `${url}/api/campaign/getcampaignteammembers`,
+    data
+  );
+  console.log(res);
+  return res;
+};
+
 export {
   getNewCode,
   updateCampaignData,
   getCampaignData,
   inviteTeamMember,
   getTeam,
+  getCampaignTeammembers,
 };

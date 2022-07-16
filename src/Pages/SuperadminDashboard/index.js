@@ -10,11 +10,13 @@ import { Link } from "react-router-dom";
 import Header from "../../Components/Header";
 import { useAuth } from "../../Context/Auth-Context";
 import { useHistory } from "react-router-dom";
-// import Campaignsettings from "./Components/Campaignsettings";
-
-// import Linechart from "./Components/Linechart";
 import Greenline from "../../Assets/greenline.JPG";
 import Redline from "../../Assets/redline.JPG";
+import { getClients } from "../../Connection/Clients";
+import { ToastContainer, toast } from "react-toastify";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import Profile from "../../Assets/profile.jpeg";
 import Img1 from "../../Assets/img1.jpeg";
@@ -29,6 +31,8 @@ const Superadmindashboard = (props) => {
   console.log(props);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [foundClients, setFoundClients] = useState();
+
   const { role } = useAuth();
   let history = useHistory();
   console.log("props");
@@ -45,6 +49,20 @@ const Superadmindashboard = (props) => {
     //   history.push("/");
     // }
     // window.location.reload();
+
+    const handleGetClients = async () => {
+      const res = await getClients();
+      console.log(res);
+      if (res.data.success === true) {
+        setFoundClients(res.data.clients);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
+    handleGetClients();
   }, []);
 
   return (
@@ -59,6 +77,26 @@ const Superadmindashboard = (props) => {
 
             <div className="row">
               <div className="col-12 col-md-12">
+                <div className="text-right">
+                  {" "}
+                  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                    <InputLabel id="demo-simple-select-label">
+                      Select Time
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      // value={age}
+                      // label="Age"
+                      // onChange={handleChange}
+                    >
+                      <MenuItem value={10}>Week</MenuItem>
+                      <MenuItem value={20}>Month</MenuItem>
+                      <MenuItem value={30}>3 Months</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+
                 <div
                   style={{
                     borderRadius: "12px",
@@ -70,7 +108,7 @@ const Superadmindashboard = (props) => {
                   <div className=" p-2">
                     <p className="mt-2 box1heading">Clients</p>
                     <p className="box1value">
-                      649{" "}
+                      {foundClients ? foundClients?.length : 0}{" "}
                       <i
                         style={{ color: "#00E38C" }}
                         class="fas fa-caret-up "
@@ -144,91 +182,70 @@ const Superadmindashboard = (props) => {
               <div className="col-12 col-md-6">
                 <div className="d-flex justify-content-between">
                   <h3 className="">Clients</h3>
-                  <p className="mt-1">12 Active Members</p>
-                  <p
-                    className=" mt-1"
-                    style={{ color: "#D12E2F", fontSize: "15px" }}
+                  <p className="mt-1">{foundClients?.length} Active Members</p>
+                  <Link
+                    // className={clsx({
+                    //   selected: checkRoute("/surveys"),
+                    //   "m-2": true,
+                    //   nonselected: checkRoute("/surveys") === false,
+                    // })}
+                    to="/clients"
                   >
-                    View All
-                  </p>
+                    {" "}
+                    <p
+                      className=" mt-1"
+                      style={{ color: "#D12E2F", fontSize: "15px" }}
+                    >
+                      View All
+                    </p>
+                  </Link>
                 </div>
                 <div>
-                  <div
-                    className="shadow p-2 px-3 d-flex justify-content-between my-2 "
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Profile} />
-                      <p className="mt-2 ml-2 text-muted">Tasadduq Ali</p>
+                  {foundClients === undefined && (
+                    <div class="spinner-border text-danger" role="status">
+                      <span class="sr-only">Loading...</span>
                     </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      State Senate- Fi 08
-                    </p>
-                  </div>
-                  <div
-                    className="shadow p-2 px-3 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Img1} />
-                      <p className="mt-2 ml-2 text-muted">Jackson MCgrath</p>
+                  )}
+
+                  {foundClients && (
+                    <div>
+                      {foundClients?.map((client) => {
+                        return (
+                          client.active === true &&
+                          client.role !== "superadmin" && (
+                            <div
+                              className="shadow p-2 px-3 d-flex justify-content-between my-2 "
+                              style={{
+                                height: "60px",
+                                backgroundColor: "#FFFFFF",
+                                borderRadius: "5px",
+                              }}
+                            >
+                              <div className="d-flex">
+                                <Avatar
+                                  alt="Remy Sharp"
+                                  src={client.campaignLogo}
+                                />
+                                <p className="mt-2 ml-2 text-muted">
+                                  {client.campaignName}
+                                </p>
+                              </div>
+                              <p
+                                style={{ fontSize: "12px" }}
+                                className="text-warning mt-2"
+                              >
+                                {client.level}
+                              </p>
+                            </div>
+                          )
+                        );
+                      })}
                     </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      Congressional - FI 01
-                    </p>
-                  </div>
-                  <div
-                    className="shadow p-2 px-3 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Img2} />
-                      <p className="mt-2 ml-2 text-muted">Jr Galliot</p>
-                    </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      Fedral Senate - FL 09
-                    </p>
-                  </div>
-                  <div
-                    className="shadow p-2 px-3 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Img3} />
-                      <p className="mt-2 ml-2 text-muted">Cody</p>
-                    </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2 "
-                    >
-                      State House - FL 03
-                    </p>
-                  </div>
+                  )}
+
+                  {foundClients?.length === 0 && (
+                    <p>No Clients Found Make One</p>
+                  )}
                 </div>
               </div>
             </div>

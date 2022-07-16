@@ -492,6 +492,35 @@ export default function Sidebar() {
               </List>
             </Link>
 
+            <Link
+              className={clsx({
+                selected: checkRoute("/surveys"),
+                "m-2": true,
+                nonselected: checkRoute("/surveys") === false,
+              })}
+              to="/surveys"
+            >
+              <List>
+                <ListItemButton
+                  // key={text}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <div className="text-center">
+                    <i class="fas fa-poll"></i>
+
+                    <ListItemText
+                      primary="Surveys"
+                      // sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </div>
+                </ListItemButton>
+              </List>
+            </Link>
+
             <List
               className={clsx({ selected: checkRoute("/mobile"), "m-2": true })}
             >

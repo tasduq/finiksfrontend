@@ -595,6 +595,10 @@ export default function Createlist({ handleUpdateData }) {
                         <div>
                           <Createscript
                             handleScripts={(scripts) => setScripts(scripts)}
+                            buttonName={{
+                              name: "Create New",
+                              color: "text-danger",
+                            }}
                           />
                         </div>
                       </div>

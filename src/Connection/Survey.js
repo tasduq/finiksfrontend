@@ -10,12 +10,45 @@ const addSurvey = async (data) => {
   return res;
 };
 
-const getCampaignsSurveys = async (data) => {
+const getClientSurvey = async (data) => {
   console.log(data);
-  let res = await axios.get(`${url}/api/survey/getcampaignssurveys`, data);
+  let res = await axios.post(`${url}/api/survey/getclientsurvey`, data);
 
   console.log(res);
   return res;
 };
 
-export { addSurvey, getCampaignsSurveys };
+const getClientSurveyResponses = async (data) => {
+  console.log(data);
+  let res = await axios.post(
+    `${url}/api/survey/getcampaignsurveyresponses`,
+    data
+  );
+
+  console.log(res);
+  return res;
+};
+
+const getCampaigns = async (data) => {
+  // console.log(data);
+  let res = await axios.get(`${url}/api/survey/getcampaigns`);
+
+  console.log(res);
+  return res;
+};
+
+const getCampaignSurveys = async (data) => {
+  // console.log(data);
+  let res = await axios.post(`${url}/api/survey/getcampaignsurveys`, data);
+
+  console.log(res);
+  return res;
+};
+
+export {
+  addSurvey,
+  getCampaigns,
+  getClientSurvey,
+  getClientSurveyResponses,
+  getCampaignSurveys,
+};

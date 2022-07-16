@@ -17,4 +17,18 @@ const editClient = async (data) => {
   return res;
 };
 
-export { getClients, editClient };
+const deleteClient = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/clients/deleteclient`, data);
+  console.log(res);
+  return res;
+};
+
+const getDistricts = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/clients/getdistricts`, data);
+  console.log(res);
+  return res;
+};
+
+export { getClients, editClient, deleteClient, getDistricts };

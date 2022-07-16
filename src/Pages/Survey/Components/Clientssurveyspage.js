@@ -20,26 +20,48 @@ import Logo from "../../../Assets/logoword.png";
 import { getAristotleData } from "../../../Connection/Aristotle";
 import { ToastContainer, toast } from "react-toastify";
 import { getTagInfo } from "../../../Connection/Tags";
+import { getClientSurvey } from "../../../Connection/Survey";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Clienttagspage({ data, dSelect, handleDSelect }) {
-  const [open, setOpen] = React.useState(false);
+export default function Clienttagspage({
+  data,
+  getDataFromServer,
+  open,
+  handleOpenSurvey,
+}) {
+  // const [open, setOpen] = React.useState(false);
   const [clientData, setClientData] = React.useState();
 
   const handleClickOpen = () => {
-    setOpen(true);
+    // setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleOpenSurvey = () => {
+  //   // setOpen(false);
+  // };
 
   React.useEffect(() => {
     setClientData(data);
-  }, []);
+    if (getDataFromServer === true) {
+      console.log(data, "i a data");
+      const handleGetData = async () => {
+        console.log("i am running");
+        let res = await getClientSurvey({ id: data });
+        console.log(res);
+        if (res.data.success) {
+          setClientData(res.data.clientData);
+        } else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      };
+      handleGetData();
+    }
+  }, [data]);
 
   return (
     <div>
@@ -54,14 +76,14 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
         }}
         className="btn "
         // onClick={() => handleInfo(list._id)}
-        onClick={handleClickOpen}
+        onClick={handleOpenSurvey}
       >
         View
       </button>
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={handleOpenSurvey}
         TransitionComponent={Transition}
       >
         <AppBar
@@ -72,7 +94,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
             <IconButton
               edge="start"
               //   color=""
-              onClick={handleClose}
+              onClick={handleOpenSurvey}
               aria-label="close"
               style={{ color: "black" }}
             >
@@ -82,15 +104,16 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
             {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Sound
             </Typography> */}
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={handleOpenSurvey}>
               Close
             </Button>
           </Toolbar>
         </AppBar>
         <div>
           <div className="mt-5 container">
+            {console.log(clientData)}
             <Header
-              name={`Surveys - ${data?.campaignName}`}
+              name={`Surveys - ${clientData?.campaignName}`}
               purpose="Ability to View Surveys"
             />
             <div
@@ -101,7 +124,7 @@ export default function Clienttagspage({ data, dSelect, handleDSelect }) {
                 borderRadius: "12px",
               }}
             >
-              <p onClick={handleClose} style={{ color: "#d12e2f" }}>
+              <p onClick={handleOpenSurvey} style={{ color: "#d12e2f" }}>
                 <i class="fas fa-angle-left mx-2"></i> Back
               </p>
               {/* {clientData === undefined && (

@@ -6,6 +6,7 @@ import Clientstable from "./Components/Clientstable";
 import { ToastContainer, toast } from "react-toastify";
 import { getTags, getTagsByClients, mergeTags } from "../../Connection/Tags";
 import clsx from "clsx";
+import Confirmmerge from "./Components/Confirmmerge";
 
 import "./Styles/style.css";
 
@@ -17,6 +18,27 @@ const Tags = () => {
   const [selectedTags, setSelectedTags] = React.useState([]);
   const [dSelect, setDSelect] = React.useState(false);
   const [merging, setMerging] = React.useState(false);
+  const [openConfirmMerge, setOpenConfirmMerge] = React.useState(false);
+  const [searching, setSearching] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searched, setSearched] = React.useState();
+
+  const handleSearch = (evt) => {
+    if (evt.target.value.length > 0) {
+      setSearching(true);
+      let yoo;
+      setSearchValue(evt.target.value);
+      yoo = foundTags.filter((tag) => {
+        return tag.tagName
+          .toLowerCase()
+          .includes(evt.target.value.toLowerCase());
+      });
+      setSearched(yoo);
+    } else {
+      setSearching(false);
+      setSearchValue(evt.target.value);
+    }
+  };
 
   const handleView = (type) => {
     if (type === "name") {
@@ -35,24 +57,38 @@ const Tags = () => {
     setSelectedTags(data);
   };
 
-  const handleMerge = async () => {
-    setMerging(true);
-    const res = await mergeTags({ ids: selectedTags });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success("Merge Successful", {
+  const handleOpenConfirmMerge = () => {
+    setOpenConfirmMerge(!openConfirmMerge);
+  };
+
+  const handleMerge = async (data) => {
+    console.log(data);
+    if (data === true) {
+      setMerging(true);
+      const res = await mergeTags({ ids: selectedTags });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success("Merge Successful", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        // setView("client");
+        handleUpdate();
+        setSelectedTags([]);
+        setDSelect(true);
+        setMerging(false);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setMerging(false);
+      }
+    } else {
+      toast.error("Merging Canceled", {
         position: toast.POSITION.TOP_RIGHT,
       });
-      // setView("client");
-      handleUpdate();
-      setSelectedTags([]);
       setDSelect(true);
       setMerging(false);
-    } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setMerging(false);
+      setSelectedTags([]);
     }
   };
 
@@ -126,6 +162,8 @@ const Tags = () => {
                       // boxShadow: "0px 3px 10px #00000029",
                       // borderRadius: "15px",
                     }}
+                    value={searchValue}
+                    onChange={handleSearch}
                   ></input>
                   {view === "name" && merging === false && (
                     <button
@@ -138,7 +176,7 @@ const Tags = () => {
                       }}
                       className="btn mx-2"
                       disabled={selectedTags.length < 2 ? true : false}
-                      onClick={handleMerge}
+                      onClick={handleOpenConfirmMerge}
                     >
                       Merge
                     </button>
@@ -211,7 +249,7 @@ const Tags = () => {
                     )}
                     {foundTags && (
                       <Tagstable
-                        data={foundTags}
+                        data={searching === true ? searched : foundTags}
                         handleSelected={handleSelected}
                         dSelect={dSelect}
                         handleDSelect={handleDSelect}
@@ -240,6 +278,14 @@ const Tags = () => {
                       <p>No Tags Found Make One</p>
                     )}
                   </div>
+                )}
+                {openConfirmMerge && (
+                  <Confirmmerge
+                    open={openConfirmMerge}
+                    data={true}
+                    handleMerge={handleMerge}
+                    handleOpenConfirmMerge={handleOpenConfirmMerge}
+                  />
                 )}
               </div>
             </div>
