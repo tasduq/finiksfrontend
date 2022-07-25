@@ -20,6 +20,8 @@ import { ToastContainer, toast } from "react-toastify";
 export default function Partyaffiliation({ handleFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [applied, setApplied] = React.useState(false);
+
   const [values, setValues] = React.useState({
     PARTY_CODE: "",
   });
@@ -42,15 +44,25 @@ export default function Partyaffiliation({ handleFilterData }) {
   };
 
   const handleSubmit = () => {
-    if (values.PARTY_CODE === "") {
-      toast.error("Please select all the field", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+    // if (values.PARTY_CODE === "") {
+    //   toast.error("Please select all the field", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
 
-    handleFilterData(values);
-    handleClose();
+    handleFilterData({
+      ...(values.PARTY_CODE.length > 0 && { PARTY_CODE: values.PARTY_CODE }),
+    });
+    if (values.PARTY_CODE === "") {
+      setApplied(false);
+
+      handleClose();
+    } else {
+      setApplied(true);
+
+      handleClose();
+    }
   };
 
   let languages = [
@@ -99,7 +111,11 @@ export default function Partyaffiliation({ handleFilterData }) {
         className="btn mx-1"
         onClick={handleClickOpen}
       >
-        <i class="fas fa-angle-down text-danger mx-2"></i> Party Affiliation
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        Party Affiliation
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle className="text-danger">
@@ -122,6 +138,11 @@ export default function Partyaffiliation({ handleFilterData }) {
               value={values.PARTY_CODE}
               onChange={handleChange}
             >
+              <FormControlLabel
+                value=""
+                control={<Radio />}
+                label={"Un Select"}
+              />
               {Object.entries(result).map(([key, value]) => {
                 return (
                   <FormControlLabel

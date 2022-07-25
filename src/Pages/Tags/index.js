@@ -97,11 +97,13 @@ const Tags = () => {
   };
 
   const handleGetClientsTags = async () => {
+    console.log("icalled");
+    setView("client");
     const res = await getTagsByClients();
     console.log(res);
     if (res.data.success === true) {
       setFoundClientTags(res.data.clients);
-      setView("client");
+      // setView("client");
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -230,11 +232,12 @@ const Tags = () => {
                       btn: true,
                       nonselectedView: view === "name",
                     })}
-                    onClick={
-                      foundClientTags === undefined
-                        ? handleGetClientsTags
-                        : () => handleView("client")
-                    }
+                    // onClick={
+                    //   foundClientTags === undefined
+                    //     ? handleGetClientsTags
+                    //     : () => handleView("client")
+                    // }
+                    onClick={handleGetClientsTags}
                   >
                     By Client
                   </button>

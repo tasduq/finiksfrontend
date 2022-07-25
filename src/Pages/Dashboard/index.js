@@ -13,6 +13,8 @@ import Campaignsettings from "./Components/Campaignsettings";
 import Linechart from "./Components/Linechart";
 import Greenline from "../../Assets/greenline.JPG";
 import Redline from "../../Assets/redline.JPG";
+import { getCampaignTeammembers } from "../../Connection/Phonebank";
+import { ToastContainer, toast } from "react-toastify";
 
 import Profile from "../../Assets/profile.jpeg";
 import Img1 from "../../Assets/img1.jpeg";
@@ -24,6 +26,9 @@ const settings = ["Settings", "Contacts", "Scripts", "Surveys", "Tags"];
 const Dashboard = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [campaignTeammembers, setCampaignTeammembers] = React.useState();
+  const [campaignData, setCampaignData] = React.useState();
+
   console.log("props");
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -32,12 +37,70 @@ const Dashboard = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const days = (date_1, date_2) => {
+    let difference = date_1.getTime() - date_2.getTime();
+    let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+    return TotalDays;
+  };
+
+  const handleGetCampaignData = (data) => {
+    console.log(data);
+    if (data && data?.campaignDates?.electionDay?.length > 0) {
+      console.log("in ifff");
+      let electionDate = new Date(data.campaignDates.electionDay);
+      let todayDate = new Date();
+
+      let daysLeft = days(electionDate, todayDate);
+      setCampaignData({ ...data, daysLeft });
+    } else {
+      setCampaignData(data);
+    }
+  };
 
   // React.useEffect(() => {})
 
+  React.useEffect(() => {
+    // if (role !== "superadmin") {
+    //   history.push("/");
+    // }
+    // window.location.reload();
+
+    const handleGetTeammembers = async () => {
+      const res = await getCampaignTeammembers({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        if (res?.data?.teamMembers.length > 0) {
+          let yoo = res.data.teamMembers.map((member) => {
+            let campaign = member.campaignJoined.find(
+              (campaign) =>
+                campaign.campaignId === window.localStorage.getItem("id")
+            );
+            return {
+              firstName: member.firstName,
+              lastName: member.lastName,
+              permission: campaign.permission,
+              image: member.image,
+            };
+          });
+          setCampaignTeammembers(yoo);
+        } else {
+          setCampaignTeammembers(res.data.teamMembers);
+        }
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
+    handleGetTeammembers();
+  }, []);
+
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100%" }}>
-      {" "}
+      {console.log(campaignData)}{" "}
       <div className="mt-5 container">
         <br />
         <div className="row">
@@ -98,7 +161,7 @@ const Dashboard = (props) => {
             <br />
             <div className="row">
               <div className="col-12 col-md-6">
-                <div className="d-flex justify-content-between">
+                {/* <div className="d-flex justify-content-between">
                   <h5 className="">Team Memebers</h5>
                   <p className="">51 Team Members</p>
                   <p
@@ -107,84 +170,55 @@ const Dashboard = (props) => {
                   >
                     View All
                   </p>
+                </div> */}
+                <div className="d-flex justify-content-between">
+                  <h4 className="">Team Members</h4>
+                  <p className="mt-1">
+                    {campaignTeammembers?.length} Team Members
+                  </p>
+                  <Link
+                    // className={clsx({
+                    //   selected: checkRoute("/surveys"),
+                    //   "m-2": true,
+                    //   nonselected: checkRoute("/surveys") === false,
+                    // })}
+                    to="/team"
+                  >
+                    {" "}
+                    <p
+                      className=" mt-1"
+                      style={{ color: "#D12E2F", fontSize: "15px" }}
+                    >
+                      View All
+                    </p>
+                  </Link>
                 </div>
                 <div>
-                  <div
-                    className="shadow p-2 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Profile} />
-                      <p className="mt-2 ml-2 text-muted">Tasadduq Ali</p>
-                    </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      Campaign Manager
-                    </p>
-                  </div>
-                  <div
-                    className="shadow p-2 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Img1} />
-                      <p className="mt-2 ml-2 text-muted">Jackson MCgrath</p>
-                    </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      Fundraising Director
-                    </p>
-                  </div>
-                  <div
-                    className="shadow p-2 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Img2} />
-                      <p className="mt-2 ml-2 text-muted">Jr Galliot</p>
-                    </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      Volunteer
-                    </p>
-                  </div>
-                  <div
-                    className="shadow p-2 d-flex justify-content-between my-2"
-                    style={{
-                      height: "60px",
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <div className="d-flex">
-                      <Avatar alt="Remy Sharp" src={Img3} />
-                      <p className="mt-2 ml-2 text-muted">Cody</p>
-                    </div>
-                    <p
-                      style={{ fontSize: "12px" }}
-                      className="text-warning mt-2"
-                    >
-                      Communication Director
-                    </p>
-                  </div>
+                  {campaignTeammembers?.map((member) => {
+                    return (
+                      <div
+                        className="shadow p-2 d-flex justify-content-between my-2"
+                        style={{
+                          height: "60px",
+                          backgroundColor: "#FFFFFF",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        <div className="d-flex">
+                          <Avatar alt="Remy Sharp" src={member?.image} />
+                          <p className="mt-2 ml-2 text-muted">
+                            {member?.firstName} {member?.lastName}
+                          </p>
+                        </div>
+                        <p
+                          style={{ fontSize: "12px" }}
+                          className="text-warning mt-2"
+                        >
+                          {member?.permission}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className="col-12 col-md-6 ">
@@ -196,7 +230,7 @@ const Dashboard = (props) => {
                   >
                     Edit
                   </p> */}
-                  <Campaignsettings />
+                  <Campaignsettings handleGetData={handleGetCampaignData} />
                 </div>
                 <div
                   style={{
@@ -204,54 +238,61 @@ const Dashboard = (props) => {
                     backgroundColor: "#FFFFFF",
                     borderRadius: "5px",
                   }}
-                  className="shadow row pt-3"
+                  className="shadow   p-3"
                 >
-                  <h5 style={{ fontWeight: "bold" }} className="px-2">
-                    Hannah Jacobs For Congress
+                  <h5 style={{ fontWeight: "bold" }} className="px-1 text-left">
+                    {campaignData?.campaignName}
                   </h5>
-                  <div className="col-7 pb-1">
-                    <div className="d-flex justify-content-between">
-                      <p className="text-left">Election Day</p>
-                      <p className="text-right" style={{ color: "#D12E2F" }}>
-                        July 18
-                      </p>
+                  <div className=" row">
+                    <div className="col-7 pb-1">
+                      <div className="d-flex justify-content-between">
+                        <p className="text-left">Election Day</p>
+                        <p className="text-right" style={{ color: "#D12E2F" }}>
+                          {campaignData?.campaignDates?.electionDay}
+                        </p>
+                      </div>
+                      <div className="d-flex justify-content-between">
+                        <p className="text-left">Campaign Filling Date</p>
+                        <p className="text-right" style={{ color: "#D12E2F" }}>
+                          {campaignData?.campaignDates?.campaignFilingDates}
+                        </p>
+                      </div>
+                      <div className="d-flex justify-content-between ">
+                        <p className="text-left">Last Day VBM Signup</p>
+                        <p className="text-right" style={{ color: "#D12E2F" }}>
+                          {campaignData?.campaignDates?.lastDateSignup}
+                        </p>
+                      </div>
+                      <div className="d-flex justify-content-between">
+                        <p className="text-left">Last Date to register</p>
+                        <p className="text-right" style={{ color: "#D12E2F" }}>
+                          {campaignData?.campaignDates?.lastDateRegister}
+                        </p>
+                      </div>
+                      <div className="d-flex justify-content-between">
+                        <p className="text-left">Early Voting Days</p>
+                        <p>{campaignData?.campaignDates?.voteEarlyDate}</p>
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="text-left">Campaign Filling Date</p>
-                      <p className="text-right" style={{ color: "#D12E2F" }}>
-                        March 11-13th
-                      </p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="text-left">Last Day VBM Signup</p>
-                      <p className="text-right" style={{ color: "#D12E2F" }}>
-                        6/6/21
-                      </p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="text-left">Last Date to register</p>
-                      <p className="text-right" style={{ color: "#D12E2F" }}>
-                        6/6/21
-                      </p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <p className="text-left">Early Voting Days</p>
-                      <p>?????</p>
-                    </div>
-                  </div>
-                  <div className="col-5 pb-3">
-                    <div
-                      className="shadow pt-4"
-                      style={{
-                        backgroundColor: "#FFFFFF",
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: "12px",
-                      }}
-                    >
-                      <h4 className="mx-2" style={{ color: "#D12E2F" }}>
-                        62 Days Until the Elections!
-                      </h4>
+                    <div className="col-5 pb-3">
+                      <div
+                        className="shadow pt-4"
+                        style={{
+                          backgroundColor: "#FFFFFF",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "12px",
+                        }}
+                      >
+                        <h4 className="mx-2" style={{ color: "#D12E2F" }}>
+                          {console.log(new Date().toISOString())}
+                          {campaignData &&
+                          campaignData?.daysLeft &&
+                          campaignData.daysLeft > 0
+                            ? `${campaignData?.daysLeft} Days Until the Elections!`
+                            : `Elections Happened`}
+                        </h4>
+                      </div>
                     </div>
                   </div>
                 </div>

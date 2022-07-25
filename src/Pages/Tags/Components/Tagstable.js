@@ -96,7 +96,7 @@ export default function Tagstable({
             {selectButtonDisabled !== true && (
               <TableCell align="center">Select To Merge</TableCell>
             )}
-            <TableCell align="center">Delete</TableCell>
+            <TableCell align="">Delete</TableCell>
           </TableRow>
         </TableHead>
 
@@ -144,8 +144,8 @@ export default function Tagstable({
                    */}
                   <Edittag handleUpdate={handleUpdate} data={list} />
                 </TableCell>
-                <TableCell align="right">
-                  {selectButtonDisabled !== true && (
+                {selectButtonDisabled !== true && (
+                  <TableCell align="right">
                     <button
                       style={{
                         width: "150px",
@@ -166,8 +166,8 @@ export default function Tagstable({
                         ? "Un Select"
                         : "Select"}
                     </button>
-                  )}
-                  {/* <button
+
+                    {/* <button
                     style={{
                       width: "150px",
                       height: "36px",
@@ -188,7 +188,7 @@ export default function Tagstable({
                       : "Select"}
                   </button> */}
 
-                  {/* {selectedTags.includes(list._id) === true && (
+                    {/* {selectedTags.includes(list._id) === true && (
                     <button
                       style={{
                         width: "150px",
@@ -202,8 +202,9 @@ export default function Tagstable({
                       Select
                     </button>
                   )} */}
-                </TableCell>
-                <TableCell align="right">
+                  </TableCell>
+                )}
+                <TableCell align="">
                   {console.log(list._id)}
                   <Confirmdelete handleDelete={handleDelete} data={list._id} />
                 </TableCell>

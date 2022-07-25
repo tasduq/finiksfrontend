@@ -22,6 +22,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { getTagInfo } from "../../../Connection/Tags";
 import { getClientSurveyResponses } from "../../../Connection/Survey";
 import Viewsurveytable from "./Viewsurveytable";
+import Viewtags from "./Viewtags";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -38,6 +39,8 @@ export default function Viewsurveypage({
   // const [open, setOpen] = React.useState(false);
   const [surveyData, setSurveyData] = React.useState();
   const [selected, setSelected] = React.useState([]);
+  const [selectedVotersData, setSelectedVoterData] = React.useState([]);
+  const [openTags, setOpenTags] = React.useState(false);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -53,10 +56,13 @@ export default function Viewsurveypage({
       let allIds = surveyData.map((survey) => {
         return survey.voterId;
       });
+
       console.log(allIds);
       setSelected(allIds);
+      setSelectedVoterData(surveyData);
     } else {
       setSelected([]);
+      setSelectedVoterData([]);
     }
   };
 
@@ -64,16 +70,26 @@ export default function Viewsurveypage({
     if (type === "select") {
       console.log(data);
       setSelected([...selected, data]);
+      setSelectedVoterData([
+        ...selectedVotersData,
+        surveyData.find((yoo) => yoo.voterId === data),
+      ]);
     } else {
-      let yoo = selected.filter((tag) => {
-        return tag !== data;
+      let yoo = selected.filter((voter) => {
+        return voter !== data;
+      });
+      let yoo2 = selectedVotersData.filter((voter) => {
+        return voter.voterId !== data;
       });
       console.log(yoo);
       setSelected(yoo);
+      setSelectedVoterData(yoo2);
     }
   };
 
-  const handleOpenTags = () => {};
+  const handleOpenTags = () => {
+    setOpenTags(!openTags);
+  };
 
   React.useEffect(() => {
     // setSurveyData(data);
@@ -94,7 +110,15 @@ export default function Viewsurveypage({
         });
       }
     };
-    handleGetSurveyResponses();
+    if (open === true) {
+      handleGetSurveyResponses();
+    }
+
+    if (open === false) {
+      setSurveyData(undefined);
+      setSelected([]);
+      setSelectedVoterData([]);
+    }
   }, [data]);
 
   return (
@@ -172,7 +196,7 @@ export default function Viewsurveypage({
                     }}
                     className="btn mx-1"
                     disabled={selected.length > 0 ? false : true}
-                    onClick={selected.length > 0 && handleOpenTags()}
+                    onClick={selected.length > 0 && handleOpenTags}
                   >
                     Tag Them
                   </button>
@@ -224,6 +248,13 @@ export default function Viewsurveypage({
           </div>
         </div>
       </Dialog>
+      {openTags && (
+        <Viewtags
+          open={openTags}
+          handleOpen={handleOpenTags}
+          data={selectedVotersData}
+        />
+      )}
     </div>
   );
 }

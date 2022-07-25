@@ -75,7 +75,7 @@ export default function Clienttagspage({
     <div>
       {/* {console.log(usersData)} */}
 
-      <button
+      {/* <button
         style={{
           width: "150px",
           height: "36px",
@@ -87,7 +87,7 @@ export default function Clienttagspage({
         onClick={handleOpenTags}
       >
         View
-      </button>
+      </button> */}
       <Dialog
         fullScreen
         open={open}

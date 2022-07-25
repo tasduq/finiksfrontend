@@ -12,20 +12,50 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
+import { getDistricts } from "../../../../Connection/Clients";
 
-export default function Generalvotingscore({ handleFilterData }) {
+export default function Generalvotingscore({
+  handleFilterData,
+  campaignFilterData,
+}) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [filtersData, setFiltersData] = React.useState();
+  const [applied, setApplied] = React.useState(false);
   const [values, setValues] = React.useState({
     VP_GEN: { from: "", to: "" },
   });
 
   const handleClickOpen = () => {
     setOpen(true);
+    handleGetFiltersData();
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleGetFiltersData = async () => {
+    let filters = {};
+
+    let res3 = await getDistricts({
+      field: "VP_GEN",
+      state: campaignFilterData?.state,
+      // fieldTwoName: "STATE",
+    });
+    console.log(res3);
+    if (res3.data.success === true) {
+      filters = {
+        ...filters,
+        VP_GEN: res3.data.districts,
+      };
+    } else {
+      toast.error("Error getting Voter Prefference Values", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+
+    setFiltersData(filters);
   };
 
   const handleChange = (evt) => {
@@ -49,15 +79,33 @@ export default function Generalvotingscore({ handleFilterData }) {
       });
       return;
     }
-    if (values.VP_GEN.from >= values.VP_GEN.to) {
-      toast.error("Score Min cannot be equal or greater than Score Max", {
+    if (values.VP_GEN.from > values.VP_GEN.to) {
+      toast.error("Score Min cannot be greater than Score Max", {
         position: toast.POSITION.TOP_RIGHT,
       });
       return;
     }
+    if (values.VP_GEN.from === "" && values.VP_GEN.to === "") {
+      handleFilterData({});
+      setApplied(true);
+
+      handleClose();
+      return;
+    }
 
     handleFilterData(values);
+    setApplied(true);
+
     handleClose();
+  };
+
+  const handleClearAll = () => {
+    setValues({
+      VP_GEN: { from: "", to: "" },
+    });
+    handleFilterData({});
+    handleClose();
+    setApplied(false);
   };
 
   return (
@@ -75,12 +123,25 @@ export default function Generalvotingscore({ handleFilterData }) {
         className="btn mx-1"
         onClick={handleClickOpen}
       >
-        <i class="fas fa-angle-down text-danger mx-2"></i> General voting score
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        General voting score
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle className="text-danger">
           General voting score Filter
         </DialogTitle>
+        <div className="d-flex justify-content-between">
+          {" "}
+          <DialogTitle className="text-danger">
+            General voting score Filter
+          </DialogTitle>
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div>
         <DialogContent>
           <DialogContentText>
             This is the Filter for filtering the Voters on the base of their
@@ -88,16 +149,9 @@ export default function Generalvotingscore({ handleFilterData }) {
           </DialogContentText>
           <br />
 
-          <FormControl fullWidth size="small">
-            {/* <InputLabel id="demo-simple-select-label">Minimum Score</InputLabel> */}
-
+          {/* <FormControl fullWidth size="small">
             <div class="form-group">
-              {/* <input
-                type="number"
-                className="form-control shadow-sm"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-              /> */}
+           
               <TextField
                 id="outlined-basic"
                 label=" Min Score"
@@ -109,18 +163,31 @@ export default function Generalvotingscore({ handleFilterData }) {
                 type="number"
               />
             </div>
+          </FormControl> */}
+          <FormControl fullWidth size="small">
+            <InputLabel id="demo-simple-select-label">Min Score</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              //   value={age}
+              label="Min Score"
+              name="VP_GENMIN"
+              value={values.VP_GEN.from}
+              onChange={handleChange}
+              // disabled={campaignFilterData?.level !== "Federal - House" && true}
+            >
+              <MenuItem value="">Un Select</MenuItem>
+              {filtersData?.VP_GEN?.map((val, i) => {
+                return <MenuItem value={val}>{val}</MenuItem>;
+              })}
+            </Select>
           </FormControl>
           <br />
-          <FormControl fullWidth size="small">
-            {/* <InputLabel id="demo-simple-select-label">Maximum Score</InputLabel> */}
+          <br />
+          {/* <FormControl fullWidth size="small">
 
             <div class="form-group">
-              {/* <input
-                type="number"
-                className="form-control shadow-sm"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-              /> */}
+           
               <TextField
                 id="outlined-basic"
                 label=" Max Score"
@@ -132,6 +199,24 @@ export default function Generalvotingscore({ handleFilterData }) {
                 type="number"
               />
             </div>
+          </FormControl> */}
+          <FormControl fullWidth size="small">
+            <InputLabel id="demo-simple-select-label">Max Score</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              //   value={age}
+              label="Max Score"
+              name="VP_GENMAX"
+              value={values.VP_GEN.to}
+              onChange={handleChange}
+              // disabled={campaignFilterData?.level !== "Federal - House" && true}
+            >
+              <MenuItem value="">Un Select</MenuItem>
+              {filtersData?.VP_GEN?.map((val, i) => {
+                return <MenuItem value={val}>{val}</MenuItem>;
+              })}
+            </Select>
           </FormControl>
         </DialogContent>
         <DialogActions>

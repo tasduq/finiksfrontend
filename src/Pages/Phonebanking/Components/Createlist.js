@@ -51,20 +51,29 @@ import { useAuth } from "../../../Context/Auth-Context";
 import {
   searchVoters,
   saveList,
+  saveRecord,
   getLists,
   updateList,
+  getCampaignTeammembers,
 } from "../../../Connection/Phonebank";
+// import { getCampaignTeammembers } from "../../../Connection/Campaign";
 import { ToastContainer, toast } from "react-toastify";
+import Checkbox from "@mui/material/Checkbox";
+import { getDistricts } from "../../../Connection/Clients";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Createlist({ handleUpdateData }) {
+export default function Createlist({ handleUpdateData, campaignFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState({
     campaignId: window.localStorage.getItem("id"),
   });
+  const [filters, setFilters] = React.useState({});
+  console.log(values, "i am filter values");
+  console.log(filters, "i am filters");
+
   const [foundVoters, setFoundVoters] = React.useState(0);
   const [foundLists, setFoundLists] = React.useState();
   const [selectedList, setSelectedList] = React.useState();
@@ -81,66 +90,126 @@ export default function Createlist({ handleUpdateData }) {
     voters: [],
     campaignOwnerId: window.localStorage.getItem("id"),
   });
+  const [record, setRecord] = React.useState({
+    recordName: "",
+    teamMembers: [],
+    campaignOwnerId: window.localStorage.getItem("id"),
+  });
+  const [campaignTeammembers, setCampaignTeammembers] = React.useState();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [locationFilters, setLocationFilters] = React.useState();
+  const [ageFilters, setAgeFilters] = React.useState();
+  const [voterStatusFilters, setVoterStatusFilters] = React.useState();
+  const [sexFilters, setSexFilters] = React.useState();
+  const [legislativeFilters, setLegislativeFilters] = React.useState();
+  const [raceFilters, setRaceFilters] = React.useState();
+  const [electionHistoryFilters, setElectionHistoryFilters] = React.useState();
+  const [languageFilters, setLanguageFilters] = React.useState();
+  const [generalVotingScoreFilters, setGeneralVotingScoreFilters] =
+    React.useState();
+  const [individualInfoFilters, setIndividualInfoFilters] = React.useState();
+  const [primaryVotingScoreFilters, setPrimaryVotingScoreFilters] =
+    React.useState();
+  const [regisDateFilters, setRegisDateFilters] = React.useState();
+  const [partyAffiliationFilters, setPartyAffiliationFilters] =
+    React.useState();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleFilterData = (data) => {
+  const handleFilterDataLocation = (data, type) => {
     console.log(data);
-    setValues({
-      ...values,
-      ...data,
-    });
+    setLocationFilters({ ...data });
   };
 
-  const handleSaveList = async () => {
-    setSaving(true);
-    const res = await saveList({ ...list });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setSaving(false);
-      handleUpdate();
-    } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setSaving(false);
-    }
+  const handleFilterDataAge = (data, name) => {
+    console.log(data);
+    setAgeFilters({ ...data });
   };
 
-  const handleUpdateList = async () => {
-    setSaving(true);
-    const res = await updateList({
-      selectedList: selectedList,
-      selectedScript: selectedScript,
-    });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setSaving(false);
-      handleClose();
-      handleUpdateData();
-    } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setSaving(false);
-    }
+  const handleFilterDataVoterStatus = (data, name) => {
+    console.log(data);
+    setVoterStatusFilters({ ...data });
+  };
+
+  const handleFilterDataSex = (data, name) => {
+    console.log(data);
+    setSexFilters({ ...data });
+  };
+
+  const handleFilterDataLegislative = (data, name) => {
+    console.log(data);
+    setLegislativeFilters({ ...data });
+  };
+
+  const handleFilterRace = (data, name) => {
+    console.log(data);
+    setRaceFilters({ ...data });
+  };
+
+  const handleFilterElectionHistory = (data, name) => {
+    console.log(data);
+    setElectionHistoryFilters({ ...data });
+  };
+
+  const handleFilterLanguage = (data, name) => {
+    console.log(data);
+    setLanguageFilters({ ...data });
+  };
+  const handleFilterGeneralVotingScore = (data, name) => {
+    console.log(data);
+    setGeneralVotingScoreFilters({ ...data });
+  };
+
+  const handleFilterPrimaryVotingScore = (data, name) => {
+    console.log(data);
+    setPrimaryVotingScoreFilters({ ...data });
+  };
+
+  const handleFilterIndividualInfo = (data, name) => {
+    console.log(data);
+    setIndividualInfoFilters({ ...data });
+  };
+
+  const handleFilterRegisDate = (data, name) => {
+    console.log(data);
+    setRegisDateFilters({ ...data });
+  };
+
+  const handleFilterPartyAffiliation = (data, name) => {
+    console.log(data);
+    setPartyAffiliationFilters({ ...data });
   };
 
   const handleSearch = async () => {
+    console.log({
+      ...locationFilters,
+      ...ageFilters,
+      ...voterStatusFilters,
+      ...sexFilters,
+      ...legislativeFilters,
+      ...raceFilters,
+      ...electionHistoryFilters,
+      ...languageFilters,
+      ...generalVotingScoreFilters,
+      ...individualInfoFilters,
+      ...primaryVotingScoreFilters,
+      ...regisDateFilters,
+      ...partyAffiliationFilters,
+    });
     setSearching(true);
-    const res = await searchVoters({ ...values });
+    const res = await searchVoters({
+      ...locationFilters,
+      ...ageFilters,
+      ...voterStatusFilters,
+      ...sexFilters,
+      ...legislativeFilters,
+      ...raceFilters,
+      ...electionHistoryFilters,
+      ...languageFilters,
+      ...generalVotingScoreFilters,
+      ...individualInfoFilters,
+      ...primaryVotingScoreFilters,
+      ...regisDateFilters,
+      ...partyAffiliationFilters,
+    });
     console.log(res);
     if (res.data.success === true) {
       setFoundVoters(res?.data.foundVoters.length);
@@ -161,6 +230,108 @@ export default function Createlist({ handleUpdateData }) {
       setFoundVoters(0);
     }
   };
+
+  // useEffect(() => {
+  //   console.log("useeffect is running");
+
+  // }, []);
+
+  useEffect(() => {
+    const handleGetLists = async () => {
+      console.log("hellooo");
+      const res = await getLists({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setFoundLists(res.data.lists);
+        setSelectedListLength(res?.data?.lists[0]?.totalNumbers);
+        setSelectedList(res?.data?.lists[0]?._id);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
+    const handleGetTeammembers = async () => {
+      const res = await getCampaignTeammembers({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setCampaignTeammembers(res.data.teamMembers);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+      // if
+    };
+
+    handleGetLists();
+    handleGetTeammembers();
+
+    setUpdate(false);
+  }, [update === true]);
+
+  const handleFilterData = (data, name) => {
+    console.log(data);
+    setValues({
+      ...values,
+      [name]: data,
+    });
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSaveList = async () => {
+    setSaving(true);
+    const res = await saveList({ ...list });
+    console.log(res);
+    if (res.data.success === true) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setSaving(false);
+      handleUpdate();
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setSaving(false);
+    }
+  };
+
+  const handleSaveRecord = async () => {
+    setSaving(true);
+    const res = await saveRecord({
+      ...record,
+      selectedList: selectedList,
+      selectedScript: selectedScript,
+    });
+    console.log(res);
+    if (res.data.success === true) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setSaving(false);
+      handleClose();
+      handleUpdateData();
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setSaving(false);
+    }
+  };
+
   const handleLocationActive = (state) => {
     setLocationActive(state);
   };
@@ -187,30 +358,29 @@ export default function Createlist({ handleUpdateData }) {
     });
   };
 
-  useEffect(() => {
-    const handleGetLists = async () => {
-      const res = await getLists({
-        campaignId: window.localStorage.getItem("id"),
-      });
-      console.log(res);
-      if (res.data.success === true) {
-        setFoundLists(res.data.phonebankLists);
-        setSelectedListLength(res.data.phonebankLists[0].totalNumbers);
-        setSelectedList(res.data.phonebankLists[0]._id);
-      } else {
-        toast.error(res.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    };
+  const handleChangeTeammembers = (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
 
-    handleGetLists();
-    setUpdate(false);
-  }, [update === true]);
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setRecord(
+      // On autofill we get a stringified value.
+      {
+        ...record,
+
+        teamMembers: typeof value === "string" ? value.split(",") : value,
+      }
+    );
+  };
 
   return (
     <div>
-      {console.log(list)}
+      {console.log(foundLists, record, selectedList, locationFilters)}
 
       <button
         style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
@@ -278,7 +448,8 @@ export default function Createlist({ handleUpdateData }) {
                   <div className="col-12 col-lg-7">
                     <div
                       style={{
-                        height: "550px",
+                        minHeight: "550px",
+                        height: "auto",
                         borderRadius: "12px",
                         border: "1px solid #D9D9D9",
                       }}
@@ -292,61 +463,84 @@ export default function Createlist({ handleUpdateData }) {
                       </button>
                       <br />
                       <div>
+                        {/* <p className="mt-2 text-left text-danger">
+                          Applied Filters : Click To Clear{" "}
+                        </p>
+                        <div className="row mx-2">
+                          {locationFilters !== undefined && (
+                            <button
+                              className="btn btn-sm btn-danger"
+                              onClick={() =>
+                                handleFilterDataLocation({}, "clear")
+                              }
+                            >
+                              location <i class="fas fa-times"></i>
+                            </button>
+                          )}
+                        </div> */}
                         <div className="row text-left mt-4">
                           <div className="col-6 p-2">
                             <Location
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterDataLocation}
                               handleLocationActive={handleLocationActive}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Age handleFilterData={handleFilterData} />
+                            <Age handleFilterData={handleFilterDataAge} />
                           </div>
                           <div className="col-6 p-2">
-                            <Voterstatus handleFilterData={handleFilterData} />
+                            <Voterstatus
+                              handleFilterData={handleFilterDataVoterStatus}
+                            />
                           </div>
                           <div className="col-6 p-2">
-                            <Gender handleFilterData={handleFilterData} />
+                            <Gender handleFilterData={handleFilterDataSex} />
                           </div>
                           <div className="col-6 p-2">
                             <Legislativedistrict
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterDataLegislative}
+                              // data={filtersData}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Race handleFilterData={handleFilterData} />
+                            <Race handleFilterData={handleFilterRace} />
                           </div>
                           <div className="col-6 p-2">
                             <Electionhistory
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterElectionHistory}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Language handleFilterData={handleFilterData} />
+                            <Language handleFilterData={handleFilterLanguage} />
                           </div>
                           <div className="col-6 p-2">
                             <Generalvotingscore
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterGeneralVotingScore}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
                             <Individualvotinginfo
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterIndividualInfo}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
                             <Primaryvotingscore
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterPrimaryVotingScore}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
                             <Registrationdate
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterRegisDate}
                             />
                           </div>
                           <div className="col-6 p-2">
                             <Partyaffiliation
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterPartyAffiliation}
                             />
                           </div>
                           <div className="col-6 p-2 text-left">
@@ -470,17 +664,18 @@ export default function Createlist({ handleUpdateData }) {
                       >
                         Select From the Previous List
                       </button>
-                      {foundLists === undefined ||
-                        (update === true && (
-                          <button class="btn btn-danger" type="button" disabled>
-                            <span
-                              class="spinner-grow spinner-grow-sm"
-                              role="status"
-                              aria-hidden="true"
-                            ></span>
-                            <span class="sr-only">Loading...</span>
-                          </button>
-                        ))}
+                      <br />
+                      <br />
+                      {(foundLists === undefined || update === true) && (
+                        <button class="btn btn-danger" type="button" disabled>
+                          <span
+                            class="spinner-grow spinner-grow-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                          <span class="sr-only">Loading...</span>
+                        </button>
+                      )}
                       {foundLists && update === false && (
                         <div className="mt-4">
                           <Element
@@ -525,6 +720,9 @@ export default function Createlist({ handleUpdateData }) {
                                     );
                                   })}
                               </RadioGroup>
+                              {foundLists?.length === 0 && (
+                                <p>No Lists Found Make One</p>
+                              )}
                             </Element>
                           </Element>
                         </div>
@@ -549,14 +747,33 @@ export default function Createlist({ handleUpdateData }) {
                         <InputLabel id="demo-simple-select-label">
                           Assign Phonebankers
                         </InputLabel>
+
                         <Select
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
+                          multiple
                           //   value={age}
-                          label="Election"
+                          label="District"
                           //   onChange={handleChange}
+                          value={record.teamMembers}
+                          onChange={handleChangeTeammembers}
+                          name="Teammembers"
+                          renderValue={(selected) => selected.join(", ")}
                         >
-                          <MenuItem value="B">Phonebanker 1</MenuItem>
+                          {campaignTeammembers?.map((val) => {
+                            return (
+                              <MenuItem key={val._id} value={val.email}>
+                                <Checkbox
+                                  checked={
+                                    record?.teamMembers?.indexOf(val.email) > -1
+                                  }
+                                />
+                                <ListItemText
+                                  primary={`${val.firstName} ${val.lastName} , ${val.email}`}
+                                />
+                              </MenuItem>
+                            );
+                          })}
                         </Select>
                       </FormControl>
                     </div>
@@ -603,6 +820,26 @@ export default function Createlist({ handleUpdateData }) {
                         </div>
                       </div>
                       <br />
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Name of Phonebanking List"
+                        style={{
+                          width: "60%",
+                          backgroundColor: "#F2F2F2",
+                          border: "none",
+                          // boxShadow: "0px 3px 10px #00000029",
+                          // borderRadius: "15px",
+                        }}
+                        value={list.name}
+                        onChange={(evt) =>
+                          setRecord({
+                            ...record,
+                            recordName: evt.target.value,
+                          })
+                        }
+                      ></input>
+                      <br />
                       <div className="d-flex justify-content-between">
                         <p className="mt-2" style={{ color: "#D12E2F" }}>
                           Total Numbers {selectedListLength}{" "}
@@ -626,11 +863,18 @@ export default function Createlist({ handleUpdateData }) {
                         {saving === false && (
                           <button
                             className={`btn ${
-                              selectedList && selectedScript ? "" : "disabled"
+                              selectedList &&
+                              selectedScript &&
+                              record.recordName !== ""
+                                ? ""
+                                : "disabled"
                             }`}
                             style={{ color: "#D12E2F" }}
                             onClick={
-                              selectedList && selectedScript && handleUpdateList
+                              selectedList &&
+                              selectedScript &&
+                              record.recordName !== "" &&
+                              handleSaveRecord
                             }
                           >
                             Save

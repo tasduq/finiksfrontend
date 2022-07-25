@@ -23,6 +23,13 @@ const getCampaignData = async (data) => {
   return res;
 };
 
+const getCampaignFilterData = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/campaign/getcampaignfilterdata`, data);
+  console.log(res);
+  return res;
+};
+
 const inviteTeamMember = async (data) => {
   console.log(data);
   let res = await axios.post(`${url}/api/teammember/inviteteammember`, data);
@@ -54,4 +61,5 @@ export {
   inviteTeamMember,
   getTeam,
   getCampaignTeammembers,
+  getCampaignFilterData,
 };

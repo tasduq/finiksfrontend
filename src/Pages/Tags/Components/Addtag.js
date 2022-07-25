@@ -21,11 +21,17 @@ export default function FormDialog({ handleUpdate }) {
   const [date, setDate] = React.useState(null);
   const [values, setValues] = useState({
     tagName: "",
-    type: "admin",
+    type:
+      window.localStorage.getItem("role") === "superadmin"
+        ? "admin"
+        : "campaign",
     description: "",
     campaignId: window.localStorage.getItem("id"),
-    creatorName: "admin",
-    ownerName: "admin",
+    creatorName: window.localStorage.getItem("id"),
+    ownerName:
+      window.localStorage.getItem("role") === "superadmin"
+        ? "admin"
+        : "campaignManager",
   });
 
   const handleClickOpen = () => {

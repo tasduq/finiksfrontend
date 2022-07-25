@@ -16,11 +16,12 @@ export default function Surveystable({ data }) {
   const [surveyPageData, setSurveyPageData] = React.useState();
 
   const handleClickOpenSurveyPage = (data) => {
-    if (data.campaignOwnerId !== undefined) {
-      setSurveyPageData(data);
-    }
+    // if (data.campaignOwnerId !== undefined) {
+    //   setSurveyPageData(data);
+    // }
 
     setOpenSurveyPage(!openSurveyPage);
+    setSurveyPageData(data);
   };
 
   console.log(data);

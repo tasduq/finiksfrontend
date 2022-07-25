@@ -16,6 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 export default function Age({ handleFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [applied, setApplied] = React.useState(false);
   const [values, setValues] = React.useState({
     AGE: { from: "", to: "" },
   });
@@ -49,7 +50,7 @@ export default function Age({ handleFilterData }) {
       });
       return;
     }
-    if (values.AGE.from >= values.AGE.to) {
+    if (values.AGE.from > values.AGE.to) {
       toast.error("AGE Min cannot be equal or greater than AGE Max", {
         position: toast.POSITION.TOP_RIGHT,
       });
@@ -57,16 +58,36 @@ export default function Age({ handleFilterData }) {
     }
 
     handleFilterData(values);
+    setApplied(true);
     handleClose();
+  };
+
+  const handleClearAll = () => {
+    setValues({
+      AGE: { from: "", to: "" },
+    });
+    handleFilterData({});
+    handleClose();
+    setApplied(false);
   };
 
   return (
     <div>
       <button className="btn mx-1" onClick={handleClickOpen}>
-        <i class="fas fa-angle-down text-danger mx-2"></i> Age
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        Age
       </button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle className="text-danger">Age Filter</DialogTitle>
+        <div className="d-flex justify-content-between">
+          {" "}
+          <DialogTitle className="text-danger">Age Filter</DialogTitle>
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div>
         <DialogContent>
           <DialogContentText>
             This is the Filter for filtering the Voters on the base of their Age

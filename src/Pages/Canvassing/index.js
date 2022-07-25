@@ -3,6 +3,8 @@ import Header from "../../Components/Header";
 import Listtable from "./Components/Listtable";
 import Createlist from "./Components/Createlist";
 import { ToastContainer, toast } from "react-toastify";
+import { getRecords } from "../../Connection/Canvassing";
+import { getCampaignFilterData } from "../../Connection/Campaign";
 
 import { getLists } from "../../Connection/Canvassing";
 
@@ -10,6 +12,7 @@ const Canvassing = (props) => {
   const [foundLists, setFoundLists] = useState();
   const [selected, setSelected] = useState();
   const [update, setUpdate] = React.useState(false);
+  const [campaignData, setCampaignData] = useState();
 
   const handleSelected = (list) => {
     console.log(list);
@@ -21,7 +24,7 @@ const Canvassing = (props) => {
   };
   useEffect(() => {
     const handleGetLists = async () => {
-      const res = await getLists({
+      const res = await getRecords({
         campaignId: window.localStorage.getItem("id"),
       });
       console.log(res);
@@ -34,7 +37,22 @@ const Canvassing = (props) => {
       }
     };
 
+    const handleGetCampaignData = async () => {
+      const res = await getCampaignFilterData({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setCampaignData(res.data.values);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
     handleGetLists();
+    handleGetCampaignData();
     setUpdate(false);
   }, [update === true]);
   console.log("props");
@@ -62,7 +80,10 @@ const Canvassing = (props) => {
               >
                 <div className="text-left">
                   {" "}
-                  <Createlist handleUpdateData={handleUpdate} />
+                  <Createlist
+                    handleUpdateData={handleUpdate}
+                    campaignFilterData={campaignData}
+                  />
                   <br />
                   <br />
                   <p>Active Canvassing Lists</p>
@@ -95,6 +116,7 @@ const Canvassing = (props) => {
                       data={foundLists}
                       handleClick={handleSelected}
                       handleUpdate={handleUpdate}
+                      campaignFilterData={campaignData}
                     />
                   )}
                   {foundLists?.length === 0 && <p>No Lists Found Make One</p>}

@@ -12,12 +12,16 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function Language({ handleFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [applied, setApplied] = React.useState(false);
+
   const [values, setValues] = React.useState({
-    LANGUAGE: "",
+    LANGUAGE: [],
   });
 
   const handleClickOpen = () => {
@@ -117,33 +121,85 @@ export default function Language({ handleFilterData }) {
   );
   console.log(result);
 
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
 
-    setValues({
-      ...values,
-      [name]: value,
-    });
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setValues(
+      // On autofill we get a stringified value.
+      {
+        ...values,
+        LANGUAGE: typeof value === "string" ? value.split(",") : value,
+      }
+    );
   };
-  const handleSubmit = () => {
-    if (values.LANGUAGE === "") {
-      toast.error("Please select all the field", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
 
-    handleFilterData(values);
+  // const handleChange = (evt) => {
+  //   const { name, value } = evt.target;
+
+  //   setValues({
+  //     ...values,
+  //     [name]: value,
+  //   });
+  // };
+  const handleSubmit = () => {
+    // if (values.LANGUAGE === "") {
+    //   toast.error("Please select all the field", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
+
+    handleFilterData({
+      ...(values.LANGUAGE.length > 0 && { LANGUAGE: values.LANGUAGE }),
+    });
+    setApplied(true);
+
     handleClose();
   };
+
+  const handleClear = (field) => {
+    setValues({
+      ...values,
+      [field]: [],
+    });
+    setApplied(false);
+    handleClose();
+  };
+
+  // const handleClearAll = () => {
+  //   setValues({
+  //     LANGUAGE: [],
+  //   });
+  //   handleFilterData({});
+  //   handleClose();
+  //   setApplied(false);
+  // };
 
   return (
     <div>
       <button className="btn mx-1" onClick={handleClickOpen}>
-        <i class="fas fa-angle-down text-danger mx-2"></i> Language
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        Language
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle className="text-danger">Language Filter</DialogTitle>
+        {/* <div className="d-flex justify-content-between">
+          {" "}
+          
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div> */}
         <DialogContent>
           <DialogContentText>
             This is the Filter for filtering the Voters on the base of their
@@ -153,21 +209,61 @@ export default function Language({ handleFilterData }) {
 
           <br />
 
-          <FormControl fullWidth size="small">
+          {/* <FormControl fullWidth size="small">
             <InputLabel id="demo-simple-select-label">
-              Ethnic Country of Origin
+              Select Language
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               //   value={age}
               label="Election"
+              name="Select Language"
+              value={values.LANGUAGE}
+              onChange={handleChange}
+              multiple
+              renderValue={(selected) => selected.join(", ")}
+            >
+              {Object.entries(result).map(([key, value]) => {
+                return;
+                <MenuItem value={key}>
+                  <Checkbox checked={values.LANGUAGE.indexOf(key) > -1} />{" "}
+                  <ListItemText primary={`${value} , (${key})`} />
+                </MenuItem>;
+              })}
+            </Select>
+          </FormControl> */}
+          <div className="text-right">
+            {" "}
+            <button
+              onClick={() => handleClear("LANGUAGE")}
+              className="btn btn-sm text-danger"
+            >
+              Clear All <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <FormControl fullWidth size="small">
+            <InputLabel id="demo-simple-select-label">
+              Select Language
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              //   value={age}
+              multiple
+              label="Select Language"
               name="LANGUAGE"
               value={values.LANGUAGE}
               onChange={handleChange}
+              renderValue={(selected) => selected.join(", ")}
             >
               {Object.entries(result).map(([key, value]) => {
-                return <MenuItem value={key}>{value}</MenuItem>;
+                return (
+                  <MenuItem value={key}>
+                    <Checkbox checked={values.LANGUAGE.indexOf(key) > -1} />{" "}
+                    <ListItemText primary={`${value} , (${key})`} />
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>

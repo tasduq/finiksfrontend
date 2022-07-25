@@ -15,8 +15,11 @@ import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Voterstatus({ handleFilterData }) {
+  // console.log(data, "this is data");
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [applied, setApplied] = React.useState(false);
+
   const [values, setValues] = React.useState({
     STATUS: "",
     VOT_PREF: "",
@@ -40,15 +43,29 @@ export default function Voterstatus({ handleFilterData }) {
   };
 
   const handleSubmit = () => {
-    if (values.STATUS === "" || values.VOT_PREF === "") {
-      toast.error("Please select all the field", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+    // if (values.STATUS === "" || values.VOT_PREF === "") {
+    //   toast.error("Please select all the field", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
 
-    handleFilterData(values);
+    handleFilterData({
+      ...(values.STATUS.length > 0 && { STATUS: values.STATUS }),
+      ...(values.VOT_PREF.length > 0 && { VOT_PREF: values.VOT_PREF }),
+    });
+    setApplied(true);
     handleClose();
+  };
+
+  const handleClearAll = () => {
+    setValues({
+      STATUS: "",
+      VOT_PREF: "",
+    });
+    handleFilterData({});
+    handleClose();
+    setApplied(false);
   };
 
   return (
@@ -66,10 +83,20 @@ export default function Voterstatus({ handleFilterData }) {
         className="btn mx-1"
         onClick={handleClickOpen}
       >
-        <i class="fas fa-angle-down text-danger mx-2"></i> Voterstatus
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        Voterstatus
       </button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle className="text-danger">Voterstatus Filter</DialogTitle>
+        <div className="d-flex justify-content-between">
+          {" "}
+          <DialogTitle className="text-danger">Voterstatus Filter</DialogTitle>
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div>
         <DialogContent>
           <DialogContentText>
             This is the Filter for filtering the Voters on the base of their
@@ -90,6 +117,7 @@ export default function Voterstatus({ handleFilterData }) {
               value={values.STATUS}
               onChange={handleChange}
             >
+              <MenuItem value="">Un Select</MenuItem>
               <MenuItem value="A">Active</MenuItem>
               <MenuItem value="I">InActive</MenuItem>
               <MenuItem value="S">Suspense</MenuItem>
@@ -111,6 +139,7 @@ export default function Voterstatus({ handleFilterData }) {
               value={values.VOT_PREF}
               onChange={handleChange}
             >
+              <MenuItem value="">Un Select</MenuItem>
               <MenuItem value="A">
                 {" "}
                 Individual is likely to vote absentee

@@ -4,7 +4,15 @@ let url = "https://finiksbackend.herokuapp.com";
 
 const getLists = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/getlists`, data);
+  let res = await axios.post(`${url}/api/list/getlists`, data);
+
+  console.log(res);
+  return res;
+};
+
+const getRecords = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/canvassing/getrecords`, data);
 
   console.log(res);
   return res;
@@ -12,7 +20,7 @@ const getLists = async (data) => {
 
 const searchVoters = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/querycanvassing`, data);
+  let res = await axios.post(`${url}/api/list/querydata`, data);
 
   console.log(res);
   return res;
@@ -20,7 +28,39 @@ const searchVoters = async (data) => {
 
 const saveList = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/savelist`, data);
+  let res = await axios.post(`${url}/api/list/savelist`, data);
+
+  console.log(res);
+  return res;
+};
+
+const saveRecord = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/canvassing/saverecord`, data);
+
+  console.log(res);
+  return res;
+};
+
+// const searchVoters = async (data) => {
+//   console.log(data);
+//   let res = await axios.post(`${url}/api/canvassing/querycanvassing`, data);
+
+//   console.log(res);
+//   return res;
+// };
+
+// const saveList = async (data) => {
+//   console.log(data);
+//   let res = await axios.post(`${url}/api/canvassing/savelist`, data);
+
+//   console.log(res);
+//   return res;
+// };
+
+const updateRecord = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/canvassing/updaterecord`, data);
 
   console.log(res);
   return res;
@@ -50,4 +90,14 @@ const editList = async (data) => {
   return res;
 };
 
-export { getLists, searchVoters, saveList, updateList, deleteList, editList };
+export {
+  getLists,
+  searchVoters,
+  saveList,
+  updateList,
+  deleteList,
+  editList,
+  saveRecord,
+  getRecords,
+  updateRecord,
+};

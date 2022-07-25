@@ -3,13 +3,14 @@ import Header from "../../Components/Header";
 import Listtable from "./Components/Listtable";
 import Createlist from "./Components/Createlist";
 import { ToastContainer, toast } from "react-toastify";
-
-import { getLists } from "../../Connection/Phonebank";
+import { getCampaignFilterData } from "../../Connection/Campaign";
+import { getRecords } from "../../Connection/Phonebank";
 
 const Phonebank = (props) => {
   const [foundLists, setFoundLists] = useState();
   const [selected, setSelected] = useState();
   const [update, setUpdate] = React.useState(false);
+  const [campaignData, setCampaignData] = useState();
 
   const handleSelected = (list) => {
     console.log(list);
@@ -21,7 +22,7 @@ const Phonebank = (props) => {
   };
   useEffect(() => {
     const handleGetLists = async () => {
-      const res = await getLists({
+      const res = await getRecords({
         campaignId: window.localStorage.getItem("id"),
       });
       console.log(res);
@@ -34,12 +35,28 @@ const Phonebank = (props) => {
       }
     };
 
+    const handleGetCampaignData = async () => {
+      const res = await getCampaignFilterData({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setCampaignData(res.data.values);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
     handleGetLists();
+    handleGetCampaignData();
     setUpdate(false);
   }, [update === true]);
   console.log("props");
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
+      {console.log(campaignData)}
       <div className="mt-5 pl-xl-5 pr-4">
         <br />
         <div className="row">
@@ -62,7 +79,10 @@ const Phonebank = (props) => {
               >
                 <div className="text-left">
                   {" "}
-                  <Createlist handleUpdateData={handleUpdate} />
+                  <Createlist
+                    handleUpdateData={handleUpdate}
+                    campaignFilterData={campaignData}
+                  />
                   <br />
                   <br />
                   <p>Active Phonebanking Lists</p>
@@ -91,7 +111,7 @@ const Phonebank = (props) => {
                       <div>
                         {" "}
                         <p style={{ color: "#000000", fontSize: "20px" }}>
-                          {selected.listName}
+                          {selected.recordName}
                         </p>
                         <div className="">
                           <div className="d-flex justify-content-center">
@@ -182,6 +202,7 @@ const Phonebank = (props) => {
                       data={foundLists}
                       handleClick={handleSelected}
                       handleUpdate={handleUpdate}
+                      campaignFilterData={campaignData}
                     />
                   )}
                   {foundLists?.length === 0 && <p>No Lists Found Make One</p>}

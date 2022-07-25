@@ -21,6 +21,8 @@ import { ToastContainer, toast } from "react-toastify";
 export default function SEX({ handleFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
+  const [applied, setApplied] = React.useState(false);
+
   const [values, setValues] = React.useState({
     SEX: "",
   });
@@ -43,32 +45,53 @@ export default function SEX({ handleFilterData }) {
   };
 
   const handleSubmit = () => {
-    if (values.SEX === "") {
-      toast.error("Please select all the field", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+    // if (values.SEX === "") {
+    //   toast.error("Please select all the field", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
 
     handleFilterData(values);
+    setApplied(true);
+
     handleClose();
+  };
+
+  const handleClearAll = () => {
+    setValues({
+      SEX: "",
+    });
+    handleFilterData({});
+    handleClose();
+    setApplied(false);
   };
 
   return (
     <div>
       <button className="btn mx-1" onClick={handleClickOpen}>
-        <i class="fas fa-angle-down text-danger mx-2"></i> SEX
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        Sex
       </button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle className="text-danger">SEX Filter</DialogTitle>
+        <div className="d-flex justify-content-between">
+          {" "}
+          <DialogTitle className="text-danger">Sex Filter</DialogTitle>
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div>
         <DialogContent>
           <DialogContentText>
-            This is the Filter for filtering the Voters on the base of their SEX
+            This is the Filter for filtering the Voters on the base of their Sex
           </DialogContentText>
           <br />
 
           <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">SEX</FormLabel>
+            <FormLabel id="demo-radio-buttons-group-label">Sex</FormLabel>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
               defaultValue="female"

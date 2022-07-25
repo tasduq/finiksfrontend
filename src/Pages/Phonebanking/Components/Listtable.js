@@ -9,8 +9,14 @@ import Confirmdelete from "./Confirmdelete";
 import { deleteList } from "../../../Connection/Phonebank";
 import { ToastContainer, toast } from "react-toastify";
 import Editlist from "./Editlist";
+import { saveRecord } from "../../../Connection/Phonebank";
 
-export default function Listtable({ data, handleClick, handleUpdate }) {
+export default function Listtable({
+  data,
+  handleClick,
+  handleUpdate,
+  campaignFilterData,
+}) {
   console.log(data);
   const handleDelete = async (data) => {
     console.log(data);
@@ -25,6 +31,30 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+    }
+  };
+
+  const handleDuplicate = async (data) => {
+    console.log(data);
+    // setSaving(true);
+    const res = await saveRecord({
+      ...data,
+      selectedList: data.list,
+      selectedScript: { scriptName: data.scriptName, _id: data.scriptId },
+    });
+    console.log(res);
+    if (res.data.success === true) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      // setSaving(false);
+      // handleClose();
+      handleUpdate();
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      // setSaving(false);
     }
   };
   return (
@@ -45,13 +75,14 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
 
         <TableBody>
           {data?.map((list) => {
+            console.log(list);
             return (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 onClick={() => handleClick(list)}
               >
                 <TableCell component="th" scope="row">
-                  {list?.listName}
+                  {list?.recordName}
                 </TableCell>
                 <TableCell align="right">{list?.totalNumbers}</TableCell>
                 <TableCell align="right">
@@ -65,9 +96,9 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
                 </TableCell>
                 <TableCell align="right">No VM Uploaded</TableCell>
                 <TableCell align="right">
-                  {list?.phoneBankerName
-                    ? list?.phoneBankerName
-                    : "No Assigned"}
+                  {list.teamMembers?.length > 0
+                    ? list?.teamMembers?.length
+                    : "Not Assigned"}
                 </TableCell>
 
                 <TableCell align="right">
@@ -105,7 +136,18 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
                       {/* <a class="dropdown-item" href="#">
                         Edit
                       </a> */}
-                      <Editlist data={list} handleUpdateData={handleUpdate} />
+                      <a
+                        onClick={() => handleDuplicate(list)}
+                        class="dropdown-item"
+                      >
+                        {" "}
+                        Re-Use
+                      </a>
+                      <Editlist
+                        campaignFilterData={campaignFilterData}
+                        data={list}
+                        handleUpdateData={handleUpdate}
+                      />
                       <Confirmdelete handleDelete={handleDelete} data={list} />
 
                       {/* <a class="dropdown-item" href="#">

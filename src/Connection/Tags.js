@@ -64,6 +64,13 @@ const deleteTag = async (data) => {
   return res;
 };
 
+const connectTagsToUsers = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/tags/connecttagtouser`, data);
+  console.log(res);
+  return res;
+};
+
 export {
   addTag,
   getTags,
@@ -73,4 +80,5 @@ export {
   editTag,
   getClientTags,
   deleteTag,
+  connectTagsToUsers,
 };

@@ -33,24 +33,25 @@ import {
 
 import Logo from "../../../Assets/logoword.png";
 
-import Location from "./Createlist Components/Location";
-import Age from "./Createlist Components/Age";
-import Voterstatus from "./Createlist Components/Voterstatus";
-import Legislativedistrict from "./Createlist Components/Legislativedistrict";
-import Gender from "./Createlist Components/Gender";
-import Race from "./Createlist Components/Race";
-import Electionhistory from "./Createlist Components/Electionhistory";
-import Language from "./Createlist Components/Language";
-import Generalvotingscore from "./Createlist Components/Generalvotingscore";
-import Primaryvotingscore from "./Createlist Components/Primaryvotingscore";
-import Individualvotinginfo from "./Createlist Components/Individualvotinginfo";
-import Registrationdate from "./Createlist Components/Registrationdate";
-import Partyaffiliation from "./Createlist Components/Partyaffiliation";
+import Location from "../../Phonebanking/Components/Createlist Components/Location";
+import Age from "../../Phonebanking/Components/Createlist Components/Age";
+import Voterstatus from "../../Phonebanking/Components/Createlist Components/Voterstatus";
+import Legislativedistrict from "../../Phonebanking/Components/Createlist Components/Legislativedistrict";
+import Gender from "../../Phonebanking/Components/Createlist Components/Gender";
+import Race from "../../Phonebanking/Components/Createlist Components/Race";
+import Electionhistory from "../../Phonebanking/Components/Createlist Components/Electionhistory";
+import Language from "../../Phonebanking/Components/Createlist Components/Language";
+import Generalvotingscore from "../../Phonebanking/Components/Createlist Components/Generalvotingscore";
+import Primaryvotingscore from "../../Phonebanking/Components/Createlist Components/Primaryvotingscore";
+import Individualvotinginfo from "../../Phonebanking/Components/Createlist Components/Individualvotinginfo";
+import Registrationdate from "../../Phonebanking/Components/Createlist Components/Registrationdate";
+import Partyaffiliation from "../../Phonebanking/Components/Createlist Components/Partyaffiliation";
 import Createscript from "./Createscript";
 import { useAuth } from "../../../Context/Auth-Context";
 import {
   searchVoters,
   saveList,
+  saveRecord,
   getLists,
   updateList,
 } from "../../../Connection/Canvassing";
@@ -60,11 +61,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Createlist({ handleUpdateData }) {
+export default function Createlist({ handleUpdateData, campaignFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState({
     campaignId: window.localStorage.getItem("id"),
   });
+  const [filters, setFilters] = React.useState({});
+  console.log(values, "i am filter values");
+  console.log(filters, "i am filters");
+
   const [foundVoters, setFoundVoters] = React.useState(0);
   const [foundLists, setFoundLists] = React.useState();
   const [selectedList, setSelectedList] = React.useState();
@@ -76,11 +81,152 @@ export default function Createlist({ handleUpdateData }) {
   const [saving, setSaving] = React.useState(false);
   const [locationActive, setLocationActive] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
+  const [walkbooksLength, setWalkbooksLength] = React.useState(50);
   const [list, setList] = React.useState({
     listName: "",
     voters: [],
     campaignOwnerId: window.localStorage.getItem("id"),
   });
+
+  const [record, setRecord] = React.useState({
+    recordName: "",
+    campaignOwnerId: window.localStorage.getItem("id"),
+    walkbooks: [],
+  });
+
+  const [locationFilters, setLocationFilters] = React.useState();
+  const [ageFilters, setAgeFilters] = React.useState();
+  const [voterStatusFilters, setVoterStatusFilters] = React.useState();
+  const [sexFilters, setSexFilters] = React.useState();
+  const [legislativeFilters, setLegislativeFilters] = React.useState();
+  const [raceFilters, setRaceFilters] = React.useState();
+  const [electionHistoryFilters, setElectionHistoryFilters] = React.useState();
+  const [languageFilters, setLanguageFilters] = React.useState();
+  const [generalVotingScoreFilters, setGeneralVotingScoreFilters] =
+    React.useState();
+  const [individualInfoFilters, setIndividualInfoFilters] = React.useState();
+  const [primaryVotingScoreFilters, setPrimaryVotingScoreFilters] =
+    React.useState();
+  const [regisDateFilters, setRegisDateFilters] = React.useState();
+  const [partyAffiliationFilters, setPartyAffiliationFilters] =
+    React.useState();
+
+  const handleFilterDataLocation = (data, type) => {
+    console.log(data);
+    setLocationFilters({ ...data });
+  };
+
+  const handleFilterDataAge = (data, name) => {
+    console.log(data);
+    setAgeFilters({ ...data });
+  };
+
+  const handleFilterDataVoterStatus = (data, name) => {
+    console.log(data);
+    setVoterStatusFilters({ ...data });
+  };
+
+  const handleFilterDataSex = (data, name) => {
+    console.log(data);
+    setSexFilters({ ...data });
+  };
+
+  const handleFilterDataLegislative = (data, name) => {
+    console.log(data);
+    setLegislativeFilters({ ...data });
+  };
+
+  const handleFilterRace = (data, name) => {
+    console.log(data);
+    setRaceFilters({ ...data });
+  };
+
+  const handleFilterElectionHistory = (data, name) => {
+    console.log(data);
+    setElectionHistoryFilters({ ...data });
+  };
+
+  const handleFilterLanguage = (data, name) => {
+    console.log(data);
+    setLanguageFilters({ ...data });
+  };
+  const handleFilterGeneralVotingScore = (data, name) => {
+    console.log(data);
+    setGeneralVotingScoreFilters({ ...data });
+  };
+
+  const handleFilterPrimaryVotingScore = (data, name) => {
+    console.log(data);
+    setPrimaryVotingScoreFilters({ ...data });
+  };
+
+  const handleFilterIndividualInfo = (data, name) => {
+    console.log(data);
+    setIndividualInfoFilters({ ...data });
+  };
+
+  const handleFilterRegisDate = (data, name) => {
+    console.log(data);
+    setRegisDateFilters({ ...data });
+  };
+
+  const handleFilterPartyAffiliation = (data, name) => {
+    console.log(data);
+    setPartyAffiliationFilters({ ...data });
+  };
+
+  const handleSearch = async () => {
+    console.log({
+      ...locationFilters,
+      ...ageFilters,
+      ...voterStatusFilters,
+      ...sexFilters,
+      ...legislativeFilters,
+      ...raceFilters,
+      ...electionHistoryFilters,
+      ...languageFilters,
+      ...generalVotingScoreFilters,
+      ...individualInfoFilters,
+      ...primaryVotingScoreFilters,
+      ...regisDateFilters,
+      ...partyAffiliationFilters,
+    });
+    setSearching(true);
+    const res = await searchVoters({
+      ...locationFilters,
+      ...ageFilters,
+      ...voterStatusFilters,
+      ...sexFilters,
+      ...legislativeFilters,
+      ...raceFilters,
+      ...electionHistoryFilters,
+      ...languageFilters,
+      ...generalVotingScoreFilters,
+      ...individualInfoFilters,
+      ...primaryVotingScoreFilters,
+      ...regisDateFilters,
+      ...partyAffiliationFilters,
+    });
+    console.log(res);
+    if (res.data.success === true) {
+      setFoundVoters(res?.data.foundVoters.length);
+      setSearching(false);
+      setList({
+        ...list,
+        voters: res.data.foundVoters,
+      });
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setList({
+        ...list,
+        voters: [],
+      });
+      setSearching(false);
+      setFoundVoters(0);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -116,6 +262,61 @@ export default function Createlist({ handleUpdateData }) {
     }
   };
 
+  const handleSaveRecord = async () => {
+    setSaving(true);
+    let walkbooks = [];
+    if (walkbooksLength > 49 && selectedListLength > 49) {
+      let divideTime = selectedListLength / walkbooksLength;
+      console.log(divideTime);
+
+      let i = 1;
+      let voters = selectedListLength + walkbooksLength;
+      // let walkbooks = [];
+
+      while (i <= divideTime + 1) {
+        console.log("running");
+        voters = voters - walkbooksLength;
+        console.log(voters, selectedListLength, "voters");
+        walkbooks = [
+          ...walkbooks,
+          {
+            name: `${record.recordName}-00${i}`,
+            voters: voters > walkbooksLength ? walkbooksLength : voters,
+            knocked: 0,
+            reached: 0,
+            surveyed: 0,
+            created: new Date(),
+            active: "Active",
+          },
+        ];
+
+        i++;
+      }
+      console.log(walkbooks);
+    }
+
+    const res = await saveRecord({
+      ...record,
+      selectedList: selectedList,
+      selectedScript: selectedScript,
+      walkbooks: walkbooks.length > 0 ? walkbooks : [],
+    });
+    console.log(res);
+    if (res.data.success === true) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setSaving(false);
+      handleClose();
+      handleUpdateData();
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setSaving(false);
+    }
+  };
+
   const handleUpdateList = async () => {
     setSaving(true);
     const res = await updateList({
@@ -138,25 +339,25 @@ export default function Createlist({ handleUpdateData }) {
     }
   };
 
-  const handleSearch = async () => {
-    setSearching(true);
-    const res = await searchVoters({ ...values });
-    console.log(res);
-    if (res.data.success === true) {
-      setFoundVoters(res?.data.foundVoters.length);
-      setSearching(false);
-      setList({
-        ...list,
-        voters: res.data.foundVoters,
-      });
-    } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setSearching(false);
-      setFoundVoters(0);
-    }
-  };
+  // const handleSearch = async () => {
+  //   setSearching(true);
+  //   const res = await searchVoters({ ...values });
+  //   console.log(res);
+  //   if (res.data.success === true) {
+  //     setFoundVoters(res?.data.foundVoters.length);
+  //     setSearching(false);
+  //     setList({
+  //       ...list,
+  //       voters: res.data.foundVoters,
+  //     });
+  //   } else {
+  //     toast.error(res.data.message, {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //     setSearching(false);
+  //     setFoundVoters(0);
+  //   }
+  // };
   const handleLocationActive = (state) => {
     setLocationActive(state);
   };
@@ -168,6 +369,11 @@ export default function Createlist({ handleUpdateData }) {
   const handleSelectScript = (evt) => {
     console.log(evt.target.value);
     setSelectedScript(evt.target.value);
+  };
+
+  const handleChangeWalkbook = (evt) => {
+    console.log(evt.target.value);
+    setWalkbooksLength(evt.target.value);
   };
 
   const handleSelectList = (evt) => {
@@ -190,9 +396,9 @@ export default function Createlist({ handleUpdateData }) {
       });
       console.log(res);
       if (res.data.success === true) {
-        setFoundLists(res.data.canvassingLists);
-        setSelectedListLength(res.data.canvassingLists[0].totalNumbers);
-        setSelectedList(res.data.canvassingLists[0]._id);
+        setFoundLists(res.data.lists);
+        setSelectedListLength(res?.data?.lists[0]?.totalNumbers);
+        setSelectedList(res?.data?.lists[0]?._id);
       } else {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
@@ -281,58 +487,94 @@ export default function Createlist({ handleUpdateData }) {
                         <div className="row text-left mt-4">
                           <div className="col-6 p-2">
                             <Location
-                              handleFilterData={handleFilterData}
+                              // handleFilterData={handleFilterData}
+                              // handleLocationActive={handleLocationActive}
+                              handleFilterData={handleFilterDataLocation}
                               handleLocationActive={handleLocationActive}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Age handleFilterData={handleFilterData} />
+                            {/* <Age handleFilterData={handleFilterData} /> */}
+                            <Age handleFilterData={handleFilterDataAge} />
                           </div>
                           <div className="col-6 p-2">
-                            <Voterstatus handleFilterData={handleFilterData} />
+                            {/* <Voterstatus handleFilterData={handleFilterData} /> */}
+                            <Voterstatus
+                              handleFilterData={handleFilterDataVoterStatus}
+                            />
                           </div>
                           <div className="col-6 p-2">
-                            <Gender handleFilterData={handleFilterData} />
+                            {/* <Gender handleFilterData={handleFilterData} /> */}
+                            <Gender handleFilterData={handleFilterDataSex} />
                           </div>
                           <div className="col-6 p-2">
+                            {/* <Legislativedistrict
+                              handleFilterData={handleFilterData}
+                            /> */}
                             <Legislativedistrict
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterDataLegislative}
+                              // data={filtersData}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Race handleFilterData={handleFilterData} />
+                            {/* <Race handleFilterData={handleFilterData} /> */}
+                            <Race handleFilterData={handleFilterRace} />
                           </div>
                           <div className="col-6 p-2">
+                            {/* <Electionhistory
+                              handleFilterData={handleFilterData}
+                            /> */}
                             <Electionhistory
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterElectionHistory}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Language handleFilterData={handleFilterData} />
+                            {/* <Language handleFilterData={handleFilterData} /> */}
+                            <Language handleFilterData={handleFilterLanguage} />
                           </div>
                           <div className="col-6 p-2">
+                            {/* <Generalvotingscore
+                              handleFilterData={handleFilterData}
+                            /> */}
                             <Generalvotingscore
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterGeneralVotingScore}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
+                            {/* <Individualvotinginfo
+                              handleFilterData={handleFilterData}
+                            /> */}
                             <Individualvotinginfo
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterIndividualInfo}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
+                            {/* <Primaryvotingscore
+                              handleFilterData={handleFilterData}
+                            /> */}
                             <Primaryvotingscore
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterPrimaryVotingScore}
+                              campaignFilterData={campaignFilterData}
                             />
                           </div>
                           <div className="col-6 p-2">
+                            {/* <Registrationdate
+                              handleFilterData={handleFilterData}
+                            /> */}
                             <Registrationdate
-                              handleFilterData={handleFilterData}
+                              handleFilterData={handleFilterRegisDate}
                             />
                           </div>
                           <div className="col-6 p-2">
-                            <Partyaffiliation
+                            {/* <Partyaffiliation
                               handleFilterData={handleFilterData}
+                            /> */}
+                            <Partyaffiliation
+                              handleFilterData={handleFilterPartyAffiliation}
                             />
                           </div>
                           <div className="col-6 p-2 text-left">
@@ -558,10 +800,61 @@ export default function Createlist({ handleUpdateData }) {
                         <div>
                           <Createscript
                             handleScripts={(scripts) => setScripts(scripts)}
+                            buttonName={{
+                              name: "Create New",
+                              color: "text-danger",
+                            }}
                           />
                         </div>
                       </div>
                       <br />
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Name of Canvassing List"
+                        style={{
+                          width: "60%",
+                          backgroundColor: "#F2F2F2",
+                          border: "none",
+                          // boxShadow: "0px 3px 10px #00000029",
+                          // borderRadius: "15px",
+                        }}
+                        value={list.name}
+                        onChange={(evt) =>
+                          setRecord({
+                            ...record,
+                            recordName: evt.target.value,
+                          })
+                        }
+                      ></input>
+                      <br />
+                      {selectedListLength > 50 && (
+                        <>
+                          {" "}
+                          <FormControl className="w-50" fullWidth size="small">
+                            <InputLabel id="demo-simple-select-label">
+                              Create Walkbook
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={walkbooksLength}
+                              label="Create Walkbook"
+                              onChange={handleChangeWalkbook}
+                            >
+                              {[50, 100, 150, 200]?.map((walkbook) => {
+                                return (
+                                  <MenuItem value={walkbook}>
+                                    {walkbook}
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </FormControl>
+                          <br />
+                        </>
+                      )}
+
                       <div className="d-flex justify-content-between">
                         <p className="mt-2" style={{ color: "#D12E2F" }}>
                           Total Numbers {selectedListLength}{" "}
@@ -585,11 +878,18 @@ export default function Createlist({ handleUpdateData }) {
                         {saving === false && (
                           <button
                             className={`btn ${
-                              selectedList && selectedScript ? "" : "disabled"
+                              selectedList &&
+                              selectedScript &&
+                              record.recordName !== ""
+                                ? ""
+                                : "disabled"
                             }`}
                             style={{ color: "#D12E2F" }}
                             onClick={
-                              selectedList && selectedScript && handleUpdateList
+                              selectedList &&
+                              selectedScript &&
+                              record.recordName !== "" &&
+                              handleSaveRecord
                             }
                           >
                             Save

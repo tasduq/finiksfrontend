@@ -16,6 +16,8 @@ import { ToastContainer, toast } from "react-toastify";
 export default function Registrationdate({ handleFilterData }) {
   const [open, setOpen] = React.useState(false);
   // const [date, setDate] = React.useState(null);
+  const [applied, setApplied] = React.useState(false);
+
   const [values, setValues] = React.useState({
     REGIS_DATE: { from: "", to: "" },
   });
@@ -75,22 +77,57 @@ export default function Registrationdate({ handleFilterData }) {
   };
 
   const handleSubmit = () => {
-    if (values.REGIS_DATE.from === "" || values.REGIS_DATE.to === "") {
+    if (
+      (values.REGIS_DATE.from !== "" && values.REGIS_DATE.to === "") ||
+      (values.REGIS_DATE.from === "" && values.REGIS_DATE.to !== "")
+    ) {
       toast.error("Please select all the field", {
         position: toast.POSITION.TOP_RIGHT,
       });
       return;
     }
-    if (values.REGIS_DATE.from >= values.REGIS_DATE.to) {
+    if (values.REGIS_DATE.from > values.REGIS_DATE.to) {
       toast.error("Date Min cannot be equal or greater than Date Max", {
         position: toast.POSITION.TOP_RIGHT,
       });
       return;
     }
 
-    handleFilterData(values);
+    handleFilterData({
+      ...(values.REGIS_DATE.from !== "" &&
+        values.REGIS_DATE.to !== "" && { REGIS_DATE: values.REGIS_DATE }),
+    });
+    setApplied(true);
+
     handleClose();
   };
+
+  const handleClear = (field) => {
+    setValues({
+      ...values,
+      REGIS_DATE: { from: "", to: "" },
+    });
+    setDate({
+      from: "",
+      to: "",
+    });
+    handleFilterData({});
+    handleClose();
+    setApplied(false);
+  };
+
+  // const handleClearAll = () => {
+  //   setValues({
+  //     REGIS_DATE: { from: "", to: "" },
+  //   });
+  //   setDate({
+  //     from: "",
+  //     to: "",
+  //   });
+  //   handleFilterData({});
+  //   handleClose();
+  //   setApplied(false);
+  // };
 
   return (
     <div>
@@ -105,18 +142,38 @@ export default function Registrationdate({ handleFilterData }) {
         className="btn mx-1"
         onClick={handleClickOpen}
       >
-        <i class="fas fa-angle-down text-danger mx-2"></i> Registration Date
+        {applied === true && <i class="fas fa-check text-success mx-2"></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
+        Registration Date
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle className="text-danger">
           Registration Date Filter
         </DialogTitle>
+        {/* <div className="d-flex justify-content-between">
+          {" "}
+          
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div> */}
         <DialogContent>
           <DialogContentText>
             This is the Filter for filtering the Voters on the base of their
             Registration Date
           </DialogContentText>
           <br />
+          <div className="text-right">
+            {" "}
+            <button
+              onClick={() => handleClear("RELIGION")}
+              className="btn btn-sm text-danger"
+            >
+              Clear All <i class="fas fa-times"></i>
+            </button>
+          </div>
           <InputLabel id="demo-simple-select-label">
             Minimum Registration Date
           </InputLabel>

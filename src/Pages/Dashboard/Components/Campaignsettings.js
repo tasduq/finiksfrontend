@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Campaignsettings() {
+export default function Campaignsettings({ handleGetData }) {
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState({
     campaignCode: "",
@@ -120,6 +120,7 @@ export default function Campaignsettings() {
           ...res.data.values,
           campaignId: window.localStorage.getItem("id"),
         });
+        handleGetData(res.data.values);
       } else {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
@@ -213,7 +214,7 @@ export default function Campaignsettings() {
                       When is your Election Day
                     </label>
                     <input
-                      type="text"
+                      type="date"
                       className="form-control shadow-sm"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
@@ -230,7 +231,7 @@ export default function Campaignsettings() {
                       What are your Campaign Filling Dates
                     </label>
                     <input
-                      type="text"
+                      type="date"
                       className="form-control shadow-sm"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
@@ -280,8 +281,9 @@ export default function Campaignsettings() {
                     >
                       What are the dates that you are allowed to vote early
                     </label>
+
                     <input
-                      type="text"
+                      type="date"
                       className="form-control shadow-sm"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"

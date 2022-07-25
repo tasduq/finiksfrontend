@@ -108,7 +108,7 @@ const Superadmindashboard = (props) => {
                   <div className=" p-2">
                     <p className="mt-2 box1heading">Clients</p>
                     <p className="box1value">
-                      {foundClients ? foundClients?.length : 0}{" "}
+                      {foundClients ? foundClients?.length - 1 : 0}{" "}
                       <i
                         style={{ color: "#00E38C" }}
                         class="fas fa-caret-up "

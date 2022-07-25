@@ -96,7 +96,7 @@ const Header = ({ name, purpose }) => {
                   <i class="fas fa-angle-right text-danger ml-5"></i>
                 </MenuItem>
               </Link>
-              <Link to="/tags">
+              {/* <Link to="/tags">
                 <MenuItem
                   className="d-flex justify-content-between px-4"
                   // key={setting}
@@ -107,7 +107,7 @@ const Header = ({ name, purpose }) => {
                   </Typography>
                   <i class="fas fa-angle-right text-danger ml-5"></i>
                 </MenuItem>
-              </Link>
+              </Link> */}
               {role === "superadmin" && (
                 <MenuItem
                   className="d-flex justify-content-between px-4"

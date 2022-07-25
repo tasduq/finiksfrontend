@@ -12,15 +12,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
+import Checkbox from "@mui/material/Checkbox";
+import ListItemText from "@mui/material/ListItemText";
 
 export default function Race({ handleFilterData }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
   const [values, setValues] = React.useState({
-    ETHNIC_INFER: "",
-    ETHNICCODE: "",
-    RELIGION: "",
+    ETHNIC_INFER: [],
+    ETHNICCODE: [],
+    RELIGION: [],
   });
+  const [applied, setApplied] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,29 +33,83 @@ export default function Race({ handleFilterData }) {
     setOpen(false);
   };
 
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    const {
+      target: { value },
+    } = event;
 
-    setValues({
-      ...values,
-      [name]: value,
-    });
+    // if(values.district.indexOf(value) > -1){
+    //   let yoo = values.district
+    // }
+
+    setValues(
+      // On autofill we get a stringified value.
+      {
+        ...values,
+        [event.target.name]:
+          typeof value === "string" ? value.split(",") : value,
+      }
+    );
   };
 
-  const handleSubmit = () => {
-    if (
-      values.ETHNIC_INFER === "" ||
-      values.ETHNICCODE === "" ||
-      values.RELIGION === ""
-    ) {
-      toast.error("Please select all the field", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+  // const handleChangeEthnicCode = (event) => {
+  //   console.log(event.target.value);
+  //   const {
+  //     target: { value },
+  //   } = event;
 
-    handleFilterData(values);
+  //   // if(values.district.indexOf(value) > -1){
+  //   //   let yoo = values.district
+  //   // }
+
+  //   setValues(
+  //     // On autofill we get a stringified value.
+  //     {
+  //       ...values,
+  //       ETHNICCODE: typeof value === "string" ? value.split(",") : value,
+  //     }
+  //   );
+  // };
+
+  // const handleChange = (evt) => {
+  //   const { name, value } = evt.target;
+
+  //   setValues({
+  //     ...values,
+  //     [name]: value,
+  //   });
+  // };
+
+  const handleSubmit = () => {
+    // if (
+    //   values.ETHNIC_INFER === "" ||
+    //   values.ETHNICCODE === "" ||
+    //   values.RELIGION === ""
+    // ) {
+    //   toast.error("Please select all the field", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
+
+    handleFilterData({
+      ...(values.ETHNIC_INFER.length > 0 && {
+        ETHNIC_INFER: values.ETHNIC_INFER,
+      }),
+      ...(values.ETHNICCODE.length > 0 && { ETHNICCODE: values.ETHNICCODE }),
+      ...(values.RELIGION.length > 0 && { RELIGION: values.RELIGION }),
+    });
+    setApplied(true);
+
     handleClose();
+  };
+
+  const handleClear = (field) => {
+    setValues({
+      ...values,
+      [field]: [],
+    });
   };
 
   let ethnicOrigin = [
@@ -248,11 +305,20 @@ export default function Race({ handleFilterData }) {
   );
   console.log(result);
 
+  const handleClearAll = () => {
+    setValues({
+      ETHNIC_INFER: [],
+      ETHNICCODE: [],
+      RELIGION: [],
+    });
+    handleFilterData({});
+    handleClose();
+    setApplied(false);
+  };
+
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
+      {console.log(values)}
       <button
         // style={{
         //   backgroundColor: "#d12e2f",
@@ -263,23 +329,87 @@ export default function Race({ handleFilterData }) {
         className="btn mx-1"
         onClick={handleClickOpen}
       >
-        <i class="fas fa-angle-down text-danger mx-2"></i>{" "}
+        {applied === true && <i class="fas fa-check text-success "></i>}{" "}
+        {applied === false && (
+          <i class="fas fa-angle-down text-danger mx-2"></i>
+        )}{" "}
         Race/Ethnicity/Religion
       </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle className="text-danger">
           Race/Ethnicity/Religion Filter
         </DialogTitle>
+        <div className="d-flex justify-content-between">
+          {" "}
+          <DialogTitle className="text-danger">
+            Race/Ethnicity/Religion Filter
+          </DialogTitle>
+          <button className="btn text-danger" onClick={handleClearAll}>
+            Clear All <i class="fas fa-times"></i>
+          </button>
+        </div>
         <DialogContent>
           <DialogContentText>
             This is the Filter for filtering the Voters on the base of their
             Race/Ethnicity/Religion
           </DialogContentText>
           <br />
+          <div className="text-right">
+            {" "}
+            <button
+              onClick={() => handleClear("ETHNIC_INFER")}
+              className="btn btn-sm text-danger"
+            >
+              Clear Filter <i class="fas fa-times"></i>
+            </button>
+          </div>
 
-          <br />
+          <FormControl
+            fullWidth
+            size="small"
+            // disabled={
+            //   values.level.length < 1 ||
+            //   values.level === "Federal - Senate" ||
+            //   values.level === "State - Statewide" ||
+            //   values.level === "County - County Wide" ||
+            //   values.level === "City - City Wide" < 0
+            //     ? true
+            //     : false
+            // }
+          >
+            <InputLabel id="demo-simple-select-label">Ethnicity</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              multiple
+              //   value={age}
+              label="Ethnicity"
+              //   onChange={handleChange}
+              value={values.ETHNIC_INFER}
+              onChange={handleChange}
+              name="ETHNIC_INFER"
+              renderValue={(selected) => selected.join(", ")}
+            >
+              <MenuItem value="A">
+                <Checkbox checked={values?.ETHNIC_INFER.indexOf("A") > -1} />{" "}
+                <ListItemText primary={`Asian , (A)`} />
+              </MenuItem>
+              <MenuItem value="B">
+                <Checkbox checked={values.ETHNIC_INFER.indexOf("B") > -1} />{" "}
+                <ListItemText primary={"African American , (B)"} />
+              </MenuItem>
+              <MenuItem value="C">
+                <Checkbox checked={values.ETHNIC_INFER.indexOf("C") > -1} />{" "}
+                <ListItemText primary={"Caucasian , (C)"} />
+              </MenuItem>
+              <MenuItem value="D">
+                <Checkbox checked={values.ETHNIC_INFER.indexOf("D") > -1} />{" "}
+                <ListItemText primary={"Hispanic , (D)"} />
+              </MenuItem>
+            </Select>
+          </FormControl>
 
-          <FormControl fullWidth size="small">
+          {/* <FormControl fullWidth size="small">
             <InputLabel id="demo-simple-select-label">Ethnicity</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -295,9 +425,17 @@ export default function Race({ handleFilterData }) {
               <MenuItem value="C">Caucasian</MenuItem>
               <MenuItem value="H">Hispanic</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
           <br />
-          <br />
+          <div className="text-right">
+            {" "}
+            <button
+              onClick={() => handleClear("ETHNICCODE")}
+              className="btn btn-sm text-danger"
+            >
+              Clear Filter <i class="fas fa-times"></i>
+            </button>
+          </div>
           <FormControl fullWidth size="small">
             <InputLabel id="demo-simple-select-label">
               Ethnic Country of Origin
@@ -306,30 +444,99 @@ export default function Race({ handleFilterData }) {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               //   value={age}
-              label="Election"
+              multiple
+              label="Ethnic Country of Origin"
               name="ETHNICCODE"
-              value={values.CONG_DIST}
+              value={values.ETHNICCODE}
               onChange={handleChange}
+              renderValue={(selected) => selected.join(", ")}
             >
               {Object.entries(result).map(([key, value]) => {
-                return <MenuItem value={key}>{value}</MenuItem>;
+                return (
+                  <MenuItem value={key}>
+                    <Checkbox checked={values.ETHNICCODE.indexOf(key) > -1} />{" "}
+                    <ListItemText primary={`${value} , (${key})`} />
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>
           <br />
-          <br />
+          <div className="text-right">
+            {" "}
+            <button
+              onClick={() => handleClear("RELIGION")}
+              className="btn btn-sm text-danger"
+            >
+              Clear Filter <i class="fas fa-times"></i>
+            </button>
+          </div>
           <FormControl fullWidth size="small">
             <InputLabel id="demo-simple-select-label">Religion</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               //   value={age}
-              label="Election"
+              label="Religion"
               name="RELIGION"
-              value={values.CONG_DIST}
+              value={values.RELIGION}
               onChange={handleChange}
+              multiple
+              renderValue={(selected) => selected.join(", ")}
             >
-              <MenuItem value="B">Buddhist</MenuItem>
+              <MenuItem value="B">
+                <Checkbox checked={values?.RELIGION.indexOf("B") > -1} />{" "}
+                <ListItemText primary={`Buddhist , (B)`} />
+              </MenuItem>
+              <MenuItem value="C">
+                <Checkbox checked={values?.RELIGION.indexOf("C") > -1} />{" "}
+                <ListItemText primary={`Catholic , (C)`} />
+              </MenuItem>
+              <MenuItem value="G">
+                <Checkbox checked={values?.RELIGION.indexOf("G") > -1} />{" "}
+                <ListItemText primary={`Greek Orthodox , (G)`} />
+              </MenuItem>
+              <MenuItem value="H">
+                <Checkbox checked={values?.RELIGION.indexOf("H") > -1} />{" "}
+                <ListItemText primary={`Hindu , (H)`} />
+              </MenuItem>
+              <MenuItem value="I">
+                <Checkbox checked={values?.RELIGION.indexOf("I") > -1} />{" "}
+                <ListItemText primary={`Islamic , (I)`} />
+              </MenuItem>
+              <MenuItem value="J">
+                <Checkbox checked={values?.RELIGION.indexOf("J") > -1} />{" "}
+                <ListItemText primary={`Jewish , (J)`} />
+              </MenuItem>
+              <MenuItem value="K">
+                <Checkbox checked={values?.RELIGION.indexOf("K") > -1} />{" "}
+                <ListItemText primary={`Siku , (K)`} />
+              </MenuItem>
+              <MenuItem value="L">
+                <Checkbox checked={values?.RELIGION.indexOf("L") > -1} />{" "}
+                <ListItemText primary={`Lutheran, (L)`} />
+              </MenuItem>
+              <MenuItem value="M">
+                <Checkbox checked={values?.RELIGION.indexOf("M") > -1} />{" "}
+                <ListItemText primary={`Mormon, (M)`} />
+              </MenuItem>
+              <MenuItem value="O">
+                <Checkbox checked={values?.RELIGION.indexOf("O") > -1} />{" "}
+                <ListItemText primary={`Eastern Orthodox, (O)`} />
+              </MenuItem>
+              <MenuItem value="P">
+                <Checkbox checked={values?.RELIGION.indexOf("P") > -1} />{" "}
+                <ListItemText primary={`Protestant, (P)`} />
+              </MenuItem>
+              <MenuItem value="S">
+                <Checkbox checked={values?.RELIGION.indexOf("S") > -1} />{" "}
+                <ListItemText primary={`Shinto, (S)`} />
+              </MenuItem>
+              <MenuItem value="X">
+                <Checkbox checked={values?.RELIGION.indexOf("X") > -1} />{" "}
+                <ListItemText primary={`Not Known or Unmatched, (X)`} />
+              </MenuItem>
+              {/* <MenuItem value="B">Buddhist</MenuItem>
               <MenuItem value="C">Catholic</MenuItem>
               <MenuItem value="G">Greek Orthodox</MenuItem>
               <MenuItem value="H">Hindu</MenuItem>
@@ -341,7 +548,7 @@ export default function Race({ handleFilterData }) {
               <MenuItem value="O">Eastern Orthodox</MenuItem>
               <MenuItem value="P">Protestant</MenuItem>
               <MenuItem value="S">Shinto</MenuItem>
-              <MenuItem value="X">Not Known or Unmatched</MenuItem>
+              <MenuItem value="X">Not Known or Unmatched</MenuItem> */}
             </Select>
           </FormControl>
         </DialogContent>
