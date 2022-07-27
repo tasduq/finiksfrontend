@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Redirect } from "react-router-dom";
 // import { useAuth } from "../Contexts/Auth-Context";
 // import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "../Pages/Dashboard";
+import Dashboardteam from "../Pages/Teamdashboard";
 import Phonebank from "../Pages/Phonebanking";
 import Canvassing from "../Pages/Canvassing";
 import Upload from "../Pages/Upload";
@@ -21,6 +22,10 @@ import Tags from "../Pages/Tags/index";
 import Surveys from "../Pages/Survey/index";
 import Logincampaign from "../Pages/Campaignlogin/index";
 import Loginadmin from "../Pages/Adminlogin/index";
+import Loginteam from "../Pages/Teamauth/login";
+import Registerteam from "../Pages/Teamauth/signup";
+import Otp from "../Pages/Teamauth/otp";
+import Teamphonebank from "../Pages/Teamphonebanking/index";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -51,8 +56,11 @@ export const AuthenticatedRoutes = ({ role }) => {
               console.log(routeProps);
               if (role === "superadmin") {
                 return <Superadmindashboard {...routeProps} />;
-              } else {
+              } else if (role === "campaignManager") {
                 return <Dashboard {...routeProps} />;
+              } else {
+                console.log("tasu");
+                return <Dashboardteam {...routeProps} />;
               }
             }}
           />
@@ -63,6 +71,15 @@ export const AuthenticatedRoutes = ({ role }) => {
             render={(routeProps) => {
               console.log(routeProps);
               return <Superadmindashboard {...routeProps} />;
+            }}
+          />
+          <Route
+            exact
+            path="/team/dashboard"
+            // render={(routeProps) => <Superadmindashboard {...routeProps} />}
+            render={(routeProps) => {
+              console.log(routeProps);
+              return <Dashboardteam {...routeProps} />;
             }}
           />
           <Route
@@ -109,6 +126,12 @@ export const AuthenticatedRoutes = ({ role }) => {
             render={(routeProps) => <Surveys {...routeProps} />}
           />
 
+          <Route
+            exact
+            path="/team/phonebanking"
+            render={(routeProps) => <Teamphonebank {...routeProps} />}
+          />
+
           <Route render={() => <Redirect to="/" />} />
         </Switch>
         {/* <Footer /> */}
@@ -140,6 +163,24 @@ export const UnAuthenticatedRoutes = () => {
             exact
             path="/superadmin/login"
             render={(routeProps) => <Loginadmin {...routeProps} />}
+          />
+
+          <Route
+            exact
+            path="/team/login"
+            render={(routeProps) => <Loginteam {...routeProps} />}
+          />
+
+          <Route
+            exact
+            path="/team/register"
+            render={(routeProps) => <Registerteam {...routeProps} />}
+          />
+
+          <Route
+            exact
+            path="/team/otp"
+            render={(routeProps) => <Otp {...routeProps} />}
           />
 
           <Route render={() => <Redirect to="/logincampaign" />} />

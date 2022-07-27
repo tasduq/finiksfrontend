@@ -45,10 +45,19 @@ const getCampaignSurveys = async (data) => {
   return res;
 };
 
+const takeSurvey = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/survey/takesurvey`, data);
+
+  console.log(res);
+  return res;
+};
+
 export {
   addSurvey,
   getCampaigns,
   getClientSurvey,
   getClientSurveyResponses,
   getCampaignSurveys,
+  takeSurvey,
 };

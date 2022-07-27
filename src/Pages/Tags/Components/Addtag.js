@@ -16,7 +16,7 @@ import validator from "validator";
 import { addTag } from "../../../Connection/Tags";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function FormDialog({ handleUpdate }) {
+export default function FormDialog({ handleUpdate, campaignOwnerId }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
   const [values, setValues] = useState({
@@ -26,8 +26,10 @@ export default function FormDialog({ handleUpdate }) {
         ? "admin"
         : "campaign",
     description: "",
-    campaignId: window.localStorage.getItem("id"),
-    creatorName: window.localStorage.getItem("id"),
+    campaignId: campaignOwnerId
+      ? campaignOwnerId
+      : window.localStorage.getItem("id"),
+    creatorName: window.localStorage.getItem("username"),
     ownerName:
       window.localStorage.getItem("role") === "superadmin"
         ? "admin"

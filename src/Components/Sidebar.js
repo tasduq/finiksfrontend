@@ -184,7 +184,7 @@ export default function Sidebar() {
         </DrawerHeader>
         <Divider />
         {console.log(role)}
-        {role === "superadmin" ? (
+        {role === "superadmin" && (
           <>
             <NavLink
               className={clsx({
@@ -366,7 +366,8 @@ export default function Sidebar() {
               </ListItemButton>
             </List>
           </>
-        ) : (
+        )}
+        {role === "campaignManager" && (
           <>
             <NavLink
               className={clsx({
@@ -542,6 +543,161 @@ export default function Sidebar() {
                 </div>
               </ListItemButton>
             </List>
+            <List
+              // className={clsx({
+              //   selected: checkRoute("/surveys"),
+              //   "m-2": true,
+              //   nonselected: checkRoute("/surveys") === false,
+              // })}
+              onClick={logout}
+            >
+              <ListItemButton
+                // key={text}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <div className="text-center">
+                  <i class="fas fa-sign-out-alt"></i>
+
+                  <ListItemText
+                    primary="Logout"
+                    // sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </div>
+              </ListItemButton>
+            </List>
+          </>
+        )}
+
+        {role === "team" && (
+          <>
+            <NavLink
+              className={clsx({
+                selected: checkRoute("/"),
+                "m-2": true,
+                nonselected: checkRoute("/") === false,
+              })}
+              to="/"
+            >
+              <List>
+                {" "}
+                <ListItemButton
+                  // key={text}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                  // className="selected"
+                >
+                  <div className="text-center  ">
+                    <i class="fas fa-home "></i>
+                    <p>Dashboard</p>
+
+                    {/* <ListItemText
+                primary="Dashboard"
+                // sx={{ opacity: open ? 1 : 0 }}
+              /> */}
+                  </div>
+                </ListItemButton>
+              </List>
+            </NavLink>
+            <Link
+              className={clsx({
+                selected: checkRoute("/team/phonebanking"),
+                "m-2": true,
+                nonselected: checkRoute("/team/phonebanking") === false,
+              })}
+              to="/team/phonebanking"
+            >
+              <List>
+                <ListItemButton
+                  // key={text}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <div className="text-center">
+                    <i class="fas fa-phone-alt "></i>
+
+                    <ListItemText
+                      primary="Phone Banking"
+                      // sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </div>
+                </ListItemButton>
+              </List>
+            </Link>
+            <Link
+              className={clsx({
+                selected: checkRoute("/team/canvassing"),
+                "m-2": true,
+                nonselected: checkRoute("/team/canvassing") === false,
+              })}
+              to="/team/canvassing"
+            >
+              <List
+              // className={clsx({
+              //   selected: checkRoute("/canvassing"),
+              //   "m-2": true,
+              // })}
+              >
+                <ListItemButton
+                  // key={text}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <div className="text-center">
+                    <i class="fas fa-map-marked-alt "></i>
+
+                    <ListItemText
+                      primary="Canvassing"
+                      // sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </div>
+                </ListItemButton>
+              </List>
+            </Link>
+
+            <Link
+              className={clsx({
+                selected: checkRoute("/team/teammembers"),
+                "m-2": true,
+                nonselected: checkRoute("/team/teammembers") === false,
+              })}
+              to="/team/teammembers"
+            >
+              <List
+              // className={clsx({ selected: checkRoute("/team"), "m-2": true })}
+              >
+                <ListItemButton
+                  // key={text}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <div className="text-center">
+                    <i class="fas fa-user-friends"></i>
+
+                    <ListItemText
+                      primary="Team Members"
+                      // sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </div>
+                </ListItemButton>
+              </List>
+            </Link>
+
             <List
               // className={clsx({
               //   selected: checkRoute("/surveys"),

@@ -9,25 +9,32 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import Header from "../../Components/Header";
 import Campaignsettings from "./Components/Campaignsettings";
-
+import { useAuth } from "../../Context/Auth-Context";
 import Linechart from "./Components/Linechart";
 import Greenline from "../../Assets/greenline.JPG";
 import Redline from "../../Assets/redline.JPG";
 import { getCampaignTeammembers } from "../../Connection/Phonebank";
+import { getJoinedCampaigns } from "../../Connection/Team";
 import { ToastContainer, toast } from "react-toastify";
 
 import Profile from "../../Assets/profile.jpeg";
 import Img1 from "../../Assets/img1.jpeg";
 import Img2 from "../../Assets/img2.png";
 import Img3 from "../../Assets/img3.jpeg";
+import { getCampaignData } from "../../Connection/Campaign";
+import Joincampaign from "./Components/Joincampaign";
 
-const settings = ["Settings", "Contacts", "Scripts", "Surveys", "Tags"];
+const settings = ["Settings"];
 
-const Dashboard = (props) => {
+const Dashboardteam = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [campaignTeammembers, setCampaignTeammembers] = React.useState();
   const [campaignData, setCampaignData] = React.useState();
+  // const [campaignsJoined, setCampaignsJoined] = React.useState(
+  //   window.localStorage.getItem("campaignsJoined")
+  // );
+  const { campaignsJoined, setCampaignsJoined } = useAuth();
 
   console.log("props");
   const handleOpenUserMenu = (event) => {
@@ -43,7 +50,7 @@ const Dashboard = (props) => {
     return TotalDays;
   };
 
-  const handleGetCampaignData = (data) => {
+  const handleSetData = (data) => {
     console.log(data);
     if (data && data?.campaignDates?.electionDay?.length > 0) {
       console.log("in ifff");
@@ -57,45 +64,75 @@ const Dashboard = (props) => {
     }
   };
 
-  // React.useEffect(() => {})
+  const handleSelectCampaign = (campaignId) => {
+    console.log(campaignId);
+    window.localStorage.setItem("selectedCampaignId", campaignId);
 
-  React.useEffect(() => {
-    // if (role !== "superadmin") {
-    //   history.push("/");
-    // }
-    // window.location.reload();
-
-    const handleGetTeammembers = async () => {
-      const res = await getCampaignTeammembers({
-        campaignId: window.localStorage.getItem("id"),
+    const handleGetCampaignData = async () => {
+      const res = await getCampaignData({
+        campaignId: campaignId,
       });
       console.log(res);
       if (res.data.success === true) {
-        if (res?.data?.teamMembers.length > 0) {
-          let yoo = res.data.teamMembers.map((member) => {
-            let campaign = member.campaignJoined.find(
-              (campaign) =>
-                campaign.campaignId === window.localStorage.getItem("id")
-            );
-            return {
-              firstName: member.firstName,
-              lastName: member.lastName,
-              permission: campaign.permission,
-              image: member.image,
-            };
-          });
-          setCampaignTeammembers(yoo);
-        } else {
-          setCampaignTeammembers(res.data.teamMembers);
-        }
+        handleSetData(res.data.values);
       } else {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
       }
     };
+    handleGetCampaignData();
+  };
+  const handleGetJoinedcampaigns = async () => {
+    let res = await getJoinedCampaigns({
+      id: window.localStorage.getItem("id"),
+    });
+    console.log(res);
+    if (res.data.success === true) {
+      setCampaignsJoined(res.data.joinedCampaigns);
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
 
-    handleGetTeammembers();
+  React.useEffect(() => {
+    handleGetJoinedcampaigns();
+    // if (role !== "superadmin") {
+    //   history.push("/");
+    // }
+    // window.location.reload();
+    // const handleGetTeammembers = async () => {
+    //   const res = await getCampaignTeammembers({
+    //     campaignId: window.localStorage.getItem("id"),
+    //   });
+    //   console.log(res);
+    //   if (res.data.success === true) {
+    //     if (res?.data?.teamMembers.length > 0) {
+    //       let yoo = res.data.teamMembers.map((member) => {
+    //         let campaign = member.campaignJoined.find(
+    //           (campaign) =>
+    //             campaign.campaignId === window.localStorage.getItem("id")
+    //         );
+    //         return {
+    //           firstName: member.firstName,
+    //           lastName: member.lastName,
+    //           permission: campaign.permission,
+    //           image: member.image,
+    //         };
+    //       });
+    //       setCampaignTeammembers(yoo);
+    //     } else {
+    //       setCampaignTeammembers(res.data.teamMembers);
+    //     }
+    //   } else {
+    //     toast.error(res.data.message, {
+    //       position: toast.POSITION.TOP_RIGHT,
+    //     });
+    //   }
+    // };
+    // handleGetTeammembers();
   }, []);
 
   return (
@@ -172,17 +209,17 @@ const Dashboard = (props) => {
                   </p>
                 </div> */}
                 <div className="d-flex justify-content-between">
-                  <h4 className="">Team Members</h4>
+                  <h4 className="">Campaigns Joined</h4>
                   <p className="mt-1">
-                    {campaignTeammembers?.length} Team Members
+                    {campaignsJoined?.length} Campaigns Joined
                   </p>
                   <Link
-                    // className={clsx({
-                    //   selected: checkRoute("/surveys"),
-                    //   "m-2": true,
-                    //   nonselected: checkRoute("/surveys") === false,
-                    // })}
-                    to="/team"
+                  // className={clsx({
+                  //   selected: checkRoute("/surveys"),
+                  //   "m-2": true,
+                  //   nonselected: checkRoute("/surveys") === false,
+                  // })}
+                  // to="/team"
                   >
                     {" "}
                     <p
@@ -194,7 +231,7 @@ const Dashboard = (props) => {
                   </Link>
                 </div>
                 <div>
-                  {campaignTeammembers?.map((member) => {
+                  {campaignsJoined?.map((member) => {
                     return (
                       <div
                         className="shadow p-2 d-flex justify-content-between my-2"
@@ -203,11 +240,12 @@ const Dashboard = (props) => {
                           backgroundColor: "#FFFFFF",
                           borderRadius: "5px",
                         }}
+                        onClick={() => handleSelectCampaign(member.campaignId)}
                       >
                         <div className="d-flex">
                           <Avatar alt="Remy Sharp" src={member?.image} />
                           <p className="mt-2 ml-2 text-muted">
-                            {member?.firstName} {member?.lastName}
+                            {member?.campaignName}
                           </p>
                         </div>
                         <p
@@ -223,14 +261,17 @@ const Dashboard = (props) => {
               </div>
               <div className="col-12 col-md-6 ">
                 <div className="d-flex justify-content-between ">
-                  <h5 className="">Campaign</h5>
+                  <h5 className="">Selected Campaign</h5>
+                  <Joincampaign
+                    handleGetJoinedcampaigns={handleGetJoinedcampaigns}
+                  />
                   {/* <p
                     className=" mt-1"
-                    style={{ color: "#D12E2F", fontSize: "10px" }}
+                    style={{ color: "#D12E2F", fontSize: "15px" }}
                   >
-                    Edit
+                    Join Campaign
                   </p> */}
-                  <Campaignsettings handleGetData={handleGetCampaignData} />
+                  {/* <Campaignsettings handleGetData={handleGetCampaignData} /> */}
                 </div>
                 <div
                   style={{
@@ -288,10 +329,11 @@ const Dashboard = (props) => {
                         <h4 className="mx-2" style={{ color: "#D12E2F" }}>
                           {console.log(new Date().toISOString())}
                           {campaignData &&
-                          campaignData?.daysLeft &&
-                          campaignData.daysLeft > 0
-                            ? `${campaignData?.daysLeft} Days Until the Elections!`
-                            : `Elections Happened`}
+                            campaignData?.daysLeft &&
+                            campaignData.daysLeft > 0 &&
+                            `${campaignData?.daysLeft} Days Until the Elections!`}
+                          {campaignData === undefined &&
+                            `Campaign Not Selected`}
                         </h4>
                       </div>
                     </div>
@@ -308,4 +350,4 @@ const Dashboard = (props) => {
     </div>
   );
 };
-export default Dashboard;
+export default Dashboardteam;

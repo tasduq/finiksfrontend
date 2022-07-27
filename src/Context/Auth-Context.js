@@ -21,6 +21,7 @@ const AuthProvider = (props) => {
   );
   console.log(role);
   console.log(loggedIn);
+  const [campaignsJoined, setCampaignsJoined] = useState([]);
 
   const login = () => {
     setLoggedIn(true);
@@ -30,6 +31,9 @@ const AuthProvider = (props) => {
   const logout = (data) => {
     if (data === "superadmin") {
       window.location.replace("/superadmin/login");
+    }
+    if (role === "team") {
+      window.location.replace("/team/login");
     }
     console.log("cliked");
     window.localStorage.clear();
@@ -41,7 +45,14 @@ const AuthProvider = (props) => {
     // });
   };
 
-  const authContextValue = { loggedIn, login, logout, role };
+  const authContextValue = {
+    loggedIn,
+    login,
+    logout,
+    role,
+    campaignsJoined,
+    setCampaignsJoined,
+  };
   // const authContextValue = {  };
 
   return <AuthContext.Provider value={authContextValue} {...props} />;
