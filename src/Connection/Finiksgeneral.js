@@ -2,11 +2,11 @@ import axios from "axios";
 let url = "http://localhost:3001";
 // let url = "https://finiksbackend.herokuapp.com";
 
-const getFiniksData = async (data) => {
-  let res = await axios.post(`${url}/api/finiks/getfiniksdata`, data);
+const updateProfile = async (data) => {
+  let res = await axios.post(`${url}/api/campaign/updateprofile`, data);
 
   console.log(res);
   return res;
 };
 
-export { getFiniksData };
+export { updateProfile };

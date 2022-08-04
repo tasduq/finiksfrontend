@@ -37,6 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Taginfo({ data, handleUpdate }) {
   const [open, setOpen] = React.useState(false);
+  const [openAddAns, setOpenAddAns] = React.useState(false);
   //   const [usersData, setUsersData] = React.useState();
   //   const [answers, setAnswers] = React.useState(["Yes", "No", "Maybe"]);
   const [colors, setColors] = React.useState([
@@ -67,11 +68,35 @@ export default function Taginfo({ data, handleUpdate }) {
     setOpen(false);
   };
 
+  const handleOpenAddAns = () => {
+    console.log("cic");
+    setOpenAddAns(!openAddAns);
+  };
+
   const handleAns = (ans) => {
     // setAnswers([...answers, ans]);
     setValues({
       ...values,
       surveyAnswer: [...values.surveyAnswer, ans],
+    });
+  };
+
+  const handleChangeAns = (evt, i) => {
+    console.log(evt.target.value, i);
+    let yoo = values.surveyAnswer;
+    yoo[i] = evt.target.value;
+    console.log(yoo);
+    setValues({
+      ...values,
+      surveyAnswer: yoo,
+    });
+  };
+
+  const handleRemoveAns = (i) => {
+    console.log("delete", i);
+    setValues({
+      ...values,
+      surveyAnswer: values.surveyAnswer.filter((_, index) => index !== i),
     });
   };
 
@@ -240,96 +265,144 @@ export default function Taginfo({ data, handleUpdate }) {
                     </div>
                   </div>
                   <div>
-                    <form>
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Survey Name</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          name="surveyName"
-                          onChange={handleChange}
-                          value={values.surveyName}
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">
-                          Survey Preview
-                        </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="exampleInputPassword1"
-                          name="surveyPreview"
-                          onChange={handleChange}
-                          value={values.surveyPreview}
-                        />
-                      </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Survey Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        name="surveyName"
+                        onChange={handleChange}
+                        value={values.surveyName}
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Survey Preview</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputPassword1"
+                        name="surveyPreview"
+                        onChange={handleChange}
+                        value={values.surveyPreview}
+                      />
+                    </div>
 
-                      <div class="form-group">
-                        <label for="exampleFormControlTextarea1">
-                          Survey Question
-                        </label>
-                        <textarea
-                          class="form-control"
-                          id="exampleFormControlTextarea1"
-                          rows="3"
-                          name="surveyQuestion"
-                          onChange={handleChange}
-                          value={values.surveyQuestion}
-                        ></textarea>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleFormControlTextarea1">
-                          Survey Answers
-                        </label>
-                        <div className="d-flex">
-                          {values.surveyAnswer.map((ans) => {
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">
+                        Survey Question
+                      </label>
+                      <textarea
+                        class="form-control"
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        name="surveyQuestion"
+                        onChange={handleChange}
+                        value={values.surveyQuestion}
+                      ></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">
+                        Survey Answers
+                      </label>
+                      <div className="d-flex">
+                        <div className="row">
+                          {values.surveyAnswer.map((ans, i) => {
                             return (
                               <div
-                                style={{
-                                  width: "175px",
-                                  height: "50px",
-                                  borderRadius: "5px",
-                                }}
-                                className="shadow-sm p-3 m-2 text-center"
+                                style={{ position: "relative" }}
+                                class="form-group mx-1"
                               >
-                                {ans}
+                                {/* <label for="exampleInputEmail1">
+                                  Email address
+                                </label> */}
+                                <i
+                                  style={{
+                                    color: "#D12E2F",
+                                    width: "25px",
+                                    height: "25px",
+                                    position: "absolute",
+                                    bottom: 30,
+                                    right: -12,
+                                  }}
+                                  onClick={() => handleRemoveAns(i)}
+                                  class="fas fa-times-circle mt-3"
+                                ></i>
+                                {/* <i class="fas fa-times-circle"></i> */}
+                                <input
+                                  type="text"
+                                  className="form-control shadow-sm p-3 text-center"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  value={ans}
+                                  style={{
+                                    width: "105px",
+                                    height: "50px",
+                                    borderRadius: "5px",
+                                  }}
+                                  onChange={(evt) => handleChangeAns(evt, i)}
+                                />
                               </div>
                             );
                           })}
-                          <div>
-                            <Addanswer handleAns={handleAns} />
-                          </div>
                         </div>
+                        <button onClick={handleOpenAddAns} className="btn">
+                          <i
+                            style={{
+                              color: "#D12E2F",
+                              width: "25px",
+                              height: "25px",
+                            }}
+                            class="fas fa-plus-circle mt-3"
+                          ></i>
+                        </button>
+                        {openAddAns === true && (
+                          <Addanswer
+                            handleAns={handleAns}
+                            handleOpenAddAns={handleOpenAddAns}
+                            open={openAddAns}
+                          />
+                        )}
                       </div>
-                      <div>
-                        <FormControl>
-                          <FormLabel id="demo-radio-buttons-group-label">
-                            Choose Active Status
-                          </FormLabel>
-                          <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            defaultValue={true}
-                            name="active"
-                            onChange={handleChange}
-                            value={values.active}
-                          >
-                            <FormControlLabel
-                              value={true}
-                              control={<Radio />}
-                              label="Active"
-                            />
-                            <FormControlLabel
-                              value={false}
-                              control={<Radio />}
-                              label="Inactive"
-                            />
-                          </RadioGroup>
-                        </FormControl>
-                      </div>
-                    </form>
+                    </div>
+                    <div>
+                      {/* <button handleClick={handleOpenAddAns} className="btn">
+                          <i
+                            style={{
+                              color: "#D12E2F",
+                              width: "25px",
+                              height: "25px",
+                            }}
+                            class="fas fa-plus-circle mt-3"
+                          ></i>
+                        </button> */}
+                    </div>
+                    <div>
+                      <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">
+                          Choose Active Status
+                        </FormLabel>
+                        <RadioGroup
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          defaultValue={true}
+                          name="active"
+                          onChange={handleChange}
+                          value={values.active}
+                        >
+                          <FormControlLabel
+                            value={true}
+                            control={<Radio />}
+                            label="Active"
+                          />
+                          <FormControlLabel
+                            value={false}
+                            control={<Radio />}
+                            label="Inactive"
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </div>
                   </div>
                 </div>
                 <div className="col-12 col-md-6 ">

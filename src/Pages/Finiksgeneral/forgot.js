@@ -5,10 +5,12 @@ import { useAuth } from "../../Context/Auth-Context";
 import Logo from "../../Assets/logoword.png";
 import { ToastContainer, toast } from "react-toastify";
 import validator from "validator";
-import { otpTeam, newOtp } from "../../Connection/Team";
+import { loginTeam } from "../../Connection/Team";
 import { Link, NavLink, useHistory, withRouter } from "react-router-dom";
+import { otpTeam, newOtp } from "../../Connection/Team";
 
-const Otp = (props) => {
+const Forgotpassword = (props) => {
+  console.log(props.location);
   React.useEffect(() => {
     if (
       props.location.state?.prevPath === "" ||
@@ -20,12 +22,10 @@ const Otp = (props) => {
       history.push("/logins");
     }
   }, []);
-  console.log(props);
-  const [loaded, setLoaded] = useState(false);
-  const { login, loggedIn } = useAuth();
+  const [loaded, setLoaded] = useState(true);
+  const { login, loggedIn, campaignsJoined, setCampaignsJoined } = useAuth();
   const [values, setValues] = useState({
-    email: props.location.state?.email,
-    otp: "",
+    email: "",
   });
   const history = useHistory();
   const [, updateState] = React.useState();
@@ -44,40 +44,6 @@ const Otp = (props) => {
     });
   };
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-
-    const testStatus = handleValidate(values.email);
-
-    if (testStatus === false) {
-      alert("Email is not valid");
-      return;
-    }
-    console.log("I am called");
-
-    let res = await otpTeam({
-      ...values,
-      prevPath: props.location.state?.prevPath,
-    });
-    console.log(res);
-    if (res?.data?.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      history.push({
-        pathname: props.location.state.path,
-        state: {
-          otp: values.otp,
-          email: props.location.state?.email,
-          prevPath: props.location.state?.prevPath,
-        },
-      });
-    } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-  };
   const handleNewOtp = async (evt) => {
     evt.preventDefault();
     const res = await newOtp({
@@ -89,13 +55,20 @@ const Otp = (props) => {
       toast.success(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      history.push({
+        pathname: "/team/otp",
+        state: {
+          email: values.email,
+          path: "/newpassword",
+          prevPath: props.location.state?.prevPath,
+        },
+      });
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
   };
-
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
       <div className="mt-5 container">
@@ -107,38 +80,42 @@ const Otp = (props) => {
           <div className="col-10 col-md-4">
             <Paper className="p-3" style={{ width: "100%", height: "500px" }}>
               <img style={{ width: "90px" }} src={Logo} />
-              <h2>Email Verification</h2>
+              <h2>Forgot Password</h2>
               <br />
               <form>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">OTP</label>
+                  <label for="exampleInputEmail1">Email address</label>
                   <input
-                    type="text"
+                    type="email"
                     class="form-control"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
-                    value={values.otp}
+                    value={values.email}
                     onChange={handleChange}
-                    name="otp"
+                    name="email"
                   />
                 </div>
 
-                <button
-                  style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
-                  className="btn px-3 py-2"
-                  //   onClick={handleClickOpen}
-                  onClick={handleSubmit}
-                >
-                  Verify Email
-                </button>
-                <p className="mt-2">
-                  OTP not recieved?{" "}
-                  <button className="btn text-danger" onClick={handleNewOtp}>
-                    <a className="text-danger" href="/team/register">
-                      Request New
-                    </a>{" "}
+                <div className="text-center">
+                  {loaded === false && (
+                    <div className="text-center">
+                      <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {loaded === true && (
+                  <button
+                    style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
+                    className="btn px-3 py-2"
+                    //   onClick={handleClickOpen}
+                    onClick={handleNewOtp}
+                  >
+                    Send OTP
                   </button>
-                </p>
+                )}
               </form>
             </Paper>
           </div>
@@ -149,4 +126,4 @@ const Otp = (props) => {
   );
 };
 
-export default Otp;
+export default Forgotpassword;

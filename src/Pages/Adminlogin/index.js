@@ -9,7 +9,7 @@ import { loginCampaign } from "../../Connection/Auth";
 import { Link, NavLink, useHistory, withRouter } from "react-router-dom";
 
 const Loginadmin = () => {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const { login, loggedIn } = useAuth();
   const [values, setValues] = useState({
     email: "",
@@ -43,6 +43,8 @@ const Loginadmin = () => {
     }
     console.log("I am called");
 
+    setLoaded(false);
+
     let res = await loginCampaign({
       ...values,
     });
@@ -64,15 +66,18 @@ const Loginadmin = () => {
         history.push({
           pathname: "/superadmin/dashboard",
         });
+        setLoaded(true);
       } else {
         toast.error("You dont have permission", {
           position: toast.POSITION.TOP_RIGHT,
         });
+        setLoaded(true);
       }
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setLoaded(true);
     }
   };
   return (
@@ -116,14 +121,25 @@ const Loginadmin = () => {
                   />
                 </div>
 
-                <button
-                  style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
-                  className="btn px-3 py-2"
-                  //   onClick={handleClickOpen}
-                  onClick={handleSubmit}
-                >
-                  Sign In
-                </button>
+                <div className="text-center">
+                  {loaded === false && (
+                    <div className="text-center">
+                      <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                {loaded === true && (
+                  <button
+                    style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
+                    className="btn px-3 py-2"
+                    //   onClick={handleClickOpen}
+                    onClick={handleSubmit}
+                  >
+                    Sign In
+                  </button>
+                )}
               </form>
             </Paper>
           </div>

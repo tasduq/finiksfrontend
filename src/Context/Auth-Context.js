@@ -29,11 +29,22 @@ const AuthProvider = (props) => {
   };
 
   const logout = (data) => {
+    console.log(role, "roleee");
     if (data === "superadmin") {
       window.location.replace("/superadmin/login");
     }
     if (role === "team") {
       window.location.replace("/team/login");
+    }
+
+    if (role === null) {
+      window.location.replace("/logins");
+    }
+    if (role === undefined) {
+      window.location.replace("/logins");
+    }
+    if (role === "") {
+      window.location.replace("/logins");
     }
     console.log("cliked");
     window.localStorage.clear();
@@ -52,6 +63,7 @@ const AuthProvider = (props) => {
     role,
     campaignsJoined,
     setCampaignsJoined,
+    setRole,
   };
   // const authContextValue = {  };
 

@@ -45,19 +45,30 @@ export default function FormDialog({ handleGetJoinedcampaigns }) {
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open form dialog
       </Button> */}
-      <p
+      {/* <p
         className=" mt-1"
         style={{ color: "#D12E2F", fontSize: "15px" }}
         onClick={handleClickOpen}
       >
         Join Campaign
-      </p>
+      </p> */}
+      <button onClick={handleClickOpen} className="btn">
+        <i
+          style={{
+            color: "#D12E2F",
+            width: "55px",
+            height: "55px",
+            fontSize: "35px",
+          }}
+          class="fas fa-plus-circle mt-3"
+        ></i>
+      </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Join The Campaign</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Here you can code of the campaign you are invited to join to join
-            the campaign
+            Here you can add code of the campaign you are invited to join to
+            join the campaign
           </DialogContentText>
           <TextField
             autoFocus

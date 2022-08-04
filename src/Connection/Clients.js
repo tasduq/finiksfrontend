@@ -1,6 +1,6 @@
 import axios from "axios";
-// let url = "http://localhost:3001";
-let url = "https://finiksbackend.herokuapp.com";
+let url = "http://localhost:3001";
+// let url = "https://finiksbackend.herokuapp.com";
 
 const getClients = async (data) => {
   console.log(data);
@@ -31,4 +31,11 @@ const getDistricts = async (data) => {
   return res;
 };
 
-export { getClients, editClient, deleteClient, getDistricts };
+const getAnalytics = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/clients/getanalytics`, data);
+  console.log(res);
+  return res;
+};
+
+export { getClients, editClient, deleteClient, getDistricts, getAnalytics };

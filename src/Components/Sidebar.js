@@ -493,7 +493,7 @@ export default function Sidebar() {
               </List>
             </Link>
 
-            <Link
+            {/* <Link
               className={clsx({
                 selected: checkRoute("/surveys"),
                 "m-2": true,
@@ -520,7 +520,7 @@ export default function Sidebar() {
                   </div>
                 </ListItemButton>
               </List>
-            </Link>
+            </Link> */}
 
             <List
               className={clsx({ selected: checkRoute("/mobile"), "m-2": true })}

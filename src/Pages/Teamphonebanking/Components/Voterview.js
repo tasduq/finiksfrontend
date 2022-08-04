@@ -466,28 +466,30 @@ export default function Voterview({ data }) {
                         <div className="row px-1">
                           {console.log(survey)}
                           {survey?.surveyQuestions?.map((value) => {
-                            return (
-                              <div
-                                style={{
-                                  width: "45%",
-                                  height: "auto",
-                                  minHeight: "210px",
-                                  backgroundColor: `${
-                                    value.color.code
-                                      ? value.color.code
-                                      : "#FF914D"
-                                  }`,
-                                  borderRadius: "20px",
-                                  color: "white",
-                                  fontSize: "25px",
-                                  overflowWrap: "break-word",
-                                }}
-                                className="p-2 text-center ml-2 d-flex justify-content-center align-items-center   mb-1"
-                                onClick={() => handleSurveyQuestion(value)}
-                              >
-                                {value?.surveyPreview}
-                              </div>
-                            );
+                            if (value.active === true) {
+                              return (
+                                <div
+                                  style={{
+                                    width: "45%",
+                                    height: "auto",
+                                    minHeight: "210px",
+                                    backgroundColor: `${
+                                      value.color.code
+                                        ? value.color.code
+                                        : "#FF914D"
+                                    }`,
+                                    borderRadius: "20px",
+                                    color: "white",
+                                    fontSize: "25px",
+                                    overflowWrap: "break-word",
+                                  }}
+                                  className="p-2 text-center ml-2 d-flex justify-content-center align-items-center   mb-1"
+                                  onClick={() => handleSurveyQuestion(value)}
+                                >
+                                  {value?.surveyPreview}
+                                </div>
+                              );
+                            }
                           })}
                         </div>
                       </div>

@@ -161,65 +161,65 @@ export default function Legislativedistrict({
   const handleGetFiltersData = async () => {
     let filters = {};
     console.log("useeffect is running", campaignFilterData);
-    if (campaignFilterData?.level === "Federal - House") {
-      let res = await getDistricts({
-        field: "CONG_DIST",
-        state: campaignFilterData?.state,
-        // fieldTwoName: "STATE",
+    // if (campaignFilterData?.level === "Federal - House") {
+    let res = await getDistricts({
+      field: "CONG_DIST",
+      state: campaignFilterData?.state,
+      // fieldTwoName: "STATE",
+    });
+    console.log(res);
+    if (res.data.success === true) {
+      // setFiltersData({ ...filters, CONG_DIST: res.data.districts });
+      filters = {
+        ...filters,
+        CONG_DIST: res.data.districts,
+      };
+    } else {
+      toast.error("Error getting Congressional District Values", {
+        position: toast.POSITION.TOP_RIGHT,
       });
-      console.log(res);
-      if (res.data.success === true) {
-        // setFiltersData({ ...filters, CONG_DIST: res.data.districts });
-        filters = {
-          ...filters,
-          CONG_DIST: res.data.districts,
-        };
-      } else {
-        toast.error("Error getting Congressional District Values", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
     }
+    // }
 
-    if (campaignFilterData?.level === "State - Senate") {
-      console.log("useeffect is running");
-      let res2 = await getDistricts({
-        field: "ST_UP_HOUS",
-        state: campaignFilterData?.state,
-        // fieldTwoName: "STATE",
+    // if (campaignFilterData?.level === "State - Senate") {
+    console.log("useeffect is running");
+    let res2 = await getDistricts({
+      field: "ST_UP_HOUS",
+      state: campaignFilterData?.state,
+      // fieldTwoName: "STATE",
+    });
+    console.log(res2);
+    if (res2.data.success === true) {
+      filters = {
+        ...filters,
+        ST_UP_HOUS: res2.data.districts,
+      };
+    } else {
+      toast.error("Error getting Voter Prefference Values", {
+        position: toast.POSITION.TOP_RIGHT,
       });
-      console.log(res2);
-      if (res2.data.success === true) {
-        filters = {
-          ...filters,
-          ST_UP_HOUS: res2.data.districts,
-        };
-      } else {
-        toast.error("Error getting Voter Prefference Values", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
     }
+    // }
 
-    if (campaignFilterData?.level === "State - House") {
-      console.log("useeffect is running");
-      let res3 = await getDistricts({
-        field: "ST_UP_HOUS",
-        state: campaignFilterData?.state,
-        // fieldTwoName: "STATE",
+    // if (campaignFilterData?.level === "State - House") {
+    console.log("useeffect is running");
+    let res3 = await getDistricts({
+      field: "ST_UP_HOUS",
+      state: campaignFilterData?.state,
+      // fieldTwoName: "STATE",
+    });
+    console.log(res3);
+    if (res3.data.success === true) {
+      filters = {
+        ...filters,
+        ST_LO_HOUS: res3.data.districts,
+      };
+    } else {
+      toast.error("Error getting Voter Prefference Values", {
+        position: toast.POSITION.TOP_RIGHT,
       });
-      console.log(res3);
-      if (res3.data.success === true) {
-        filters = {
-          ...filters,
-          ST_LO_HOUS: res3.data.districts,
-        };
-      } else {
-        toast.error("Error getting Voter Prefference Values", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
     }
+    // }
 
     setFiltersData(filters);
   };
@@ -276,7 +276,7 @@ export default function Legislativedistrict({
               name="CONG_DISTFROM"
               value={values.CONG_DIST.from}
               onChange={handleChangeDist}
-              disabled={campaignFilterData?.level !== "Federal - House" && true}
+              // disabled={campaignFilterData?.level !== "Federal - House" && true}
             >
               <MenuItem value="">Un Select</MenuItem>
               {filtersData?.CONG_DIST?.map((val, i) => {
@@ -300,7 +300,7 @@ export default function Legislativedistrict({
               name="CONG_DISTTO"
               value={values.CONG_DIST.to}
               onChange={handleChangeDist}
-              disabled={campaignFilterData?.level !== "Federal - House" && true}
+              // disabled={campaignFilterData?.level !== "Federal - House" && true}
             >
               <MenuItem value="">Un Select</MenuItem>
               {filtersData?.CONG_DIST?.map((val, i) => {
@@ -322,7 +322,7 @@ export default function Legislativedistrict({
               name="ST_UP_HOUSFROM"
               value={values.ST_UP_HOUS.from}
               onChange={handleChangeSTUP}
-              disabled={campaignFilterData?.level !== "State - Senate" && true}
+              // disabled={campaignFilterData?.level !== "State - Senate" && true}
             >
               <MenuItem value="">Un Select</MenuItem>
               {filtersData?.ST_UP_HOUS?.map((val, i) => {
@@ -344,7 +344,7 @@ export default function Legislativedistrict({
               name="ST_UP_HOUSTO"
               value={values.ST_UP_HOUS.to}
               onChange={handleChangeSTUP}
-              disabled={campaignFilterData?.level !== "State - Senate" && true}
+              // disabled={campaignFilterData?.level !== "State - Senate" && true}
             >
               <MenuItem value="">Un Select</MenuItem>
               {filtersData?.ST_UP_HOUS?.map((val, i) => {
@@ -366,7 +366,7 @@ export default function Legislativedistrict({
               name="ST_LO_HOUSFROM"
               value={values.ST_LO_HOUS.from}
               onChange={handleChangeSTLO}
-              disabled={campaignFilterData?.level !== "State - House" && true}
+              // disabled={campaignFilterData?.level !== "State - House" && true}
             >
               <MenuItem value="">Un Select</MenuItem>
               {filtersData?.ST_LO_HOUS?.map((val, i) => {
@@ -388,7 +388,7 @@ export default function Legislativedistrict({
               name="ST_LO_HOUSTO"
               value={values.ST_LO_HOUS.to}
               onChange={handleChangeSTLO}
-              disabled={campaignFilterData?.level !== "State - House" && true}
+              // disabled={campaignFilterData?.level !== "State - House" && true}
             >
               <MenuItem value="">Un Select</MenuItem>
               {filtersData?.ST_LO_HOUS?.map((val, i) => {

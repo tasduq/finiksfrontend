@@ -23,6 +23,11 @@ import Surveys from "../Pages/Survey/index";
 import Logincampaign from "../Pages/Campaignlogin/index";
 import Loginadmin from "../Pages/Adminlogin/index";
 import Loginteam from "../Pages/Teamauth/login";
+import Logins from "../Pages/Finiksgeneral/logins";
+import Forgot from "../Pages/Finiksgeneral/forgot";
+import Newpassword from "../Pages/Finiksgeneral/newpassword";
+import Selectcampaign from "../Pages/Finiksgeneral/Selectcampaign";
+import Profile from "../Pages/Finiksgeneral/Profile";
 import Registerteam from "../Pages/Teamauth/signup";
 import Otp from "../Pages/Teamauth/otp";
 import Teamphonebank from "../Pages/Teamphonebanking/index";
@@ -58,10 +63,13 @@ export const AuthenticatedRoutes = ({ role }) => {
                 return <Superadmindashboard {...routeProps} />;
               } else if (role === "campaignManager") {
                 return <Dashboard {...routeProps} />;
-              } else {
+              } else if (role === "team") {
                 console.log("tasu");
                 return <Dashboardteam {...routeProps} />;
               }
+              // else {
+              //   return <Selectcampaign {...routeProps} />;
+              // }
             }}
           />
           <Route
@@ -82,6 +90,22 @@ export const AuthenticatedRoutes = ({ role }) => {
               return <Dashboardteam {...routeProps} />;
             }}
           />
+          <Route
+            exact
+            path="/selectcampaign"
+            // render={(routeProps) => <Superadmindashboard {...routeProps} />}
+            render={(routeProps) => {
+              console.log(routeProps);
+              return <Selectcampaign {...routeProps} />;
+            }}
+          />
+
+          <Route
+            exact
+            path="/profile"
+            render={(routeProps) => <Profile {...routeProps} />}
+          />
+
           <Route
             exact
             path="/phonebanking"
@@ -173,6 +197,24 @@ export const UnAuthenticatedRoutes = () => {
 
           <Route
             exact
+            path="/logins"
+            render={(routeProps) => <Logins {...routeProps} />}
+          />
+
+          <Route
+            exact
+            path="/forgot"
+            render={(routeProps) => <Forgot {...routeProps} />}
+          />
+
+          <Route
+            exact
+            path="/newpassword"
+            render={(routeProps) => <Newpassword {...routeProps} />}
+          />
+
+          <Route
+            exact
             path="/team/register"
             render={(routeProps) => <Registerteam {...routeProps} />}
           />
@@ -181,6 +223,16 @@ export const UnAuthenticatedRoutes = () => {
             exact
             path="/team/otp"
             render={(routeProps) => <Otp {...routeProps} />}
+          />
+
+          <Route
+            exact
+            path="/selectcampaign"
+            // render={(routeProps) => <Superadmindashboard {...routeProps} />}
+            render={(routeProps) => {
+              console.log(routeProps);
+              return <Selectcampaign {...routeProps} />;
+            }}
           />
 
           <Route render={() => <Redirect to="/logincampaign" />} />

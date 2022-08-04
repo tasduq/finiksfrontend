@@ -12,7 +12,7 @@ import { useAuth } from "../../Context/Auth-Context";
 import { useHistory } from "react-router-dom";
 import Greenline from "../../Assets/greenline.JPG";
 import Redline from "../../Assets/redline.JPG";
-import { getClients } from "../../Connection/Clients";
+import { getClients, getAnalytics } from "../../Connection/Clients";
 import { ToastContainer, toast } from "react-toastify";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -62,7 +62,12 @@ const Superadmindashboard = (props) => {
       }
     };
 
+    // const handleGetAnalytics = async () => {
+    //   const res = await getAnalytics();
+    // };
+
     handleGetClients();
+    // handleGetAnalytics();
   }, []);
 
   return (
@@ -87,7 +92,7 @@ const Superadmindashboard = (props) => {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       // value={age}
-                      // label="Age"
+                      label="Select Time"
                       // onChange={handleChange}
                     >
                       <MenuItem value={10}>Week</MenuItem>
@@ -106,7 +111,7 @@ const Superadmindashboard = (props) => {
                   className="row shadow p-2"
                 >
                   <div className=" p-2">
-                    <p className="mt-2 box1heading">Clients</p>
+                    <h5 className="box1heading mt-2">Clients</h5>
                     <p className="box1value">
                       {foundClients ? foundClients?.length - 1 : 0}{" "}
                       <i
@@ -115,20 +120,20 @@ const Superadmindashboard = (props) => {
                       ></i>
                     </p>
 
-                    <img src={Greenline} />
+                    {/* <img src={Greenline} /> */}
                   </div>
                   <div className=" p-2">
                     <h5 className="box1heading mt-2">Texts Sent</h5>
                     <p className="box1value">
-                      12,034{" "}
+                      12{" "}
                       <i
                         style={{ color: "#00E38C" }}
                         class="fas fa-caret-up "
                       ></i>
                     </p>
-                    <img src={Greenline} />
+                    {/* <img src={Greenline} /> */}
                   </div>
-                  <div className=" p-2">
+                  {/* <div className=" p-2">
                     <h5 className="box1heading mt-2">Emails Sent</h5>
                     <p className="box1value">
                       124,234{" "}
@@ -138,8 +143,8 @@ const Superadmindashboard = (props) => {
                       ></i>
                     </p>
                     <img src={Redline} />
-                  </div>
-                  <div className=" p-2">
+                  </div> */}
+                  {/* <div className=" p-2">
                     <h5 className="box1heading mt-2">Donations Colleted</h5>
                     <p className="box1value">
                       439{" "}
@@ -149,11 +154,11 @@ const Superadmindashboard = (props) => {
                       ></i>
                     </p>
                     <img src={Redline} />
-                  </div>
+                  </div> */}
                   <div className=" p-2">
                     <h5 className="box1heading mt-2">Phones Called</h5>
                     <p className="box1value">
-                      17,343{" "}
+                      17{" "}
                       <i
                         style={{ color: "#D12E2F" }}
                         class="fas fa-caret-down "
@@ -164,7 +169,7 @@ const Superadmindashboard = (props) => {
                   <div className=" p-2">
                     <h5 className="box1heading mt-2">Doors Knocked</h5>
                     <p className="box1value">
-                      53,132
+                      53
                       <i
                         style={{ color: "#D12E2F" }}
                         class="fas fa-caret-down "
@@ -182,7 +187,12 @@ const Superadmindashboard = (props) => {
               <div className="col-12 col-md-6">
                 <div className="d-flex justify-content-between">
                   <h3 className="">Clients</h3>
-                  <p className="mt-1">{foundClients?.length} Active Members</p>
+                  <p className="mt-1">
+                    {foundClients?.length > 0
+                      ? foundClients?.length - 1
+                      : foundClients?.length}{" "}
+                    Active Members
+                  </p>
                   <Link
                     // className={clsx({
                     //   selected: checkRoute("/surveys"),

@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 // import Confirmdelete from "./Confirmdelete";
 import { deleteList } from "../../../Connection/Phonebank";
 import { ToastContainer, toast } from "react-toastify";
-// import Editlist from "./Editlist";
+import Editmember from "./Editmember";
 
 export default function Listtable({ data, handleClick, handleUpdate }) {
   console.log(data);
@@ -49,15 +49,18 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
 
         <TableBody>
           {data?.map((list) => {
+            console.log(list);
             return (
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={() => handleClick(list)}
+                // onClick={() => handleClick(list)}
               >
                 <TableCell component="th" scope="row">
                   {list?.memberName}
                 </TableCell>
-                <TableCell align="right">{list?.permission}</TableCell>
+                <TableCell align="right">
+                  {list?.permission?.toUpperCase()}
+                </TableCell>
                 <TableCell align="right">{list?.phoneNumber}</TableCell>
                 <TableCell align="right">{list?.email}</TableCell>
                 <TableCell align="right">
@@ -118,6 +121,7 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
                       {/* <a class="dropdown-item" href="#">
                         Re-Use
                       </a> */}
+                      <Editmember handleUpdate={handleUpdate} data={list} />
                     </div>
                   </div>
                 </TableCell>

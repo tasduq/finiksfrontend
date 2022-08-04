@@ -194,6 +194,12 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
       ...regisDateFilters,
       ...partyAffiliationFilters,
     });
+    if (locationActive === false) {
+      toast.error("Location Filter is not Active", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
     setSearching(true);
     const res = await searchVoters({
       ...locationFilters,
@@ -553,9 +559,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
                                 className={`btn btn-sm mx-4 px-3 py-2 ${
                                   locationActive === true ? "" : "disabled"
                                 }`}
-                                onClick={
-                                  locationActive === true && handleSearch
-                                }
+                                onClick={handleSearch}
                               >
                                 <i class="fas fa-search"></i> Find best Results
                               </button>
@@ -801,11 +805,14 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
                             onChange={handleSelectScript}
                           >
                             {scripts?.map((script) => {
-                              return (
-                                <MenuItem value={script}>
-                                  {script.scriptName}
-                                </MenuItem>
-                              );
+                              console.log(script);
+                              if (script?.status === true) {
+                                return (
+                                  <MenuItem value={script}>
+                                    {script.scriptName}
+                                  </MenuItem>
+                                );
+                              }
                             })}
                           </Select>
                         </FormControl>

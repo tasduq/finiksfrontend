@@ -23,10 +23,10 @@ const Teamphonebank = (props) => {
     setUpdate(true);
   };
   useEffect(() => {
-    if (window.localStorage.getItem("selectedCampaignId")) {
+    if (window.localStorage.getItem("id")) {
       const handleGetLists = async () => {
         const res = await getTeamPhonebankRecords({
-          campaignId: window.localStorage.getItem("selectedCampaignId"),
+          campaignId: window.localStorage.getItem("id"),
           teamMemberEmail: window.localStorage.getItem("email"),
         });
         console.log(res);

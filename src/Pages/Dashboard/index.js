@@ -29,7 +29,7 @@ const Dashboard = (props) => {
   const [campaignTeammembers, setCampaignTeammembers] = React.useState();
   const [campaignData, setCampaignData] = React.useState();
 
-  console.log("props");
+  // console.log("props");
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -57,14 +57,7 @@ const Dashboard = (props) => {
     }
   };
 
-  // React.useEffect(() => {})
-
   React.useEffect(() => {
-    // if (role !== "superadmin") {
-    //   history.push("/");
-    // }
-    // window.location.reload();
-
     const handleGetTeammembers = async () => {
       const res = await getCampaignTeammembers({
         campaignId: window.localStorage.getItem("id"),
@@ -205,7 +198,7 @@ const Dashboard = (props) => {
                         }}
                       >
                         <div className="d-flex">
-                          <Avatar alt="Remy Sharp" src={member?.image} />
+                          <Avatar alt="Remy Sharp" src={member?.campaignLogo} />
                           <p className="mt-2 ml-2 text-muted">
                             {member?.firstName} {member?.lastName}
                           </p>
@@ -214,7 +207,7 @@ const Dashboard = (props) => {
                           style={{ fontSize: "12px" }}
                           className="text-warning mt-2"
                         >
-                          {member?.permission}
+                          {member?.permission?.toUpperCase()}
                         </p>
                       </div>
                     );

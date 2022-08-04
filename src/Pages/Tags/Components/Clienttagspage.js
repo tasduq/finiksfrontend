@@ -20,6 +20,7 @@ import Logo from "../../../Assets/logoword.png";
 import { getAristotleData } from "../../../Connection/Aristotle";
 import { ToastContainer, toast } from "react-toastify";
 import { getClientTags } from "../../../Connection/Tags";
+import Addtag from "./Addtag";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +37,9 @@ export default function Clienttagspage({
 }) {
   // const [open, setOpen] = React.useState(false);
   const [clientData, setClientData] = React.useState();
+  const [update, setUpdate] = React.useState(false);
+
+  console.log(data);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
@@ -44,6 +48,10 @@ export default function Clienttagspage({
   // const handleOpenTags = () => {
   //   setOpen(false);
   // };
+
+  const handleUpdate = () => {
+    setUpdate(true);
+  };
 
   React.useEffect(() => {
     setClientData(data);
@@ -68,8 +76,9 @@ export default function Clienttagspage({
         }
       };
       handleGetData();
+      setUpdate(false);
     }
-  }, [data]);
+  }, [data, update === true]);
 
   return (
     <div>
@@ -120,7 +129,7 @@ export default function Clienttagspage({
         <div>
           <div className="mt-5 container">
             <Header
-              name={`Tags - ${clientData?.campaignName}`}
+              name={`Tags`}
               purpose="Ability to Edit , Merge , record campaign Tags"
             />
             <div
@@ -131,9 +140,15 @@ export default function Clienttagspage({
                 borderRadius: "12px",
               }}
             >
-              <p onClick={handleOpenTags} style={{ color: "#d12e2f" }}>
-                <i class="fas fa-angle-left mx-2"></i> Back
-              </p>
+              <div className="d-flex justify-content-between">
+                <p onClick={handleOpenTags} style={{ color: "#d12e2f" }}>
+                  <i class="fas fa-angle-left mx-2"></i> Back
+                </p>
+                {window.localStorage.getItem("role") !== "superadmin" && (
+                  <Addtag handleUpdate={handleUpdate} />
+                )}
+              </div>
+
               {clientData === undefined && (
                 <div class="spinner-border text-danger" role="status">
                   <span class="sr-only">Loading...</span>
@@ -145,6 +160,7 @@ export default function Clienttagspage({
                   handleDSelect={handleDSelect}
                   data={clientData.tags}
                   selectButtonDisabled={selectButtonDisabled}
+                  handleUpdate={handleUpdate}
                 />
               )}
 

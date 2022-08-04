@@ -64,13 +64,13 @@ const Dashboardteam = (props) => {
     }
   };
 
-  const handleSelectCampaign = (campaignId) => {
-    console.log(campaignId);
-    window.localStorage.setItem("selectedCampaignId", campaignId);
+  const handleSelectCampaign = () => {
+    // console.log(campaignId);
+    // window.localStorage.setItem("selectedCampaignId", campaignId);
 
     const handleGetCampaignData = async () => {
       const res = await getCampaignData({
-        campaignId: campaignId,
+        campaignId: window.localStorage.getItem("id"),
       });
       console.log(res);
       if (res.data.success === true) {
@@ -83,56 +83,54 @@ const Dashboardteam = (props) => {
     };
     handleGetCampaignData();
   };
-  const handleGetJoinedcampaigns = async () => {
-    let res = await getJoinedCampaigns({
-      id: window.localStorage.getItem("id"),
-    });
-    console.log(res);
-    if (res.data.success === true) {
-      setCampaignsJoined(res.data.joinedCampaigns);
-    } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-  };
+  // const handleGetJoinedcampaigns = async () => {
+  //   let res = await getJoinedCampaigns({
+  //     id: window.localStorage.getItem("id"),
+  //   });
+  //   console.log(res);
+  //   if (res.data.success === true) {
+  //     setCampaignsJoined(res.data.joinedCampaigns);
+  //   } else {
+  //     toast.error(res.data.message, {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //   }
+  // };
 
   React.useEffect(() => {
-    handleGetJoinedcampaigns();
-    // if (role !== "superadmin") {
-    //   history.push("/");
-    // }
-    // window.location.reload();
-    // const handleGetTeammembers = async () => {
-    //   const res = await getCampaignTeammembers({
-    //     campaignId: window.localStorage.getItem("id"),
-    //   });
-    //   console.log(res);
-    //   if (res.data.success === true) {
-    //     if (res?.data?.teamMembers.length > 0) {
-    //       let yoo = res.data.teamMembers.map((member) => {
-    //         let campaign = member.campaignJoined.find(
-    //           (campaign) =>
-    //             campaign.campaignId === window.localStorage.getItem("id")
-    //         );
-    //         return {
-    //           firstName: member.firstName,
-    //           lastName: member.lastName,
-    //           permission: campaign.permission,
-    //           image: member.image,
-    //         };
-    //       });
-    //       setCampaignTeammembers(yoo);
-    //     } else {
-    //       setCampaignTeammembers(res.data.teamMembers);
-    //     }
-    //   } else {
-    //     toast.error(res.data.message, {
-    //       position: toast.POSITION.TOP_RIGHT,
-    //     });
-    //   }
-    // };
-    // handleGetTeammembers();
+    const handleGetTeammembers = async () => {
+      const res = await getCampaignTeammembers({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        if (res?.data?.teamMembers.length > 0) {
+          let yoo = res.data.teamMembers.map((member) => {
+            let campaign = member.campaignJoined.find(
+              (campaign) =>
+                campaign.campaignId === window.localStorage.getItem("id")
+            );
+            return {
+              firstName: member.firstName,
+              lastName: member.lastName,
+              permission: campaign.permission,
+              image: member.image,
+            };
+          });
+          setCampaignTeammembers(yoo);
+        } else {
+          setCampaignTeammembers(res.data.teamMembers);
+        }
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
+    handleSelectCampaign();
+
+    handleGetTeammembers();
   }, []);
 
   return (
@@ -197,29 +195,14 @@ const Dashboardteam = (props) => {
             <br />
             <br />
             <div className="row">
-              <div className="col-12 col-md-6">
-                {/* <div className="d-flex justify-content-between">
-                  <h5 className="">Team Memebers</h5>
-                  <p className="">51 Team Members</p>
-                  <p
-                    className=" mt-1"
-                    style={{ color: "#D12E2F", fontSize: "10px" }}
-                  >
-                    View All
-                  </p>
-                </div> */}
+              {/* <div className="col-12 col-md-6">
+                
                 <div className="d-flex justify-content-between">
                   <h4 className="">Campaigns Joined</h4>
                   <p className="mt-1">
                     {campaignsJoined?.length} Campaigns Joined
                   </p>
                   <Link
-                  // className={clsx({
-                  //   selected: checkRoute("/surveys"),
-                  //   "m-2": true,
-                  //   nonselected: checkRoute("/surveys") === false,
-                  // })}
-                  // to="/team"
                   >
                     {" "}
                     <p
@@ -243,7 +226,7 @@ const Dashboardteam = (props) => {
                         onClick={() => handleSelectCampaign(member.campaignId)}
                       >
                         <div className="d-flex">
-                          <Avatar alt="Remy Sharp" src={member?.image} />
+                          <Avatar alt="Remy Sharp" src={member?.campaignLogo} />
                           <p className="mt-2 ml-2 text-muted">
                             {member?.campaignName}
                           </p>
@@ -252,7 +235,68 @@ const Dashboardteam = (props) => {
                           style={{ fontSize: "12px" }}
                           className="text-warning mt-2"
                         >
-                          {member?.permission}
+                          {member?.permission?.toUpperCase()}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div> */}
+              <div className="col-12 col-md-6">
+                {/* <div className="d-flex justify-content-between">
+                  <h5 className="">Team Memebers</h5>
+                  <p className="">51 Team Members</p>
+                  <p
+                    className=" mt-1"
+                    style={{ color: "#D12E2F", fontSize: "10px" }}
+                  >
+                    View All
+                  </p>
+                </div> */}
+                <div className="d-flex justify-content-between">
+                  <h4 className="">Team Members</h4>
+                  <p className="mt-1">
+                    {campaignTeammembers?.length} Team Members
+                  </p>
+                  <Link
+                    // className={clsx({
+                    //   selected: checkRoute("/surveys"),
+                    //   "m-2": true,
+                    //   nonselected: checkRoute("/surveys") === false,
+                    // })}
+                    to="/team"
+                  >
+                    {" "}
+                    <p
+                      className=" mt-1"
+                      style={{ color: "#D12E2F", fontSize: "15px" }}
+                    >
+                      View All
+                    </p>
+                  </Link>
+                </div>
+                <div>
+                  {campaignTeammembers?.map((member) => {
+                    return (
+                      <div
+                        className="shadow p-2 d-flex justify-content-between my-2"
+                        style={{
+                          height: "60px",
+                          backgroundColor: "#FFFFFF",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        <div className="d-flex">
+                          <Avatar alt="Remy Sharp" src={member?.campaignLogo} />
+                          <p className="mt-2 ml-2 text-muted">
+                            {member?.firstName} {member?.lastName}
+                          </p>
+                        </div>
+                        <p
+                          style={{ fontSize: "12px" }}
+                          className="text-warning mt-2"
+                        >
+                          {member?.permission?.toUpperCase()}
                         </p>
                       </div>
                     );
@@ -262,9 +306,9 @@ const Dashboardteam = (props) => {
               <div className="col-12 col-md-6 ">
                 <div className="d-flex justify-content-between ">
                   <h5 className="">Selected Campaign</h5>
-                  <Joincampaign
+                  {/* <Joincampaign
                     handleGetJoinedcampaigns={handleGetJoinedcampaigns}
-                  />
+                  /> */}
                   {/* <p
                     className=" mt-1"
                     style={{ color: "#D12E2F", fontSize: "15px" }}

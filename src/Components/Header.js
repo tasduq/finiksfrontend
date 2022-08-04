@@ -10,11 +10,16 @@ import { Link } from "react-router-dom";
 import Profile from "../Assets/profile.jpeg";
 import { useAuth } from "../Context/Auth-Context";
 import Createscript from "../Pages/Phonebanking/Components/Createscript";
+import Profilepage from "../Pages/Finiksgeneral/Profile";
+import Clienttagspage from "../Pages/Tags/Components/Clienttagspage";
 
 const settings = ["Settings", "Contacts"];
 const Header = ({ name, purpose }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [openTags, setOpenTags] = React.useState(false);
+  const [dSelect, setDSelect] = React.useState(false);
+
   const { logout, role } = useAuth();
   console.log("props");
   const handleOpenUserMenu = (event) => {
@@ -23,6 +28,16 @@ const Header = ({ name, purpose }) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleOpenTags = (list) => {
+    console.log(list);
+    // setClientTagsList(list);
+    setOpenTags(!openTags);
+  };
+
+  const handleDSelect = () => {
+    setDSelect(false);
   };
   return (
     <div>
@@ -41,7 +56,10 @@ const Header = ({ name, purpose }) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src={Profile} />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={window.localStorage.getItem("campaignLogo")}
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -60,7 +78,7 @@ const Header = ({ name, purpose }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem
                   className="d-flex justify-content-between px-4"
                   key={setting}
@@ -69,7 +87,31 @@ const Header = ({ name, purpose }) => {
                   <Typography textAlign="center">{setting}</Typography>
                   <i class="fas fa-angle-right text-danger ml-5"></i>
                 </MenuItem>
-              ))}
+              ))} */}
+
+              <MenuItem
+                className="d-flex justify-content-between px-4"
+                // key={setting}
+                // onClick={handleCloseUserMenu}
+              >
+                <Profilepage btn1={true} />
+                <i class="fas fa-angle-right text-danger ml-5"></i>
+              </MenuItem>
+              {window.localStorage.getItem("teamLogin") === "true" && (
+                <Link to="/selectcampaign">
+                  <MenuItem
+                    className="d-flex justify-content-between px-4"
+                    // key={setting}
+                    // onClick={handleCloseUserMenu}
+                  >
+                    <Typography className="text-dark" textAlign="center">
+                      Switch Campaign
+                    </Typography>
+                    <i class="fas fa-angle-right text-danger ml-5"></i>
+                  </MenuItem>
+                </Link>
+              )}
+
               {role !== "superadmin" && (
                 <MenuItem
                   className="d-flex justify-content-between px-4"
@@ -83,6 +125,17 @@ const Header = ({ name, purpose }) => {
                   <i class="fas fa-angle-right text-danger ml-5"></i>
                 </MenuItem>
               )}
+
+              <MenuItem
+                className="d-flex justify-content-between px-4"
+                // key={setting}
+                onClick={handleOpenTags}
+              >
+                <Typography className="text-dark" textAlign="center">
+                  Tags
+                </Typography>
+                <i class="fas fa-angle-right text-danger ml-5"></i>
+              </MenuItem>
 
               <Link to="/surveys">
                 <MenuItem
@@ -141,6 +194,17 @@ const Header = ({ name, purpose }) => {
           </div>
         </div>
       </div>
+      {openTags && (
+        <Clienttagspage
+          data={window.localStorage.getItem("id")}
+          open={openTags}
+          handleOpenTags={handleOpenTags}
+          dSelect={dSelect}
+          handleDSelect={handleDSelect}
+          selectButtonDisabled={true}
+          getDataFromServer={true}
+        />
+      )}
     </div>
   );
 };

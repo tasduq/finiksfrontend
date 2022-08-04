@@ -7,15 +7,18 @@ import { ToastContainer, toast } from "react-toastify";
 import validator from "validator";
 import { loginTeam } from "../../Connection/Team";
 import { Link, NavLink, useHistory, withRouter } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Loginteam = () => {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const { login, loggedIn, campaignsJoined, setCampaignsJoined } = useAuth();
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
   const history = useHistory();
+  const location = useLocation();
+
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
 
@@ -43,6 +46,8 @@ const Loginteam = () => {
     }
     console.log("I am called");
 
+    setLoaded(false);
+
     let res = await loginTeam({
       ...values,
     });
@@ -51,22 +56,40 @@ const Loginteam = () => {
       toast.success(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
-      window.localStorage.setItem("username", `${res.data.firstName}`);
+      window.localStorage.setItem("username", `${res.data.username}`);
       window.localStorage.setItem("accessToken", res.data.access_token);
       window.localStorage.setItem("email", res.data.email);
-      window.localStorage.setItem("id", res.data.id);
-      window.localStorage.setItem("role", res.data.role);
+      // window.localStorage.setItem("id", res.data.id);
+      window.localStorage.setItem("userId", res.data.userId);
+      window.localStorage.setItem("role", "");
+      window.localStorage.setItem("firstName", res.data.firstName);
+      window.localStorage.setItem("lastName", res.data.lastName);
+      window.localStorage.setItem("address", res.data.address);
+      window.localStorage.setItem("phoneNumber", res.data.phoneNumber);
+      window.localStorage.setItem("teamLogin", res.data.teamLogin);
+      window.localStorage.setItem("campaignLogo", res.data.campaignLogo);
       window.localStorage.setItem("loggedin", true);
+      window.localStorage.setItem(
+        "campaigns",
+        JSON.stringify(res.data.campaigns)
+      );
+
       // forceUpdate();
-      setCampaignsJoined(res.data.campaignJoined);
-      login();
+      setCampaignsJoined(res.data.campaigns);
       history.push({
-        pathname: "/",
+        pathname: "/selectcampaign",
+        state: { role: "team" },
       });
+      // login();
+      // history.push({
+      //   pathname: "/",
+      // });
+      setLoaded(true);
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setLoaded(true);
     }
   };
   return (
@@ -82,7 +105,7 @@ const Loginteam = () => {
               <img style={{ width: "90px" }} src={Logo} />
               <h2>Login</h2>
               <br />
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Email address</label>
                   <input
@@ -108,16 +131,43 @@ const Loginteam = () => {
                     onChange={handleChange}
                     name="password"
                   />
+                  <div className="d-flex justify-content-left ">
+                    {" "}
+                    <Link
+                      className="text-danger"
+                      to={{
+                        pathname: "/forgot",
+                        state: {
+                          prevPath: location.pathname ? location.pathname : "",
+                        }, // your data array of objects
+                      }}
+                    >
+                      Forgot Password
+                    </Link>
+                  </div>
                 </div>
 
-                <button
-                  style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
-                  className="btn px-3 py-2"
-                  //   onClick={handleClickOpen}
-                  onClick={handleSubmit}
-                >
-                  Sign In
-                </button>
+                <div className="text-center">
+                  {loaded === false && (
+                    <div className="text-center">
+                      <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {loaded === true && (
+                  <button
+                    style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
+                    className="btn px-3 py-2"
+                    //   onClick={handleClickOpen}
+                    onClick={handleSubmit}
+                  >
+                    Sign In
+                  </button>
+                )}
+
                 <p className="mt-2">
                   Not Registered Already?{" "}
                   <button className="btn text-danger">

@@ -8,8 +8,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export default function FormDialog({ handleAns }) {
-  const [openDialog, setOpenDialog] = React.useState(false);
+export default function FormDialog({ handleAns, open, handleOpenAddAns }) {
+  // const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
   const [ans, setAns] = React.useState("");
 
@@ -17,13 +17,13 @@ export default function FormDialog({ handleAns }) {
   //     setOpen(true);
   //   };
 
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
-  const handleOpen = () => {
-    alert("clicked");
-    setOpenDialog(true);
-  };
+  // const handleClose = () => {
+  //   setOpenDialog(false);
+  // };
+  // const handleOpen = () => {
+  //   alert("clicked");
+  //   setOpenDialog(true);
+  // };
 
   const handleChange = (evt) => {
     setAns(evt.target.value);
@@ -32,12 +32,12 @@ export default function FormDialog({ handleAns }) {
   const handleSubmit = async (evt) => {
     console.log(ans);
     handleAns(ans);
-    handleClose();
+    handleOpenAddAns();
   };
 
   return (
     <div>
-      <button className="btn">
+      {/* <button className="btn">
         <i
           style={{
             color: "#D12E2F",
@@ -46,7 +46,7 @@ export default function FormDialog({ handleAns }) {
           }}
           class="fas fa-plus-circle mt-3"
         ></i>
-      </button>
+      </button> */}
       {/* <button
         style={{
           width: "150px",
@@ -60,7 +60,7 @@ export default function FormDialog({ handleAns }) {
       >
         Add New Survey
       </button> */}
-      <Dialog open={openDialog} onClose={handleClose}>
+      <Dialog open={open} onClose={handleOpenAddAns}>
         <DialogTitle className="text-danger">Create New Answer</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -81,10 +81,10 @@ export default function FormDialog({ handleAns }) {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          {/* <Button className="text-danger" onClick={handleSubmit}>
+          <Button onClick={handleOpenAddAns}>Cancel</Button>
+          <Button className="text-danger" onClick={handleSubmit}>
             Add Answer
-          </Button> */}
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

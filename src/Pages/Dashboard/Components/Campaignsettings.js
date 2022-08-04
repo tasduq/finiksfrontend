@@ -29,6 +29,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Campaignsettings({ handleGetData }) {
   const [open, setOpen] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
     campaignCode: "",
     campaignLogo: "",
@@ -95,12 +96,16 @@ export default function Campaignsettings({ handleGetData }) {
   };
 
   const handleSubmit = async () => {
+    setSaving(true);
     let res = await updateCampaignData({ ...values });
     console.log(res);
     if (res.data.success === true) {
       toast.success(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      window.localStorage.setItem("campaignLogo", values.campaignLogo);
+      handleGetData(values);
+      setSaving(false);
       handleClose();
     } else {
       toast.error(res.data.message, {
@@ -185,7 +190,7 @@ export default function Campaignsettings({ handleGetData }) {
                 borderRadius: "12px",
               }}
             >
-              <p style={{ color: "#d12e2f" }}>
+              <p style={{ color: "#d12e2f" }} onClick={handleClose}>
                 <i class="fas fa-angle-left mx-2"></i> Back
               </p>
               <div className="row">
@@ -316,21 +321,33 @@ export default function Campaignsettings({ handleGetData }) {
                     >
                       Genrate New Code
                     </button> */}
-                    <button
-                      style={{
-                        color: "#FFFFFF",
-                        backgroundColor: "#d12e2f",
-                        width: "124.9px",
-                        height: "35px",
-                      }}
-                      // className={`btn btn-sm mx-4 px-3 py-2 ${
-                      //   locationActive === true ? "" : "disabled"
-                      // }`}
-                      onClick={handleSubmit}
-                      className="btn btn-sm  px-3 py-2"
-                    >
-                      Update
-                    </button>
+                    <div className="text-center">
+                      {saving === true && (
+                        <div className="text-center">
+                          <div class="spinner-border text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    ;
+                    {saving === false && (
+                      <button
+                        style={{
+                          color: "#FFFFFF",
+                          backgroundColor: "#d12e2f",
+                          width: "124.9px",
+                          height: "35px",
+                        }}
+                        // className={`btn btn-sm mx-4 px-3 py-2 ${
+                        //   locationActive === true ? "" : "disabled"
+                        // }`}
+                        onClick={handleSubmit}
+                        className="btn btn-sm  px-3 py-2"
+                      >
+                        Update
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

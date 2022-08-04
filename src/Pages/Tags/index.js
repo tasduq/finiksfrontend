@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { getTags, getTagsByClients, mergeTags } from "../../Connection/Tags";
 import clsx from "clsx";
 import Confirmmerge from "./Components/Confirmmerge";
+import { Link, NavLink, useHistory, withRouter } from "react-router-dom";
 
 import "./Styles/style.css";
 
@@ -22,6 +23,8 @@ const Tags = () => {
   const [searching, setSearching] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searched, setSearched] = React.useState();
+
+  const history = useHistory();
 
   const handleSearch = (evt) => {
     if (evt.target.value.length > 0) {
@@ -112,20 +115,30 @@ const Tags = () => {
   };
 
   React.useEffect(() => {
-    console.log("i am running");
-    const handleGetTags = async () => {
-      const res = await getTags();
-      console.log(res);
-      if (res.data.success === true) {
-        setFoundTags(res.data.tags);
-      } else {
-        toast.error(res.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-      }
-    };
+    if (window.localStorage.getItem("role") !== "superadmin") {
+      toast.error("You don't have access", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      history.push({
+        pathname: "/",
+      });
+    } else {
+      console.log("i am running");
+      const handleGetTags = async () => {
+        const res = await getTags();
+        console.log(res);
+        if (res.data.success === true) {
+          setFoundTags(res.data.tags);
+        } else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      };
 
-    handleGetTags();
+      handleGetTags();
+    }
+
     setUpdate(false);
   }, [update === true]);
   return (

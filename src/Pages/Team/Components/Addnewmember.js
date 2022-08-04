@@ -29,14 +29,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Campaignsettings({ handleUpdate }) {
   const [open, setOpen] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
     firstName: "",
     lastName: "",
-    phoneNumber: "",
+    // phoneNumber: "",
     email: "",
-    address: "",
+    // address: "",
     permission: "",
-    image: "",
     about: "",
     campaignId: window.localStorage.getItem("id"),
     campaignName: window.localStorage.getItem("username"),
@@ -68,6 +68,13 @@ export default function Campaignsettings({ handleUpdate }) {
   };
 
   const handleSubmit = async () => {
+    if (values.permission.length <= 0) {
+      toast.error("Selecting Permission is Compulsary", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    }
+    setSaving(true);
     let res = await inviteTeamMember({ ...values });
     console.log(res);
     if (res.data.success === true) {
@@ -77,16 +84,17 @@ export default function Campaignsettings({ handleUpdate }) {
       setValues({
         firstName: "",
         lastName: "",
-        phoneNumber: "",
+        // phoneNumber: "",
         email: "",
-        address: "",
+        // address: "",
         permission: "",
-        image: "",
+        // image: "",
         about: "",
         campaignId: window.localStorage.getItem("id"),
         campaignName: window.localStorage.getItem("username"),
         campaignCode: window.localStorage.getItem("campaignCode"),
       });
+      setSaving(false);
       handleClose();
       handleUpdate();
     } else {
@@ -154,8 +162,8 @@ export default function Campaignsettings({ handleUpdate }) {
               </p> */}
               <div className="row">
                 <div className="col-12 col-md-6 text-center">
-                  <h3 style={{ color: "#d12e2f" }}>Admin</h3>
-                  <div className=" d-flex justify-content-center">
+                  <h3 style={{ color: "#d12e2f" }}>Invite Team Member</h3>
+                  {/* <div className=" d-flex justify-content-center">
                     <Avatar
                       sx={{ bgcolor: "#FF914D", width: 100, height: 100 }}
                       src={values.image ? values.image : ""}
@@ -165,10 +173,13 @@ export default function Campaignsettings({ handleUpdate }) {
                     </Avatar>
                   </div>
                   <Imagepicker selectedImage={handleSelectedImage} />
+                  <br /> */}
                   <br />
                   <div>
                     <div class="form-group text-left">
-                      <label for="exampleFormControlTextarea1">About You</label>
+                      <label for="exampleFormControlTextarea1">
+                        About Your Campaign
+                      </label>
                       <textarea
                         class="form-control shadow-sm"
                         id="exampleFormControlTextarea1"
@@ -176,25 +187,40 @@ export default function Campaignsettings({ handleUpdate }) {
                         value={values.about}
                         onChange={handleChange}
                         name="about"
+                        style={{ borderRadius: "12px" }}
                       ></textarea>
                     </div>
                     <div className="text-left">
                       {" "}
-                      <button
-                        style={{
-                          color: "#FFFFFF",
-                          backgroundColor: "#d12e2f",
-                          width: "124.9px",
-                          height: "35px",
-                        }}
-                        // className={`btn btn-sm mx-4 px-3 py-2 ${
-                        //   locationActive === true ? "" : "disabled"
-                        // }`}
-                        onClick={values.permission.length > 0 && handleSubmit}
-                        className="btn btn-sm  px-3 py-2"
-                      >
-                        Save
-                      </button>
+                      <div className="text-center">
+                        {saving === true && (
+                          <div className="text-center">
+                            <div
+                              class="spinner-border text-danger"
+                              role="status"
+                            >
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      {saving === false && (
+                        <button
+                          style={{
+                            color: "#FFFFFF",
+                            backgroundColor: "#d12e2f",
+                            width: "124.9px",
+                            height: "35px",
+                          }}
+                          // className={`btn btn-sm mx-4 px-3 py-2 ${
+                          //   locationActive === true ? "" : "disabled"
+                          // }`}
+                          onClick={handleSubmit}
+                          className="btn btn-sm  px-3 py-2"
+                        >
+                          Invite
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -234,7 +260,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       name="lastName"
                     />
                   </div>
-                  <div class="form-group">
+                  {/* <div class="form-group">
                     <label
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
@@ -250,7 +276,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       onChange={handleChange}
                       name="phoneNumber"
                     />
-                  </div>
+                  </div> */}
                   <div class="form-group">
                     <label
                       style={{ color: "#d12e2f" }}
@@ -268,7 +294,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       name="email"
                     />
                   </div>
-                  <div class="form-group">
+                  {/* <div class="form-group">
                     <label
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
@@ -284,7 +310,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       onChange={handleChange}
                       name="address"
                     />
-                  </div>
+                  </div> */}
                   <InputLabel
                     style={{ color: "#d12e2f" }}
                     id="demo-simple-select-label"
@@ -301,10 +327,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       value={values.permission}
                       onChange={handleChange}
                     >
-                      <MenuItem value="Manager">Manager</MenuItem>
-                      <MenuItem value="Director">Director</MenuItem>
-                      <MenuItem value="Intern Level 1">Intern Level 1</MenuItem>
-                      <MenuItem value="Intern Level 2">Intern Level 2</MenuItem>
+                      <MenuItem value="campaignManager">Manager</MenuItem>
                       <MenuItem value="Volunteer">Volunteer</MenuItem>
                     </Select>
                   </FormControl>
