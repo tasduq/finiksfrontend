@@ -55,8 +55,13 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs({ handleWrongNumber, data }) {
-  const [open, setOpen] = React.useState(false);
+export default function CustomizedDialogs({
+  handleWrongNumber,
+  data,
+  open,
+  handleOpen,
+}) {
+  // const [open, setOpen] = React.useState(false);
   const [yes, setYes] = React.useState(false);
   const [connected, setConnected] = React.useState();
   const [value, setValue] = React.useState(data);
@@ -102,12 +107,12 @@ export default function CustomizedDialogs({ handleWrongNumber, data }) {
     }
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
+  // const handleOpen = () => {
+  //   setOpen(false);
+  // };
 
   const handleYes = () => {
     setYes(true);
@@ -115,7 +120,7 @@ export default function CustomizedDialogs({ handleWrongNumber, data }) {
 
   const handleNo = () => {
     setYes(false);
-    handleClose();
+    handleOpen();
   };
 
   const handleConnected = () => {
@@ -130,7 +135,7 @@ export default function CustomizedDialogs({ handleWrongNumber, data }) {
 
   const handleNext = () => {
     handleWrongNumber(wrongNumber);
-    handleClose();
+    handleOpen();
     setWrongNumber([]);
   };
 
@@ -143,26 +148,26 @@ export default function CustomizedDialogs({ handleWrongNumber, data }) {
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
       </Button> */}
-      <button
+      {/* <button
         style={{
           borderRadius: "8px",
           backgroundColor: "#D9D9D9",
         }}
-        className="btn w-100 p-2 m-1 mr-2 text-center"
+        className="btn w-100 p-2 m-1  text-center"
         // onClick={handleWrongNumber}
         onClick={handleClickOpen}
       >
         Wrong Number
-      </button>
+      </button> */}
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={handleOpen}
         aria-labelledby="customized-dialog-title"
         open={open}
         fullWidth
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
-          onClose={handleClose}
+          onClose={handleOpen}
           className="text-center"
           style={{ backgroundColor: "#FF914D", color: "white" }}
         >

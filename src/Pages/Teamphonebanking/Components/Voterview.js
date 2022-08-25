@@ -59,6 +59,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   const [survey, setSurvey] = React.useState();
   const [surveyQuestion, setSurveyQuestion] = React.useState();
   const [openSurveyQuestion, setOpenSurveyQuestion] = React.useState(false);
+  const [openWrongNumber, setOpenWrongNumber] = React.useState(false);
   const [view, setView] = React.useState("voter");
   const [values, setValues] = React.useState({
     campaignId: window.localStorage.getItem("id"),
@@ -96,6 +97,10 @@ export default function Voterview({ data, handleUpdateTable }) {
   const handleClose = () => {
     setOpen(false);
     // handleUpdateTable();
+  };
+
+  const hanldeOpenWrongNumber = () => {
+    setOpenWrongNumber(!openWrongNumber);
   };
 
   // const handleToggle = (value) => () => {
@@ -519,19 +524,35 @@ export default function Voterview({ data, handleUpdateTable }) {
                         >
                           Wrong Number
                         </button> */}
-                        <Wrongnumber
-                          handleWrongNumber={handleWrongNumber}
-                          data={[
-                            currentVoter?.MOBILE_NUM ?? "",
-                            currentVoter?.PHONE_NUM ?? "",
-                          ]}
-                        />
+                        {openWrongNumber && (
+                          <Wrongnumber
+                            handleWrongNumber={handleWrongNumber}
+                            data={[
+                              currentVoter?.MOBILE_NUM ?? "",
+                              currentVoter?.PHONE_NUM ?? "",
+                            ]}
+                            handleOpen={hanldeOpenWrongNumber}
+                            open={openWrongNumber}
+                          />
+                        )}
+
                         <button
                           style={{
                             borderRadius: "8px",
                             backgroundColor: "#D9D9D9",
                           }}
-                          className="btn w-50 p-2 m-1 ml-3 text-center"
+                          className="btn w-50 p-2 m-1  text-center"
+                          // onClick={handleWrongNumber}
+                          onClick={hanldeOpenWrongNumber}
+                        >
+                          Wrong Number
+                        </button>
+                        <button
+                          style={{
+                            borderRadius: "8px",
+                            backgroundColor: "#D9D9D9",
+                          }}
+                          className="btn w-50 p-2 m-1 text-center"
                           onClick={handleDoNotCall}
                         >
                           Do Not Call
