@@ -18,7 +18,12 @@ import {
   getTags,
   getSurvey,
 } from "../../../Connection/Team";
-import { takeSurvey } from "../../../Connection/Survey";
+import {
+  takeSurvey,
+  doNotCall,
+  saveInteraction,
+  wrongNumber,
+} from "../../../Connection/Survey";
 import Logo from "../../../Assets/logoword.png";
 import { ToastContainer, toast } from "react-toastify";
 import List from "@mui/material/List";
@@ -29,12 +34,18 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import Addnewtag from "../../Tags/Components/Addtag";
 import Surveyquestion from "./Surveyquestion";
+import Tags from "./Tags";
+import Addtoteam from "./VoterviewComponents/Addtoteam";
+import Emailtovoter from "./VoterviewComponents/Emailtovoter";
+import Updatevoter from "./VoterviewComponents/Updatevoter";
+import Nextvoter from "./VoterviewComponents/Nextvoter";
+import Wrongnumber from "./VoterviewComponents/Wrongnumber";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Voterview({ data }) {
+export default function Voterview({ data, handleUpdateTable }) {
   console.log(data);
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
@@ -50,7 +61,7 @@ export default function Voterview({ data }) {
   const [openSurveyQuestion, setOpenSurveyQuestion] = React.useState(false);
   const [view, setView] = React.useState("voter");
   const [values, setValues] = React.useState({
-    campaignId: window.localStorage.getItem("selectedCampaignId"),
+    campaignId: window.localStorage.getItem("id"),
     campaignName: undefined,
     voterId: currentVoter?._id,
     voterName: currentVoter?.FIRSTNAME,
@@ -60,7 +71,7 @@ export default function Voterview({ data }) {
     geoLocation: "",
     date: new Date(),
     time: new Date(),
-    subUserId: window.localStorage.getItem("id"),
+    subUserId: window.localStorage.getItem("userId"),
     subUserName: window.localStorage.getItem("username"),
     actions: {
       votersInfluenced: true,
@@ -74,6 +85,7 @@ export default function Voterview({ data }) {
     list: data?.list,
     recordId: data?._id,
     totalNumbers: data?.totalNumbers,
+    interaction: "",
   });
 
   const handleClickOpen = () => {
@@ -83,32 +95,50 @@ export default function Voterview({ data }) {
 
   const handleClose = () => {
     setOpen(false);
+    // handleUpdateTable();
   };
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value.tagId);
-    const newChecked = [...checked];
-    const newCheckedTags = [...checkedTags];
+  // const handleToggle = (value) => () => {
+  //   const currentIndex = checked.indexOf(value.tagId);
+  //   const newChecked = [...checked];
+  //   const newCheckedTags = [...checkedTags];
 
-    if (currentIndex === -1) {
-      newChecked.push(value.tagId);
-      newCheckedTags.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-      newCheckedTags.splice(currentIndex, 1);
-    }
+  //   if (currentIndex === -1) {
+  //     newChecked.push(value.tagId);
+  //     newCheckedTags.push(value);
+  //   } else {
+  //     newChecked.splice(currentIndex, 1);
+  //     newCheckedTags.splice(currentIndex, 1);
+  //   }
 
-    setChecked(newChecked);
-    setCheckedTags(newCheckedTags);
+  //   setChecked(newChecked);
+  //   setCheckedTags(newCheckedTags);
+  // };
+
+  const handleTags = (data) => {
+    console.log(data);
+    setChecked(data);
+    setCheckedTags(data);
   };
 
   const handleGetData = async () => {
     const res = await getList({ id: data?.list });
     console.log(res);
     if (res.data.success) {
-      setVoters(res.data.list?.voters);
-      setCurrentVoter(res.data.list?.voters[0]);
-      setCurrentVoterIndex(0);
+      let unSurveyedVoters = res.data.list?.voters.filter((voter) => {
+        return !voter.surveyed || voter.surveyed === false;
+      });
+      console.log(unSurveyedVoters.length);
+      if (unSurveyedVoters.length > 0) {
+        setVoters(unSurveyedVoters);
+        setCurrentVoter(unSurveyedVoters[0]);
+        setCurrentVoterIndex(0);
+      } else {
+        handleClose();
+        toast.success("This list is completed", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -126,7 +156,7 @@ export default function Voterview({ data }) {
     }
 
     const res3 = await getTags({
-      id: window.localStorage.getItem("selectedCampaignId"),
+      id: window.localStorage.getItem("id"),
     });
     console.log(res3);
     if (res3.data.success) {
@@ -140,7 +170,7 @@ export default function Voterview({ data }) {
 
   const handleUpdate = async () => {
     const res3 = await getTags({
-      id: window.localStorage.getItem("selectedCampaignId"),
+      id: window.localStorage.getItem("id"),
     });
     console.log(res3);
     if (res3.data.success) {
@@ -154,7 +184,7 @@ export default function Voterview({ data }) {
 
   const handleGetSurvey = async () => {
     const res3 = await getSurvey({
-      id: window.localStorage.getItem("selectedCampaignId"),
+      id: window.localStorage.getItem("id"),
     });
     console.log(res3);
     if (res3.data.success) {
@@ -198,6 +228,9 @@ export default function Voterview({ data }) {
       return;
     }
     setSaving(true);
+    // console.table(currentVoter);
+    // console.log(values);
+
     const res = await takeSurvey({
       ...values,
       tags: checkedTags,
@@ -216,7 +249,7 @@ export default function Voterview({ data }) {
       setCheckedTags([]);
       setView("voter");
       setValues({
-        campaignId: window.localStorage.getItem("selectedCampaignId"),
+        campaignId: window.localStorage.getItem("id"),
         campaignName: undefined,
         voterId: currentVoter?._id,
         voterName: currentVoter?.FIRSTNAME,
@@ -226,7 +259,7 @@ export default function Voterview({ data }) {
         geoLocation: "",
         date: new Date(),
         time: new Date(),
-        subUserId: window.localStorage.getItem("id"),
+        subUserId: window.localStorage.getItem("userId"),
         subUserName: window.localStorage.getItem("username"),
         actions: {
           votersInfluenced: true,
@@ -241,7 +274,14 @@ export default function Voterview({ data }) {
         totalNumbers: data?.totalNumbers,
       });
       setSaving(false);
-      handleNextVoter();
+      // if (currentVoterIndex < voters?.length - 1) {
+      //   //   handleNextVoter();
+      //   // } else {
+      //   handleClose();
+      //   toast.success("This was the last voter", {
+      //     position: toast.POSITION.TOP_RIGHT,
+      //   });
+      // }
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -249,9 +289,113 @@ export default function Voterview({ data }) {
     }
   };
 
-  const handleNextVoter = () => {
-    setCurrentVoterIndex(currentVoterIndex + 1);
-    setCurrentVoter(voters[currentVoterIndex + 1]);
+  const handleNextVoterCheck = (interactionData) => {
+    console.log(interactionData);
+    if (values.voterAnswers?.length > 0) {
+      toast.error("You havn't saved the survey", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    } else {
+      setValues({
+        ...values,
+        interaction: interactionData,
+      });
+      handleNextVoter(interactionData);
+    }
+  };
+
+  const handleNextVoter = async (interaction) => {
+    console.log(currentVoterIndex, voters.length);
+
+    if (currentVoterIndex < voters?.length - 1) {
+      let res = await saveInteraction({
+        interaction: interaction,
+        listId: data?.list,
+        voterId: currentVoter?._id,
+      });
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setCurrentVoterIndex(currentVoterIndex + 1);
+        setCurrentVoter(voters[currentVoterIndex + 1]);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } else {
+      let res = await saveInteraction({ interaction: interaction });
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        handleClose();
+        toast.success("This was the last voter", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        handleClose();
+        toast.success("This was the last voter", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+
+      // handleUpdateTable();
+    }
+  };
+
+  const handleContactLater = () => {
+    if (values.voterAnswers?.length > 0) {
+      toast.error("You havn't saved the survey", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return;
+    } else {
+      toast.success("You can proceed with next voter", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+
+  const handleDoNotCall = async () => {
+    let res = await doNotCall({
+      listId: data?.list,
+      voterId: currentVoter?._id,
+      recordId: data?._id,
+    });
+    console.log(res);
+    if (res.data.success) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  };
+
+  const handleWrongNumber = async (numbers) => {
+    console.log(numbers);
+    let res = await wrongNumber({
+      listId: data?.list,
+      voterId: currentVoter?._id,
+      wrongNumbers: numbers,
+    });
+    if (res.data.success) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   //   React.useEffect(() => {}, [open === true]);
@@ -325,12 +469,16 @@ export default function Voterview({ data }) {
                     >
                       Preview
                     </p>
+                    {/* <ButtonMailto
+                      label="Write me an E-Mail"
+                      mailto="mailto:no-reply@example.com"
+                    /> */}
                     <div
                       style={{
                         width: "100%",
                         height: "auto",
-                        minHeight: "150px",
-                        backgroundColor: "#00000017",
+                        minHeight: "300px",
+                        backgroundColor: "#F6F6F6",
                         borderRadius: "12px",
                       }}
                       className="p-2"
@@ -351,7 +499,7 @@ export default function Voterview({ data }) {
                               color: "#D12E2F",
                             }}
                           >
-                            Script Name : {script?.scriptName}
+                            <strong>Script</strong>
                           </p>
                           <div>
                             <p>{script.description}</p>
@@ -361,21 +509,30 @@ export default function Voterview({ data }) {
                     </div>
                     <div>
                       <div className="d-flex">
-                        <button
+                        {/* <button
                           style={{
                             borderRadius: "8px",
                             backgroundColor: "#D9D9D9",
                           }}
                           className="btn w-50 p-2 m-1 text-center"
+                          // onClick={handleWrongNumber}
                         >
                           Wrong Number
-                        </button>
+                        </button> */}
+                        <Wrongnumber
+                          handleWrongNumber={handleWrongNumber}
+                          data={[
+                            currentVoter?.MOBILE_NUM ?? "",
+                            currentVoter?.PHONE_NUM ?? "",
+                          ]}
+                        />
                         <button
                           style={{
                             borderRadius: "8px",
                             backgroundColor: "#D9D9D9",
                           }}
-                          className="btn w-50 p-2 m-1  text-center"
+                          className="btn w-50 p-2 m-1 ml-3 text-center"
+                          onClick={handleDoNotCall}
                         >
                           Do Not Call
                         </button>
@@ -387,13 +544,16 @@ export default function Voterview({ data }) {
                             backgroundColor: "#D9D9D9",
                           }}
                           className="btn w-50 p-2 m-1 text-center"
+                          onClick={handleContactLater}
                         >
                           Contact Later
                         </button>
                         <button
                           style={{
                             borderRadius: "8px",
-                            backgroundColor: "#D9D9D9",
+                            backgroundColor: `${
+                              view === "survey" ? "#FF914D" : "#D9D9D9"
+                            }`,
                           }}
                           className="btn w-50 p-2 m-1  text-center"
                           onClick={handleGetSurvey}
@@ -402,21 +562,18 @@ export default function Voterview({ data }) {
                         </button>
                       </div>
                       <div>
-                        <button
+                        {/* <button
                           style={{
                             borderRadius: "8px",
                             backgroundColor: "#FF914D",
                             color: "white",
                           }}
                           className="btn w-100 p-2 m-1  text-center"
-                          onClick={
-                            currentVoterIndex < voters?.length - 1 &&
-                            values.voterAnswers?.length === 0 &&
-                            handleNextVoter
-                          }
+                          onClick={handleNextVoterCheck}
                         >
                           Next Voter
-                        </button>
+                        </button> */}
+                        <Nextvoter handleNextVoter={handleNextVoterCheck} />
                         <div className="text-center">
                           {saving === true && (
                             <div
@@ -454,15 +611,21 @@ export default function Voterview({ data }) {
                     {view === "survey" && (
                       <div
                         className="p-3"
-                        style={{ minHeight: "500px", height: "auto" }}
+                        style={{ minHeight: "734px", height: "auto" }}
                       >
                         <button
                           onClick={() => setView("voter")}
                           className="btn text-danger"
                         >
-                          X
+                          <i class="fas fa-angle-left mx-2"></i> Back
                         </button>
-                        <h5 className="text-danger text-center">Survey</h5>
+                        <p
+                          style={{ fontSize: "24px" }}
+                          className="text-danger text-center"
+                        >
+                          {" "}
+                          <strong>Survey</strong>{" "}
+                        </p>
                         <div className="row px-1">
                           {console.log(survey)}
                           {survey?.surveyQuestions?.map((value) => {
@@ -472,7 +635,7 @@ export default function Voterview({ data }) {
                                   style={{
                                     width: "45%",
                                     height: "auto",
-                                    minHeight: "210px",
+                                    minHeight: "222px",
                                     backgroundColor: `${
                                       value.color.code
                                         ? value.color.code
@@ -486,7 +649,10 @@ export default function Voterview({ data }) {
                                   className="p-2 text-center ml-2 d-flex justify-content-center align-items-center   mb-1"
                                   onClick={() => handleSurveyQuestion(value)}
                                 >
-                                  {value?.surveyPreview}
+                                  <p style={{ fontSize: "24px" }}>
+                                    {" "}
+                                    {value?.surveyPreview}
+                                  </p>
                                 </div>
                               );
                             }
@@ -498,7 +664,7 @@ export default function Voterview({ data }) {
                       <div>
                         <div
                           className="shadow-sm p-3  d-flex justify-content-center align-items-center"
-                          style={{ height: "110px" }}
+                          style={{ minHeight: "155px", height: "auto" }}
                         >
                           {!currentVoter && (
                             <div
@@ -509,26 +675,99 @@ export default function Voterview({ data }) {
                             </div>
                           )}
                           {currentVoter && (
-                            <div className=" d-flex justify-content-center align-items-center">
-                              {" "}
-                              <Avatar
-                                sx={{
-                                  bgcolor: "#FF914D",
-                                  width: 79,
-                                  height: 79,
-                                }}
-                                className="mr-2"
-                              >
-                                {voters[currentVoterIndex]?.FIRSTNAME[0]}
-                              </Avatar>
-                              <h5
-                                className="mr-4"
-                                style={{ fontWeight: "bold", fontSize: "25px" }}
-                              >
-                                {voters[currentVoterIndex]?.FIRSTNAME +
-                                  " " +
-                                  voters[currentVoterIndex]?.LASTNAME}
-                              </h5>
+                            <div>
+                              <div className=" d-flex justify-content-center align-items-center mt-3">
+                                {" "}
+                                <Avatar
+                                  sx={{
+                                    bgcolor: "#FF914D",
+                                    width: 60,
+                                    height: 60,
+                                  }}
+                                  className="mr-2"
+                                >
+                                  {voters[currentVoterIndex]?.FIRSTNAME[0]}
+                                </Avatar>
+                                <p
+                                  className="mr-4 mt-2"
+                                  style={{
+                                    fontWeight: "bold",
+                                    fontSize: "25px",
+                                  }}
+                                >
+                                  {voters[currentVoterIndex]?.FIRSTNAME +
+                                    " " +
+                                    voters[currentVoterIndex]?.LASTNAME}
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between mt-2">
+                                <div
+                                  style={{ color: "#D12E2F" }}
+                                  className="text-center mx-2"
+                                >
+                                  <i
+                                    style={{ fontSize: "25px" }}
+                                    class="fas fa-comment"
+                                  ></i>
+                                  <br />{" "}
+                                  <p style={{ fontSize: "12px" }}>Message</p>
+                                </div>
+                                <div
+                                  style={{ color: "#D12E2F" }}
+                                  className="text-center mx-2"
+                                >
+                                  <i
+                                    style={{ fontSize: "25px" }}
+                                    class="fas fa-phone-alt"
+                                  ></i>
+                                  <br />{" "}
+                                  <p style={{ fontSize: "12px" }}>Phone</p>
+                                </div>
+                                {/* <div
+                                  style={{ color: "#D12E2F" }}
+                                  className="text-center mx-2"
+                                  onClick = {handleAddToTeam}
+                                >
+                                  <i
+                                    style={{ fontSize: "25px" }}
+                                    class="fas fa-user-plus"
+                                  ></i>
+                                  <br />{" "}
+                                  <p style={{ fontSize: "12px" }}>
+                                    Add to Team
+                                  </p>
+                                </div> */}
+                                <Addtoteam data={currentVoter?.EMAIL} />
+                                {/* <div
+                                  style={{ color: "#D12E2F" }}
+                                  className="text-center mx-2"
+                                >
+                                  <i
+                                    style={{ fontSize: "25px" }}
+                                    class="fas fa-envelope"
+                                  ></i>
+                                  <br />{" "}
+                                  <p style={{ fontSize: "12px" }}>Email</p>
+                                </div> */}
+                                <Emailtovoter
+                                  data={`mailto:${currentVoter?.EMAIL}`}
+                                />
+                                {/* <div
+                                  style={{ color: "#D12E2F" }}
+                                  className="text-center mx-2"
+                                >
+                                  <i
+                                    style={{ fontSize: "25px" }}
+                                    class="fas fa-ellipsis-h"
+                                  ></i>
+                                  <br />{" "}
+                                  <p style={{ fontSize: "12px" }}>Update</p>
+                                </div> */}
+                                <Updatevoter
+                                  data={currentVoter}
+                                  listId={data?.list}
+                                />
+                              </div>
                             </div>
                           )}
                         </div>
@@ -538,15 +777,22 @@ export default function Voterview({ data }) {
                             className="text-danger"
                           >
                             Last Contacted :
-                            {data.lastInfluenced
-                              ? data.lastInfluenced
+                            {voters[currentVoterIndex]?.lastInfluenced
+                              ? voters[currentVoterIndex]?.lastInfluenced.split(
+                                  "T"
+                                )[0]
                               : "Not Contacted Yet"}
                           </p>
                           {(voters[currentVoterIndex]?.voterTags?.length ===
                             0 ||
                             voters[currentVoterIndex]?.voterTags?.length ===
                               undefined) && (
-                            <Tag value={{ tagName: "No Tags Found" }} />
+                            <div className="d-flex">
+                              <Tag value={{ tagName: "No Tags" }} />
+                              {tags && (
+                                <Tags handleTags={handleTags} tags={tags} />
+                              )}
+                            </div>
                           )}
                           {voters[currentVoterIndex]?.voterTags?.length > 0 && (
                             <div className="row px-2">
@@ -559,8 +805,12 @@ export default function Voterview({ data }) {
                                   );
                                 }
                               )}
+                              {tags && (
+                                <Tags handleTags={handleTags} tags={tags} />
+                              )}
                             </div>
                           )}
+
                           <br />
                           <h5 className="text-muted">
                             {" "}
@@ -579,15 +829,31 @@ export default function Voterview({ data }) {
 
                           <br />
                           <br />
-                          <p className="text-danger">Address</p>
-                          <p className="text-muted">
+                          <p
+                            style={{ fontSize: "15px" }}
+                            className="text-danger"
+                          >
+                            <strong>Address</strong>
+                          </p>
+                          <p
+                            style={{ fontSize: "19px" }}
+                            className="text-muted"
+                          >
                             {voters[currentVoterIndex]?.ADDRESS}
                           </p>
 
-                          <p className="text-danger">Demographics</p>
+                          <p
+                            style={{ fontSize: "15px" }}
+                            className="text-danger"
+                          >
+                            <strong>Demographics</strong>
+                          </p>
                           <div className="d-flex justify-content-between text-muted text-center ">
                             <p
-                              style={{ borderRight: "1px solid #707070" }}
+                              style={{
+                                borderRight: "1px solid #707070",
+                                fontSize: "19px",
+                              }}
                               className="pr-3"
                             >
                               {voters[currentVoterIndex]?.SEX === "M"
@@ -595,95 +861,160 @@ export default function Voterview({ data }) {
                                 : "Female"}
                             </p>
                             <p
-                              style={{ borderRight: "1px solid #707070" }}
+                              style={{
+                                borderRight: "1px solid #707070",
+                                fontSize: "19px",
+                              }}
                               className="pr-3"
                             >
                               {voters[currentVoterIndex]?.AGE} Years Old
                             </p>
                             {voters[currentVoterIndex]?.PARTY_CODE === "A" && (
-                              <p align="">American Independent</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                American Independent
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "B" && (
-                              <p align="">Constitution Party</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Constitution Party
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "C" && (
-                              <p align="">Consumer</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Consumer
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "D" && (
-                              <p align="">Democrat</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Democrat
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "E" && (
-                              <p align="">Inferred Democrat</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Inferred Democrat
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "F" && (
-                              <p align="">Reform </p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Reform{" "}
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "G" && (
-                              <p align="">Green</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Green
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "H" && (
-                              <p align="">Liberal</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Liberal
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "I" && (
-                              <p align="">Independent</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Independent
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "J" && (
-                              <p align="">UMOJA</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                UMOJA
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "K" && (
-                              <p align="">Independent NM Party</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                Independent NM Party
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "L" && (
-                              <p align=""> Libertarian</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Libertarian
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "N" && (
-                              <p align="">
+                              <p style={{ fontSize: "19px" }} align="">
                                 {" "}
-                                None/Non-Partisan/No Party/No
-                                Preference/Undeclared/Declined to
-                                State/Undecided/Unaffiliated
+                                None/Non-Partisan/
+                                <br />
+                                No Party/No Preference/
+                                <br />
+                                Undeclared/
+                                <br />
+                                Declined to State/
+                                <br />
+                                Undecided/
+                                <br />
+                                Unaffiliated
                               </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "O" && (
-                              <p align=""> Other</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Other
+                              </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "P" && (
-                              <p align=""> Peace and Freedom</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Peace and Freedom
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "R" && (
-                              <p align=""> Republican</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Republican
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "S" && (
-                              <p align=""> Inferred Republican</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Inferred Republican
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "T" && (
-                              <p align=""> to Life</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                to Life
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "U" && (
-                              <p align=""> Unknown</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Unknown
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "V" && (
-                              <p align=""> Conservative</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Conservative
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "W" && (
-                              <p align=""> Natural Law</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Natural Law
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE === "Z" && (
-                              <p align=""> Independance</p>
+                              <p style={{ fontSize: "19px" }} align="">
+                                {" "}
+                                Independance
+                              </p>
                             )}
 
                             {voters[currentVoterIndex]?.PARTY_CODE ===
                               undefined ||
                               null ||
-                              ("" && <p align=""></p>)}
+                              ("" && (
+                                <p style={{ fontSize: "19px" }} align=""></p>
+                              ))}
                           </div>
                         </div>
                       </div>
@@ -691,6 +1022,627 @@ export default function Voterview({ data }) {
                   </div>
                 </div>
                 <div className="col-12 col-md-3">
+                  <h5 className="my-2 text-danger ">Profiled Information</h5>
+                  <hr />
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_2NDAMEND &&
+                      voters[currentVoterIndex]?.PRFL_2NDAMEND === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_2NDAMEND === "Y"
+                        ? "2nd Amendment Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_ACTIVE &&
+                      voters[currentVoterIndex]?.PRFL_ACTIVE === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_ACTIVE === "Y"
+                        ? "Active Military"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_AMZN_PRIME &&
+                      voters[currentVoterIndex]?.PRFL_AMZN_PRIME === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_AMZN_PRIME === "Y"
+                        ? "Amazon Prime Subscriber"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_ANML_RIGHTS &&
+                      voters[currentVoterIndex]?.PRFL_ANML_RIGHTS === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_ANML_RIGHTS === "Y"
+                        ? "Animal Rights Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT === "Y"
+                        ? "Likely Biden Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_BLM_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_BLM_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_BLM_SUPPORT === "Y"
+                        ? "Likely Black Lives Matter Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_BORDER_SECURITY &&
+                      voters[currentVoterIndex]?.PRFL_BORDER_SECURITY === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_BORDER_SECURITY === "Y"
+                        ? " Interest in Border Security"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_CHOICELIFE &&
+                      voters[currentVoterIndex]?.PRFL_CHOICELIFE === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_CHOICELIFE === "Y"
+                        ? " Pro Life"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_CLINTON_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_CLINTON_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_CLINTON_SUPPORT === "Y"
+                        ? " Likely Hillary Clinton Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_CONSERVATIVE_NEWS &&
+                      voters[currentVoterIndex]?.PRFL_CONSERVATIVE_NEWS === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_CONSERVATIVE_NEWS === "Y"
+                        ? " Likely to watch Conservative News Outlets"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_EDUCATION &&
+                      voters[currentVoterIndex]?.PRFL_EDUCATION === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_EDUCATION === "Y"
+                        ? "Interest in Education Issues"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_ENVIRONMENT &&
+                      voters[currentVoterIndex]?.PRFL_ENVIRONMENT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_ENVIRONMENT === "Y"
+                        ? "Environmentalist"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_EVANGELICAL &&
+                      voters[currentVoterIndex]?.PRFL_EVANGELICAL === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_EVANGELICAL === "Y"
+                        ? " Evangelical"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_FENCE_SITTER &&
+                      voters[currentVoterIndex]?.PRFL_FENCE_SITTER === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_FENCE_SITTER === "Y"
+                        ? "Likely Fence Sitter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_GUN_CONTROL &&
+                      voters[currentVoterIndex]?.PRFL_GUN_CONTROL === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_GUN_CONTROL === "Y"
+                        ? "Gun Control Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM &&
+                      voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM.length >
+                        0
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM === "Y"
+                        ? " Healthcare Reform Supporter"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM === "N"
+                        ? "Against Healthcare Reform"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_HEALTHCARE &&
+                      voters[currentVoterIndex]?.PRFL_HEALTHCARE === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_HEALTHCARE === "Y"
+                        ? "Healthcare Professional"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_IMMIGRATION_REFORM &&
+                      voters[currentVoterIndex]?.PRFL_IMMIGRATION_REFORM === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_IMMIGRATION_REFORM ===
+                      "Y"
+                        ? "Interested in Immigration Reform"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_INFLUENCER &&
+                      voters[currentVoterIndex]?.PRFL_INFLUENCER === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_INFLUENCER === "Y"
+                        ? "Voter Is An Influencer"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_INSURANCE &&
+                      voters[currentVoterIndex]?.PRFL_INSURANCE === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_INSURANCE === "Y"
+                        ? "Likely To Have Workplace Insurance"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_LABOR &&
+                      voters[currentVoterIndex]?.PRFL_LABOR === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_LABOR === "Y"
+                        ? "Organized Labor Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT > 0
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT === 1
+                        ? "LGBT Donor"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT === 2
+                        ? "LGBT Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS &&
+                      voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS === "Y"
+                        ? "Likely to Watch Liberal News Outlets"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_MARIJUANA_REFORM &&
+                      voters[currentVoterIndex]?.PRFL_MARIJUANA_REFORM === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_MARIJUANA_REFORM === "Y"
+                        ? "Marijuana Policy Reform Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY &&
+                      voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY > 0
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY === 1
+                        ? "Supports Marriage Equality"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY === 2
+                        ? "Opposes Marriage Equality"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_METOO_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_METOO_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_METOO_SUPPORT === "Y"
+                        ? "Likely to Support the MeToo Movement"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_MIL_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_MIL_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_MIL_SUPPORT === "Y"
+                        ? " Military Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_MINWAGE &&
+                      voters[currentVoterIndex]?.PRFL_MINWAGE > 0
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_MINWAGE === 1
+                        ? "Likely to Support Minimum Wage Increase"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_MINWAGE === 2
+                        ? "Likely to Oppose Minimum Wage Increase"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_OBAMA &&
+                      voters[currentVoterIndex]?.PRFL_OBAMA === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_OBAMA === "Y"
+                        ? " Likely Obama"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_PERSUADABLE_VOTER &&
+                      voters[currentVoterIndex]?.PRFL_PERSUADABLE_VOTER === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_PERSUADABLE_VOTER === "Y"
+                        ? "Persuadable/Swing Voter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY &&
+                      voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY
+                        .length > 0
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY ===
+                      "C"
+                        ? " Conservative"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY ===
+                      "M"
+                        ? " Moderate"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY ===
+                      "L"
+                        ? " Liberal"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_SANDERS_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_SANDERS_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_SANDERS_SUPPORT === "Y"
+                        ? "Likely Sanders Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_TAXES &&
+                      voters[currentVoterIndex]?.PRFL_TAXES === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_TAXES === "Y"
+                        ? "Interested in Taxes and Tax Reform"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_TEACHERS_UNION &&
+                      voters[currentVoterIndex]?.PRFL_TEACHERS_UNION === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_TEACHERS_UNION === "Y"
+                        ? "Likely Teachers Union Member"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_TEAPARTY &&
+                      voters[currentVoterIndex]?.PRFL_TEAPARTY > 0
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_TEAPARTY === 1
+                        ? " Tea Party Donor"
+                        : ""}
+                      {voters[currentVoterIndex]?.PRFL_TEAPARTY === 2
+                        ? "Likely Tea Party Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT &&
+                      voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT === "Y"
+                        ? "Likely Trump Supporter"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+
+                  <div
+                    className={`my-4 ${
+                      voters[currentVoterIndex]?.PRFL_VETERAN &&
+                      voters[currentVoterIndex]?.PRFL_VETERAN === "Y"
+                        ? ""
+                        : "d-none"
+                    }`}
+                  >
+                    <p>
+                      {voters[currentVoterIndex]?.PRFL_VETERAN === "Y"
+                        ? "Veteran"
+                        : ""}
+                    </p>
+                    <hr />
+                  </div>
+                </div>
+                {/* <div className="col-12 col-md-3">
                   <div className="text-center">
                     <h5 className="my-2 text-danger ">Campaign Tags</h5>
 
@@ -731,7 +1683,7 @@ export default function Voterview({ data }) {
                               key={value._id}
                               secondaryAction={
                                 <IconButton edge="end" aria-label="comments">
-                                  {/* <CommentIcon /> */}
+                                 
                                 </IconButton>
                               }
                               disablePadding
@@ -764,7 +1716,7 @@ export default function Voterview({ data }) {
                         })}
                     </List>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
             <br />

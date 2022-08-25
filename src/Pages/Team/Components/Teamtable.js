@@ -33,17 +33,18 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
         <TableHead>
           <TableRow>
             <TableCell>Team Member</TableCell>
-            <TableCell align="right">Campaign Position</TableCell>
-            <TableCell align="right">Phone</TableCell>
-            <TableCell align="right">Email</TableCell>
-            <TableCell align="right">Voters Influnced</TableCell>
-            <TableCell align="right">Doors Knocked</TableCell>
-            <TableCell align="right">Voters Surveyed</TableCell>
-            <TableCell align="right">Voters Messaged</TableCell>
-            <TableCell align="right">Phones Called</TableCell>
-            <TableCell align="right">Date Added</TableCell>
+            <TableCell align="">Campaign permission</TableCell>
+            <TableCell align="">Campaign Position</TableCell>
+            <TableCell align="">Phone</TableCell>
+            <TableCell align="">Email</TableCell>
+            <TableCell align="">Voters Influnced</TableCell>
+            <TableCell align="">Doors Knocked</TableCell>
+            <TableCell align="">Voters Surveyed</TableCell>
+            <TableCell align="">Voters Messaged</TableCell>
+            <TableCell align="">Phones Called</TableCell>
+            <TableCell align="">Date Added</TableCell>
 
-            <TableCell align="right"></TableCell>
+            <TableCell align=""></TableCell>
           </TableRow>
         </TableHead>
 
@@ -58,29 +59,30 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
                 <TableCell component="th" scope="row">
                   {list?.memberName}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="">
                   {list?.permission?.toUpperCase()}
                 </TableCell>
-                <TableCell align="right">{list?.phoneNumber}</TableCell>
-                <TableCell align="right">{list?.email}</TableCell>
-                <TableCell align="right">
+                <TableCell align="">{list?.campaignPosition}</TableCell>
+                <TableCell align="">{list?.phoneNumber}</TableCell>
+                <TableCell align="">{list?.email}</TableCell>
+                <TableCell align="">
                   {list?.votersInfluenced ? list.votersInfluenced : 0}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="">
                   {list?.doorsKnocked ? list.doorsKnocked : 0}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="">
                   {list?.votersSurveyed ? list.votersSurveyed : 0}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="">
                   {list?.votersMessaged ? list.votersMessaged : 0}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="">
                   {list?.phonesCalled ? list.phonesCalled : 0}
                 </TableCell>
-                <TableCell align="right">{list?.dateJoined}</TableCell>
+                <TableCell align="">{list?.dateJoined}</TableCell>
 
-                <TableCell align="right">
+                <TableCell align="">
                   {/* <button
                     style={{
                       color: "white",

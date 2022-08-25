@@ -31,7 +31,7 @@ import Profile from "../Pages/Finiksgeneral/Profile";
 import Registerteam from "../Pages/Teamauth/signup";
 import Otp from "../Pages/Teamauth/otp";
 import Teamphonebank from "../Pages/Teamphonebanking/index";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const AuthenticatedRoutes = ({ role }) => {
@@ -66,10 +66,11 @@ export const AuthenticatedRoutes = ({ role }) => {
               } else if (role === "team") {
                 console.log("tasu");
                 return <Dashboardteam {...routeProps} />;
+              } else {
+                return (
+                  <Route render={() => <Redirect to="/selectcampaign" />} />
+                );
               }
-              // else {
-              //   return <Selectcampaign {...routeProps} />;
-              // }
             }}
           />
           <Route
@@ -78,7 +79,14 @@ export const AuthenticatedRoutes = ({ role }) => {
             // render={(routeProps) => <Superadmindashboard {...routeProps} />}
             render={(routeProps) => {
               console.log(routeProps);
-              return <Superadmindashboard {...routeProps} />;
+              if (role === "superadmin") {
+                return <Superadmindashboard {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
             }}
           />
           <Route
@@ -87,7 +95,15 @@ export const AuthenticatedRoutes = ({ role }) => {
             // render={(routeProps) => <Superadmindashboard {...routeProps} />}
             render={(routeProps) => {
               console.log(routeProps);
-              return <Dashboardteam {...routeProps} />;
+
+              if (role === "team" || role === "superadmin") {
+                return <Dashboardteam {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
             }}
           />
           <Route

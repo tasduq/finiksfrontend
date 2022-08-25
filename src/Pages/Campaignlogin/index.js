@@ -56,6 +56,7 @@ const Logincamapaign = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
       window.localStorage.setItem("username", res.data.username);
+      window.localStorage.setItem("campaignName", res.data.campaignName);
       window.localStorage.setItem(
         "firstName",
         res.data.firstName ? res.data.firstName : ""
@@ -92,6 +93,7 @@ const Logincamapaign = () => {
           pathname: "/selectcampaign",
           state: { role: "campaignManager" },
         });
+        // login();
       } else {
         history.push({
           pathname: "/",

@@ -31,12 +31,13 @@ export default function Campaignsettings({ handleUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
-    firstName: "",
-    lastName: "",
+    // firstName: "",
+    // lastName: "",
     // phoneNumber: "",
     email: "",
     // address: "",
     permission: "",
+    campaignPosition: "",
     about: "",
     campaignId: window.localStorage.getItem("id"),
     campaignName: window.localStorage.getItem("username"),
@@ -82,12 +83,13 @@ export default function Campaignsettings({ handleUpdate }) {
         position: toast.POSITION.TOP_RIGHT,
       });
       setValues({
-        firstName: "",
-        lastName: "",
+        // firstName: "",
+        // lastName: "",
         // phoneNumber: "",
         email: "",
         // address: "",
         permission: "",
+        campaignPosition: "",
         // image: "",
         about: "",
         campaignId: window.localStorage.getItem("id"),
@@ -225,7 +227,7 @@ export default function Campaignsettings({ handleUpdate }) {
                   </div>
                 </div>
                 <div className="col-12 col-md-6">
-                  <div class="form-group">
+                  {/* <div class="form-group">
                     <label
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
@@ -259,24 +261,8 @@ export default function Campaignsettings({ handleUpdate }) {
                       onChange={handleChange}
                       name="lastName"
                     />
-                  </div>
-                  {/* <div class="form-group">
-                    <label
-                      style={{ color: "#d12e2f" }}
-                      for="exampleInputEmail1"
-                    >
-                      Phone Number
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control shadow-sm"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      value={values.phoneNumber}
-                      onChange={handleChange}
-                      name="phoneNumber"
-                    />
                   </div> */}
+
                   <div class="form-group">
                     <label
                       style={{ color: "#d12e2f" }}
@@ -294,23 +280,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       name="email"
                     />
                   </div>
-                  {/* <div class="form-group">
-                    <label
-                      style={{ color: "#d12e2f" }}
-                      for="exampleInputEmail1"
-                    >
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control shadow-sm"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      value={values.address}
-                      onChange={handleChange}
-                      name="address"
-                    />
-                  </div> */}
+
                   <InputLabel
                     style={{ color: "#d12e2f" }}
                     id="demo-simple-select-label"
@@ -329,6 +299,34 @@ export default function Campaignsettings({ handleUpdate }) {
                     >
                       <MenuItem value="campaignManager">Manager</MenuItem>
                       <MenuItem value="Volunteer">Volunteer</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <br />
+                  <br />
+
+                  <InputLabel
+                    style={{ color: "#d12e2f" }}
+                    id="demo-simple-select-label"
+                  >
+                    Campaign Position
+                  </InputLabel>
+                  <FormControl fullWidth size="small">
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      //   value={age}
+                      label="Campaign Position"
+                      name="campaignPosition"
+                      value={values.campaignPosition}
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="Campaign Manager">
+                        Campaign Manager
+                      </MenuItem>
+                      <MenuItem value="Volunteer">Volunteer</MenuItem>
+                      <MenuItem value="Intern Level 1">Intern Level 1</MenuItem>
+                      <MenuItem value="Intern Level 2">Intern Level 2</MenuItem>
+                      <MenuItem value="Director">Director</MenuItem>
                     </Select>
                   </FormControl>
                 </div>

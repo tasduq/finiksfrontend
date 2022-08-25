@@ -62,7 +62,9 @@ const Team = () => {
                   <span class="sr-only">Loading...</span>
                 </div>
               )}
-              {foundTeam && <Teamtable data={foundTeam} />}
+              {foundTeam && (
+                <Teamtable handleUpdate={handleUpdate} data={foundTeam} />
+              )}
 
               {foundTeam?.length === 0 && <p>No Team Found Make One</p>}
             </div>

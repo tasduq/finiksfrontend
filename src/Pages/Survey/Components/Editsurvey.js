@@ -17,7 +17,7 @@ import Avatar from "@mui/material/Avatar";
 import Imagepicker from "../../../Components/Imagepicker";
 // import Taginfotable from "./Taginfotable";
 import Logo from "../../../Assets/logoword.png";
-import { addSurvey } from "../../../Connection/Survey.js";
+import { editSurvey } from "../../../Connection/Survey.js";
 import { ToastContainer, toast } from "react-toastify";
 // import { getTagInfo } from "../../../Connection/Tags";
 import Addanswer from "./Addanswer";
@@ -35,11 +35,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Taginfo({ data, handleUpdate }) {
-  const [open, setOpen] = React.useState(false);
+export default function Taginfo({ data, handleUpdate, open, handleOpen }) {
+  console.log(data);
+  //   const [open, setOpen] = React.useState(false);
   const [openAddAns, setOpenAddAns] = React.useState(false);
-  //   const [usersData, setUsersData] = React.useState();
-  //   const [answers, setAnswers] = React.useState(["Yes", "No", "Maybe"]);
   const [colors, setColors] = React.useState([
     { name: "Orange", code: "#FF914D" },
     { name: "Yellow", code: "#FFBD59" },
@@ -54,19 +53,19 @@ export default function Taginfo({ data, handleUpdate }) {
     surveyQuestion: "",
     surveyAnswers: ["Yes", "No", "Maybe"],
     active: true,
-    color: { name: "Orange", code: "#FF914D" },
+    color: colors[0],
     campaignId: window.localStorage.getItem("id"),
     campaignName: window.localStorage.getItem("campaignName"),
   });
   const [selectedAns, setSelectedAns] = React.useState();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  //   const handleOpen = () => {
+  //     setOpen(true);
+  //   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  //   const handleOpen = () => {
+  //     setOpen(false);
+  //   };
 
   const handleOpenAddAns = () => {
     console.log("cic");
@@ -149,7 +148,7 @@ export default function Taginfo({ data, handleUpdate }) {
       });
       return;
     }
-    const res = await addSurvey({ ...values });
+    const res = await editSurvey({ ...values, surveyId: data?.surveyId });
     console.log(res);
     if (res.data.success === true) {
       toast.success(res.data.message, {
@@ -161,11 +160,11 @@ export default function Taginfo({ data, handleUpdate }) {
         surveyQuestion: "",
         surveyAnswers: ["Yes", "No", "Maybe"],
         active: true,
-        color: { name: "Orange", code: "#FF914D" },
+        color: colors[0],
         campaignId: window.localStorage.getItem("id"),
         campaignName: window.localStorage.getItem("campaignName"),
       });
-      handleClose();
+      handleOpen();
       handleUpdate();
     } else {
       toast.error(res.data.message, {
@@ -173,6 +172,20 @@ export default function Taginfo({ data, handleUpdate }) {
       });
     }
   };
+
+  React.useEffect(() => {
+    setValues({
+      surveyName: data?.surveyName,
+      surveyPreview: data?.surveyPreview,
+      surveyQuestion: data?.surveyQuestion,
+      surveyAnswers: data.surveyAnswers,
+      active: data?.active,
+      color: data?.color,
+      campaignId: window.localStorage.getItem("id"),
+      campaignName: window.localStorage.getItem("campaignName"),
+      ...data,
+    });
+  }, []);
 
   //   React.useEffect(() => {
   //     const handleInfo = async (id) => {
@@ -205,14 +218,14 @@ export default function Taginfo({ data, handleUpdate }) {
         }}
         className="btn "
         // onClick={() => handleInfo(list._id)}
-        onClick={handleClickOpen}
+        onClick={handleOpen}
       >
         Add New Survey
       </button>
       <Dialog
         fullScreen
         open={open}
-        onClose={handleClose}
+        onClose={handleOpen}
         TransitionComponent={Transition}
       >
         <AppBar
@@ -223,7 +236,7 @@ export default function Taginfo({ data, handleUpdate }) {
             <IconButton
               edge="start"
               //   color=""
-              onClick={handleClose}
+              onClick={handleOpen}
               aria-label="close"
               style={{ color: "black" }}
             >
@@ -233,7 +246,7 @@ export default function Taginfo({ data, handleUpdate }) {
             {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Sound
             </Typography> */}
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={handleOpen}>
               Close
             </Button>
           </Toolbar>
@@ -257,7 +270,7 @@ export default function Taginfo({ data, handleUpdate }) {
                   <div className="d-flex justify-content-between ">
                     <div>
                       {" "}
-                      <p onClick={handleClose} style={{ color: "#d12e2f" }}>
+                      <p onClick={handleOpen} style={{ color: "#d12e2f" }}>
                         <i class="fas fa-angle-left mx-2 mt-2"></i> Back
                       </p>
                     </div>
@@ -322,7 +335,7 @@ export default function Taginfo({ data, handleUpdate }) {
                       </label>
                       <div className="d-flex">
                         <div className="row">
-                          {values.surveyAnswers.map((ans, i) => {
+                          {values.surveyAnswers?.map((ans, i) => {
                             return (
                               <div
                                 style={{ position: "relative" }}
@@ -509,7 +522,7 @@ export default function Taginfo({ data, handleUpdate }) {
                           ? values.surveyPreview
                           : "Add Your Survey Preview"}
                       </h5>
-                      {values.surveyAnswers.map((ans) => {
+                      {values.surveyAnswers?.map((ans) => {
                         return (
                           <div
                             style={{

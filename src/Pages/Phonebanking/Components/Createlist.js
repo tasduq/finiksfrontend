@@ -218,11 +218,18 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
     });
     console.log(res);
     if (res.data.success === true) {
-      setFoundVoters(res?.data.foundVoters.length);
+      let filterVoters = res.data?.foundVoters.filter((voter) => {
+        return (
+          (voter.MOBILE_NUM && voter.MOBILE_NUM?.length > 0) ||
+          (voter.PHONE_NUM && voter.PHONE_NUM?.length > 0)
+        );
+      });
+      console.log(filterVoters?.length);
+      setFoundVoters(filterVoters?.length);
       setSearching(false);
       setList({
         ...list,
-        voters: res.data.foundVoters,
+        voters: filterVoters,
       });
     } else {
       toast.error(res.data.message, {

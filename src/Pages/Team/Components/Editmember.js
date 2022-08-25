@@ -32,10 +32,11 @@ export default function Editmember({ handleUpdate, data }) {
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    permission: "",
+    // firstName: "",
+    // lastName: "",
+    email: data?.email,
+    permission: data?.permission,
+    campaignPosition: data?.campaignPosition,
     campaignId: window.localStorage.getItem("id"),
     campaignName: window.localStorage.getItem("username"),
     campaignCode: window.localStorage.getItem("campaignCode"),
@@ -73,12 +74,13 @@ export default function Editmember({ handleUpdate, data }) {
         position: toast.POSITION.TOP_RIGHT,
       });
       setValues({
-        firstName: "",
-        lastName: "",
+        // firstName: "",
+        // lastName: "",
         // phoneNumber: "",
         email: "",
         // address: "",
         permission: "",
+        campaignPosition: "",
         // image: "",
         about: "",
         campaignId: window.localStorage.getItem("id"),
@@ -104,13 +106,14 @@ export default function Editmember({ handleUpdate, data }) {
       email: data?.email,
       // address: data?.,
       permission: data?.permission,
+      campaignPosition: data?.campaignPosition,
       about: data?.about,
       campaignId: window.localStorage.getItem("id"),
       campaignName: window.localStorage.getItem("username"),
       campaignCode: window.localStorage.getItem("campaignCode"),
       disabled: data?.disabled,
     });
-  }, []);
+  }, [data]);
 
   return (
     <div style={{ backgroundColor: "#FCFCFC" }}>
@@ -197,6 +200,33 @@ export default function Editmember({ handleUpdate, data }) {
                     >
                       <MenuItem value="campaignManager">Manager</MenuItem>
                       <MenuItem value="Volunteer">Volunteer</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <br />
+                  <br />
+                  <InputLabel
+                    style={{ color: "#d12e2f" }}
+                    id="demo-simple-select-label"
+                  >
+                    Campaign Position
+                  </InputLabel>
+                  <FormControl fullWidth size="small">
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      //   value={age}
+                      label="Campaign Position"
+                      name="campaignPosition"
+                      value={values.campaignPosition}
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="Campaign Manager">
+                        Campaign Manager
+                      </MenuItem>
+                      <MenuItem value="Volunteer">Volunteer</MenuItem>
+                      <MenuItem value="Intern Level 1">Intern Level 1</MenuItem>
+                      <MenuItem value="Intern Level 2">Intern Level 2</MenuItem>
+                      <MenuItem value="Director">Director</MenuItem>
                     </Select>
                   </FormControl>
                   <br />

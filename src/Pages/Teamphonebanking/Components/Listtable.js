@@ -64,9 +64,9 @@ export default function Listtable({
             <TableCell>List Name</TableCell>
             <TableCell align="right">Total Numbers</TableCell>
             <TableCell align="right">Total Called</TableCell>
-            <TableCell align="right">Numbers Left</TableCell>
+            {/* <TableCell align="right">Numbers Left</TableCell> */}
             <TableCell align="right">Script</TableCell>
-            <TableCell align="right"></TableCell>
+            {/* <TableCell align="right"></TableCell> */}
           </TableRow>
         </TableHead>
 
@@ -79,15 +79,15 @@ export default function Listtable({
                 // onClick={() => handleClick(list)}
               >
                 <TableCell component="th" scope="row">
-                  <Voterview data={list} />
+                  <Voterview handleUpdateTable={handleUpdate} data={list} />
                 </TableCell>
                 <TableCell align="right">{list?.totalNumbers}</TableCell>
                 <TableCell align="right">
                   {list?.totalCalled ? list?.totalCalled : "0"}
                 </TableCell>
-                <TableCell align="right">
+                {/* <TableCell align="right">
                   {list?.numbersLeft ? list?.numbersLeft : "All"}
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="right">
                   {list?.scriptName ? list?.scriptName : "No Script Found"}
                 </TableCell>

@@ -1,6 +1,6 @@
 import axios from "axios";
-// let url = "http://localhost:3001";
-let url = "https://finiksbackend.herokuapp.com";
+let url = "http://localhost:3001";
+// let url = "https://finiksbackend.herokuapp.com";
 
 const register = async (data) => {
   console.log(data);
@@ -101,6 +101,19 @@ const updatePassword = async (data) => {
   console.log(res);
   return res;
 };
+const addToTeam = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/teammember/addtoteam`, data);
+  console.log(res);
+  return res;
+};
+
+const updateVoterInfo = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/teammember/updatevoterinfo`, data);
+  console.log(res);
+  return res;
+};
 
 export {
   register,
@@ -116,4 +129,6 @@ export {
   getSurvey,
   newPassword,
   updatePassword,
+  addToTeam,
+  updateVoterInfo,
 };

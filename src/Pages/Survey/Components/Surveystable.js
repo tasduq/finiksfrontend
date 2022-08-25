@@ -9,11 +9,16 @@ import TableRow from "@mui/material/TableRow";
 import { ToastContainer, toast } from "react-toastify";
 // import Editlist from "./Editlist";
 import Viewsurveypage from "./Viewsurveypage";
+import Editsurvey from "./Editsurvey";
+import Confirmdelete from "../../../Components/Confirmdelete";
+import { deleteSurvey } from "../../../Connection/Survey";
 
-export default function Surveystable({ data }) {
+export default function Surveystable({ data, handleUpdate }) {
   const [selectedTags, setSelectedTags] = React.useState([]);
   const [openSurveyPage, setOpenSurveyPage] = React.useState(false);
+  const [openEditSurvey, setOpenEditSurvey] = React.useState(false);
   const [surveyPageData, setSurveyPageData] = React.useState();
+  const [editData, setEditData] = React.useState();
 
   const handleClickOpenSurveyPage = (data) => {
     // if (data.campaignOwnerId !== undefined) {
@@ -22,6 +27,31 @@ export default function Surveystable({ data }) {
 
     setOpenSurveyPage(!openSurveyPage);
     setSurveyPageData(data);
+  };
+
+  const handleOpenEditSurvey = (data) => {
+    setEditData(data);
+    setOpenEditSurvey(!openEditSurvey);
+  };
+
+  const handleDelete = async (data) => {
+    console.log(data);
+    const res = await deleteSurvey({
+      surveyId: data?.surveyId,
+      campaignId: window.localStorage.getItem("id"),
+      campaignName: window.localStorage.getItem("campaignName"),
+    });
+    if (res.data.success === true) {
+      toast.success(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+
+      handleUpdate();
+    } else {
+      toast.error(res.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   console.log(data);
@@ -76,6 +106,8 @@ export default function Surveystable({ data }) {
             <TableCell align="right"># of Responses</TableCell>
             <TableCell align="center">Script</TableCell>
             <TableCell align="center">View</TableCell>
+            <TableCell align="center">Edit</TableCell>
+            <TableCell align="center">Delete</TableCell>
             {/* <TableCell align="center">Edit</TableCell>
             <TableCell align="center">Select To Merge</TableCell> */}
           </TableRow>
@@ -116,6 +148,24 @@ export default function Surveystable({ data }) {
                   >
                     View
                   </button>
+                </TableCell>
+                <TableCell align="right">
+                  <button
+                    style={{
+                      width: "150px",
+                      height: "36px",
+                      backgroundColor: "#D12E2F",
+                      color: "white",
+                    }}
+                    className="btn "
+                    // onClick={() => handleInfo(list._id)}
+                    onClick={() => handleOpenEditSurvey(list)}
+                  >
+                    Edit
+                  </button>
+                </TableCell>
+                <TableCell align="right">
+                  <Confirmdelete data={list} handleDelete={handleDelete} />
                 </TableCell>
 
                 {/* <TableCell align="right">
@@ -163,6 +213,14 @@ export default function Surveystable({ data }) {
               data={surveyPageData}
               open={openSurveyPage}
               handleClickOpen={handleClickOpenSurveyPage}
+            />
+          )}
+          {openEditSurvey && (
+            <Editsurvey
+              open={openEditSurvey}
+              handleUpdate={handleUpdate}
+              handleOpen={handleOpenEditSurvey}
+              data={editData}
             />
           )}
         </TableBody>

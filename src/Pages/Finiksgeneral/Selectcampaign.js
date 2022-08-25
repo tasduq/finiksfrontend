@@ -22,7 +22,13 @@ const Selectcampaign = (props) => {
       data._id ? data._id : data.campaignId
     );
     window.localStorage.setItem("selectedCampaignData", JSON.stringify(data));
-    window.localStorage.setItem("role", props?.location?.state?.role);
+    window.localStorage.setItem(
+      "role",
+      props?.location?.state?.role ?? window.localStorage.getItem("role")
+    );
+    window.localStorage.setItem("campaignCode", data?.campaignCode);
+    window.localStorage.setItem("campaignName", data?.campaignName);
+    window.localStorage.setItem("campaignSelected", true);
     login();
     history.push({
       pathname: "/",
@@ -145,6 +151,19 @@ const Selectcampaign = (props) => {
                       ) : (
                         ""
                       )}
+                      <br />
+                      <br />
+                      <button
+                        style={{
+                          backgroundColor: "#D12E2F",
+                          width: "150px",
+                          height: "42px",
+                        }}
+                        className="btn text-light"
+                        onClick={logout}
+                      >
+                        Logout
+                      </button>
                     </div>
                     <div className="col-1"></div>
                   </div>

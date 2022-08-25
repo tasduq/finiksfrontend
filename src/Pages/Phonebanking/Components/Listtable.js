@@ -65,7 +65,7 @@ export default function Listtable({
             <TableCell>List Name</TableCell>
             <TableCell align="right">Total Numbers</TableCell>
             <TableCell align="right">Total Called</TableCell>
-            <TableCell align="right">Numbers Left</TableCell>
+            {/* <TableCell align="right">Numbers Left</TableCell> */}
             <TableCell align="right">Script</TableCell>
             <TableCell align="right">Voice Mail</TableCell>
             <TableCell align="right">Assigned Phonebankers</TableCell>
@@ -88,9 +88,9 @@ export default function Listtable({
                 <TableCell align="right">
                   {list?.totalCalled ? list?.totalCalled : "0"}
                 </TableCell>
-                <TableCell align="right">
+                {/* <TableCell align="right">
                   {list?.numbersLeft ? list?.numbersLeft : "All"}
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="right">
                   {list?.scriptName ? list?.scriptName : "No Script Found"}
                 </TableCell>

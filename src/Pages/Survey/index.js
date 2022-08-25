@@ -161,7 +161,12 @@ const Survey = () => {
                             <span class="sr-only">Loading...</span>
                           </div>
                         )}
-                        {foundLists && <Surveystable data={foundLists} />}{" "}
+                        {foundLists && (
+                          <Surveystable
+                            handleUpdate={handleUpdate}
+                            data={foundLists}
+                          />
+                        )}{" "}
                         {foundLists?.length === 0 && (
                           <p>No Campaigns Survey Found </p>
                         )}

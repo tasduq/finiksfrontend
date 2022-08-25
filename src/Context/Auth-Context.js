@@ -30,23 +30,24 @@ const AuthProvider = (props) => {
 
   const logout = (data) => {
     console.log(role, "roleee");
-    if (data === "superadmin") {
-      window.location.replace("/superadmin/login");
-    }
-    if (role === "team") {
-      window.location.replace("/team/login");
-    }
+    // if (data === "superadmin") {
+    //   window.location.replace("/superadmin/login");
+    // }
+    // if (role === "team") {
+    //   window.location.replace("/team/login");
+    // }
 
-    if (role === null) {
-      window.location.replace("/logins");
-    }
-    if (role === undefined) {
-      window.location.replace("/logins");
-    }
-    if (role === "") {
-      window.location.replace("/logins");
-    }
+    // if (role === null) {
+    //   window.location.replace("/logins");
+    // }
+    // if (role === undefined) {
+    //   window.location.replace("/logins");
+    // }
+    // if (role === "") {
+    //   window.location.replace("/logins");
+    // }
     console.log("cliked");
+    window.location.replace("/logins");
     window.localStorage.clear();
     setLoggedIn(false);
     setRole("");

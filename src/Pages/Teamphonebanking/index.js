@@ -6,6 +6,7 @@ import { getCampaignFilterData } from "../../Connection/Campaign";
 import { getTeamPhonebankRecords } from "../../Connection/Team";
 import { Link, NavLink, useHistory, withRouter } from "react-router-dom";
 import Listspage from "./Components/Listspage";
+// import { useLocation, Link, NavLink } from "react-router-dom";
 
 const Teamphonebank = (props) => {
   const [foundLists, setFoundLists] = useState();
@@ -91,8 +92,14 @@ const Teamphonebank = (props) => {
                   className="text-left"
                   style={{ fontSize: "24px", color: "#D12E2F" }}
                 >
-                  How would you like to phonebank?
+                  <strong>How would you like to phonebank?</strong>
                 </p>
+                <Link to="/">
+                  <p className="text-left" style={{ color: "#d12e2f" }}>
+                    <i class="fas fa-angle-left mx-2"></i> Back
+                  </p>
+                </Link>
+
                 <div className="mt-5">
                   {foundLists && <Listspage data={foundLists} />}
                 </div>
