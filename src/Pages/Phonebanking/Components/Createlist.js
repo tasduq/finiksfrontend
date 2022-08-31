@@ -220,8 +220,8 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
     if (res.data.success === true) {
       let filterVoters = res.data?.foundVoters.filter((voter) => {
         return (
-          (voter.MOBILE_NUM && voter.MOBILE_NUM?.length > 0) ||
-          (voter.PHONE_NUM && voter.PHONE_NUM?.length > 0)
+          (voter.MOBILE_NUM && Number(voter.MOBILE_NUM) > 0) ||
+          (voter.PHONE_NUM && Number(voter.PHONE_NUM) > 0)
         );
       });
       console.log(filterVoters?.length);

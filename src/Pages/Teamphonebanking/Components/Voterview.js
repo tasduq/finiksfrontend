@@ -58,6 +58,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   const [currentVoterIndex, setCurrentVoterIndex] = React.useState();
   const [survey, setSurvey] = React.useState();
   const [surveyQuestion, setSurveyQuestion] = React.useState();
+  const [answeredSurveys, setAnsweredSurveys] = React.useState([]);
   const [openSurveyQuestion, setOpenSurveyQuestion] = React.useState(false);
   const [openWrongNumber, setOpenWrongNumber] = React.useState(false);
   const [view, setView] = React.useState("voter");
@@ -221,6 +222,7 @@ export default function Voterview({ data, handleUpdateTable }) {
       voterId: currentVoter?._id,
       voterName: currentVoter?.FIRSTNAME,
     });
+    setAnsweredSurveys([...answeredSurveys, surveyId]);
   };
   console.log(checkedTags);
 
@@ -361,9 +363,10 @@ export default function Voterview({ data, handleUpdateTable }) {
       });
       return;
     } else {
-      toast.success("You can proceed with next voter", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      // toast.success("You can proceed with next voter", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
+      handleNextVoterCheck("Contact Later");
     }
   };
 
@@ -407,6 +410,7 @@ export default function Voterview({ data, handleUpdateTable }) {
 
   return (
     <div>
+      {console.log(values, answeredSurveys)}
       <p onClick={handleClickOpen} className="text-danger">
         {data.recordName}
       </p>
@@ -650,31 +654,37 @@ export default function Voterview({ data, handleUpdateTable }) {
                         <div className="row px-1">
                           {console.log(survey)}
                           {survey?.surveyQuestions?.map((value) => {
+                            console.log(
+                              values.surveyData?.includes(value?.surveyId)
+                            );
                             if (value.active === true) {
                               return (
-                                <div
+                                <button
                                   style={{
                                     width: "45%",
                                     height: "auto",
                                     minHeight: "222px",
                                     backgroundColor: `${
-                                      value.color.code
-                                        ? value.color.code
-                                        : "#FF914D"
+                                      answeredSurveys?.includes(value?.surveyId)
+                                        ? "grey"
+                                        : value.color.code
+                                      // value.color.code
+                                      //   ? value.color.code
+                                      //   : "#FF914D"
                                     }`,
                                     borderRadius: "20px",
                                     color: "white",
                                     fontSize: "25px",
                                     overflowWrap: "break-word",
                                   }}
-                                  className="p-2 text-center ml-2 d-flex justify-content-center align-items-center   mb-1"
+                                  className="btn p-2 text-center ml-2 d-flex justify-content-center align-items-center   mb-1"
                                   onClick={() => handleSurveyQuestion(value)}
                                 >
                                   <p style={{ fontSize: "24px" }}>
                                     {" "}
                                     {value?.surveyPreview}
                                   </p>
-                                </div>
+                                </button>
                               );
                             }
                           })}
@@ -809,9 +819,12 @@ export default function Voterview({ data, handleUpdateTable }) {
                             voters[currentVoterIndex]?.voterTags?.length ===
                               undefined) && (
                             <div className="d-flex">
-                              <Tag value={{ tagName: "No Tags" }} />
                               {tags && (
-                                <Tags handleTags={handleTags} tags={tags} />
+                                <Tags
+                                  handleUpdate={handleUpdate}
+                                  handleTags={handleTags}
+                                  tags={tags}
+                                />
                               )}
                             </div>
                           )}
@@ -827,7 +840,11 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 }
                               )}
                               {tags && (
-                                <Tags handleTags={handleTags} tags={tags} />
+                                <Tags
+                                  handleUpdate={handleUpdate}
+                                  handleTags={handleTags}
+                                  tags={tags}
+                                />
                               )}
                             </div>
                           )}
@@ -1751,6 +1768,7 @@ export default function Voterview({ data, handleUpdateTable }) {
           handleOpen={handleOpenSurveyQuestion}
           open={openSurveyQuestion}
           handleAnswer={handleAnswer}
+          surveyIds={values?.surveyData}
         />
       )}
     </div>

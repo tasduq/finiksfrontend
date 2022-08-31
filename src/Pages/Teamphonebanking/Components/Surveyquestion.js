@@ -121,11 +121,11 @@ export default function CustomizedDialogs({
                       width: "175px",
                       height: "50px",
                       borderRadius: "5px",
-                      color: `${
-                        voterAnswer.answer === ans ? "#D12E2F" : "black"
+                      backgroundColor: `${
+                        voterAnswer.answer === ans ? "#FF914D" : "white"
                       }`,
                     }}
-                    className="btn shadow-sm p-3 m-2 text-center"
+                    className="btn shadow p-3 m-2 text-center"
                     onClick={() =>
                       setVoterAnswer({ ...voterAnswer, answer: ans })
                     }

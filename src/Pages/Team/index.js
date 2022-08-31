@@ -4,6 +4,7 @@ import Addnewmember from "./Components/Addnewmember";
 import Teamtable from "./Components/Teamtable";
 import { ToastContainer, toast } from "react-toastify";
 import { getTeam } from "../../Connection/Campaign";
+import Addvotertoteam from "./Components/Addvotertoteam";
 
 const Team = () => {
   const [update, setUpdate] = React.useState(false);
@@ -52,9 +53,10 @@ const Team = () => {
                 boxShadow: " 0px 10px 24px #00000029",
               }}
             >
-              <div className="text-right">
+              <div className="text-right d-flex justify-content-end">
                 {" "}
-                <Addnewmember handleUpdateData={handleUpdate} />
+                <Addnewmember data="" handleUpdateData={handleUpdate} />
+                <Addvotertoteam handleUpdateData={handleUpdate} />
               </div>
               <br />
               {foundTeam === undefined && (

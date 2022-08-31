@@ -62,11 +62,11 @@ export default function Listtable({
         <TableHead>
           <TableRow>
             <TableCell>List Name</TableCell>
-            <TableCell align="right">Total Numbers</TableCell>
-            <TableCell align="right">Total Called</TableCell>
+            {/* <TableCell align="right">Total Numbers</TableCell>
+            <TableCell align="right">Total Called</TableCell> */}
             {/* <TableCell align="right">Numbers Left</TableCell> */}
-            <TableCell align="right">Script</TableCell>
-            {/* <TableCell align="right"></TableCell> */}
+            {/* <TableCell align="right">Script</TableCell> */}
+            <TableCell align="">Active</TableCell>
           </TableRow>
         </TableHead>
 
@@ -77,19 +77,34 @@ export default function Listtable({
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 // onClick={() => handleClick(list)}
+                className="shadow-sm"
               >
                 <TableCell component="th" scope="row">
                   <Voterview handleUpdateTable={handleUpdate} data={list} />
                 </TableCell>
-                <TableCell align="right">{list?.totalNumbers}</TableCell>
+                {/* <TableCell align="right">{list?.totalNumbers}</TableCell>
                 <TableCell align="right">
                   {list?.totalCalled ? list?.totalCalled : "0"}
-                </TableCell>
+                </TableCell> */}
                 {/* <TableCell align="right">
                   {list?.numbersLeft ? list?.numbersLeft : "All"}
                 </TableCell> */}
-                <TableCell align="right">
+                {/* <TableCell align="right">
                   {list?.scriptName ? list?.scriptName : "No Script Found"}
+                </TableCell> */}
+                <TableCell align="">
+                  {/* {list?.Active ? list?.scriptName : "No Script Found"} */}
+                  <div
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: `${
+                        list.active === "Active" ? "#49C661" : "grey"
+                      }`,
+                      color: "green",
+                      borderRadius: "50%",
+                    }}
+                  ></div>
                 </TableCell>
               </TableRow>
             );

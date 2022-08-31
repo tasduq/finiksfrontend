@@ -69,6 +69,7 @@ export default function Createlist({
   data,
   campaignFilterData,
 }) {
+  console.log(data);
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState({
     campaignId: window.localStorage.getItem("id"),
@@ -315,6 +316,13 @@ export default function Createlist({
     setLocationActive(state);
   };
 
+  const handleChangeActive = (evt) => {
+    setRecord({
+      ...record,
+      active: evt.target.value,
+    });
+  };
+
   const handleUpdate = () => {
     setUpdate(true);
   };
@@ -397,6 +405,7 @@ export default function Createlist({
       teamMembers: data?.teamMembers,
       recordName: data?.recordName,
       recordId: data?._id,
+      active: data?.active,
     });
     // setSelectedScript({
     //   ...selectedScript,
@@ -883,6 +892,30 @@ export default function Createlist({
                           })
                         }
                       ></input>
+                      <br />
+                      <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">
+                          Choose Active Status
+                        </FormLabel>
+                        <RadioGroup
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          defaultValue={true}
+                          value={record.active}
+                          name="active"
+                          onChange={handleChangeActive}
+                        >
+                          <FormControlLabel
+                            value="Active"
+                            control={<Radio />}
+                            label="Active"
+                          />
+                          <FormControlLabel
+                            value="In Active"
+                            control={<Radio />}
+                            label="Inactive"
+                          />
+                        </RadioGroup>
+                      </FormControl>
                       <br />
                       <div className="d-flex justify-content-between">
                         <p className="mt-2" style={{ color: "#D12E2F" }}>

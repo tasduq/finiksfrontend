@@ -5,7 +5,7 @@ const Tag = ({ value }) => {
     <div
       style={{
         backgroundColor: "#d12e2f",
-        minHeight: "40px",
+        minHeight: "35px",
         height: "auto",
         width: "100px",
         color: "white",

@@ -20,6 +20,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import { editTeamMember } from "../../../Connection/Campaign";
+import TextField from "@mui/material/TextField";
 
 import Logo from "../../../Assets/logoword.png";
 
@@ -204,7 +205,7 @@ export default function Editmember({ handleUpdate, data }) {
                   </FormControl>
                   <br />
                   <br />
-                  <InputLabel
+                  {/* <InputLabel
                     style={{ color: "#d12e2f" }}
                     id="demo-simple-select-label"
                   >
@@ -228,7 +229,24 @@ export default function Editmember({ handleUpdate, data }) {
                       <MenuItem value="Intern Level 2">Intern Level 2</MenuItem>
                       <MenuItem value="Director">Director</MenuItem>
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
+                  <InputLabel
+                    style={{ color: "#d12e2f" }}
+                    id="demo-simple-select-label"
+                  >
+                    Campaign Position
+                  </InputLabel>
+                  <TextField
+                    id="outlined-basic"
+                    label=""
+                    name="campaignPosition"
+                    value={values.campaignPosition}
+                    onChange={handleChange}
+                    variant="outlined"
+                    placeholder="Ex. Communication Director"
+                    fullWidth
+                    size="small"
+                  />
                   <br />
                   <br />
                   <InputLabel

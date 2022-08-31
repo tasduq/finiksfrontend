@@ -1,6 +1,6 @@
 import axios from "axios";
-// let url = "http://localhost:3001";
-let url = "https://finiksbackend.herokuapp.com";
+let url = "http://localhost:3001";
+// let url = "https://finiksbackend.herokuapp.com";
 
 const register = async (data) => {
   console.log(data);
@@ -115,6 +115,13 @@ const updateVoterInfo = async (data) => {
   return res;
 };
 
+const getInvitedVoters = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/teammember/getinvitedvoters`, data);
+  console.log(res);
+  return res;
+};
+
 export {
   register,
   loginTeam,
@@ -131,4 +138,5 @@ export {
   updatePassword,
   addToTeam,
   updateVoterInfo,
+  getInvitedVoters,
 };

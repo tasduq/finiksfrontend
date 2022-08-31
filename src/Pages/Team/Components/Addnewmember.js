@@ -20,6 +20,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import { inviteTeamMember } from "../../../Connection/Campaign";
+import TextField from "@mui/material/TextField";
 
 import Logo from "../../../Assets/logoword.png";
 
@@ -27,14 +28,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Campaignsettings({ handleUpdate }) {
+export default function Campaignsettings({ handleUpdate, data }) {
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
     // firstName: "",
     // lastName: "",
     // phoneNumber: "",
-    email: "",
+    email: data ?? "",
     // address: "",
     permission: "",
     campaignPosition: "",
@@ -106,12 +107,19 @@ export default function Campaignsettings({ handleUpdate }) {
     }
   };
 
+  React.useEffect(() => {
+    setValues({
+      ...values,
+      email: data,
+    });
+  }, [data]);
+
   return (
     <div style={{ backgroundColor: "#FCFCFC" }}>
       {console.log(values)}
       <p
         style={{ color: "#FFFFFF", backgroundColor: "#583689" }}
-        className="btn px-3 py-2"
+        className="btn px-3 py-2 mt-2"
         onClick={handleClickOpen}
       >
         Add New
@@ -303,14 +311,25 @@ export default function Campaignsettings({ handleUpdate }) {
                   </FormControl>
                   <br />
                   <br />
-
                   <InputLabel
                     style={{ color: "#d12e2f" }}
                     id="demo-simple-select-label"
                   >
                     Campaign Position
                   </InputLabel>
-                  <FormControl fullWidth size="small">
+                  <TextField
+                    id="outlined-basic"
+                    label=""
+                    name="campaignPosition"
+                    value={values.campaignPosition}
+                    onChange={handleChange}
+                    variant="outlined"
+                    placeholder="Ex. Communication Director"
+                    fullWidth
+                    size="small"
+                  />
+
+                  {/* <FormControl fullWidth size="small">
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -328,7 +347,7 @@ export default function Campaignsettings({ handleUpdate }) {
                       <MenuItem value="Intern Level 2">Intern Level 2</MenuItem>
                       <MenuItem value="Director">Director</MenuItem>
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </div>
               </div>
             </div>

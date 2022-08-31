@@ -16,6 +16,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import Addnewtag from "../../Tags/Components/Addtag";
+import { getInvitedVoters } from "../../../Connection/Team";
+import { ToastContainer, toast } from "react-toastify";
+import Addnewmember from "./Addnewmember";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -55,10 +58,11 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function Tags({ tags, handleTags, handleUpdate }) {
+export default function Invitedvoters({ handleUpdateData }) {
   const [open, setOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState([]);
-  const [checkedTags, setCheckedTags] = React.useState([]);
+  //   const [checked, setChecked] = React.useState([]);
+  //   const [checkedTags, setCheckedTags] = React.useState([]);
+  const [voters, setVoters] = React.useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,44 +71,40 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
     setOpen(false);
   };
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value.tagId);
-    const newChecked = [...checked];
-    const newCheckedTags = [...checkedTags];
+  React.useEffect(() => {
+    const handleGetTeam = async () => {
+      const res = await getInvitedVoters({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setVoters(res.data.invitedVoters);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
 
-    if (currentIndex === -1) {
-      newChecked.push(value.tagId);
-      newCheckedTags.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-      newCheckedTags.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-    setCheckedTags(newCheckedTags);
-  };
-
-  const handleSave = () => {
-    handleTags(checkedTags);
-    handleClose();
-  };
+    handleGetTeam();
+    // setUpdate(false);
+  }, []);
 
   return (
     <div>
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
       </Button> */}
-      <button onClick={handleClickOpen} className="btn">
-        <i
-          style={{
-            color: "#D12E2F",
-            // width: "35px",
-            // height: "35px",
-            fontSize: "25px",
-          }}
-          class="fas fa-plus-circle mt-3"
-        ></i>
-      </button>
+      {/* <button onClick={handleClickOpen} className="btn">
+        Add Voter to Team
+      </button> */}
+      <p
+        style={{ color: "#FFFFFF", backgroundColor: "#583689" }}
+        className="btn px-3 py-2 mx-2 mt-2"
+        onClick={handleClickOpen}
+      >
+        Invited Voters
+      </p>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -115,21 +115,21 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Tags
+          Invited Voters
         </BootstrapDialogTitle>
         <div className="">
           <div className="text-center">
-            <h5 className="my-2 text-danger ">Campaign Tags</h5>
+            <h5 className="my-2 text-danger ">Campaign Invited Voters</h5>
 
-            <Addnewtag
+            {/* <Addnewtag
               handleUpdate={handleUpdate}
               campaignOwnerId={window.localStorage.getItem("id")}
-            />
+            /> */}
           </div>
-          {tags?.length === 0 && <p>No Tags Found</p>}
+          {voters?.length === 0 && <p className="mx-3">No Voters Found</p>}
           <div className="text-center">
             {" "}
-            {!tags && (
+            {!voters && (
               <div
                 class="spinner-border text-danger text-center mt-3"
                 role="status"
@@ -139,7 +139,7 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
             )}
           </div>
 
-          {tags?.length > 0 && (
+          {voters?.length > 0 && (
             <List
               sx={{
                 width: "100%",
@@ -147,13 +147,13 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
                 bgcolor: "background.paper",
               }}
             >
-              {tags?.length > 0 &&
-                tags?.map((value) => {
-                  const labelId = `checkbox-list-label-${value._id}`;
+              {voters?.length > 0 &&
+                voters?.map((value) => {
+                  const labelId = `checkbox-list-label-${value.email}`;
 
                   return (
                     <ListItem
-                      key={value._id}
+                      key={value.email}
                       secondaryAction={
                         <IconButton
                           edge="end"
@@ -165,22 +165,17 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
                     >
                       <ListItemButton
                         role={undefined}
-                        onClick={handleToggle({
-                          tagId: value._id,
-                          tagName: value.tagName,
-                        })}
+                        // onClick={handleToggle({
+                        //   tagId: value._id,
+                        //   tagName: value.tagName,
+                        // })}
                         dense
                       >
-                        <ListItemIcon>
-                          <Checkbox
-                            edge="start"
-                            checked={checked.indexOf(value._id) !== -1}
-                            tabIndex={-1}
-                            disableRipple
-                            inputProps={{ "aria-labelledby": labelId }}
-                          />
-                        </ListItemIcon>
-                        <ListItemText id={labelId} primary={value.tagName} />
+                        <ListItemText id={labelId} primary={value.email} />
+                        <Addnewmember
+                          data={value.email}
+                          handleUpdateData={handleUpdateData}
+                        />
                       </ListItemButton>
                     </ListItem>
                   );
@@ -193,7 +188,7 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
-          <Button className="text-danger" autoFocus onClick={handleSave}>
+          <Button className="text-danger" autoFocus>
             Save
           </Button>
         </DialogActions>
