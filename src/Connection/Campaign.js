@@ -1,6 +1,6 @@
 import axios from "axios";
-// let url = "http://localhost:3001";
-let url = "https://finiksbackend.herokuapp.com";
+let url = "http://localhost:3001";
+// let url = "https://finiksbackend.herokuapp.com";
 
 const getNewCode = async (data) => {
   console.log(data);
@@ -51,6 +51,13 @@ const getTeam = async (data) => {
   return res;
 };
 
+const getTeamAdmin = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/campaign/getteamadmin`, data);
+  console.log(res);
+  return res;
+};
+
 const getCampaignTeammembers = async (data) => {
   console.log(data);
   let res = await axios.post(
@@ -67,6 +74,7 @@ export {
   getCampaignData,
   inviteTeamMember,
   getTeam,
+  getTeamAdmin,
   getCampaignTeammembers,
   getCampaignFilterData,
   editTeamMember,

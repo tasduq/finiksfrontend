@@ -55,7 +55,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function Tags({ tags, handleTags, handleUpdate }) {
+export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState([]);
   const [checkedTags, setCheckedTags] = React.useState([]);
@@ -85,6 +85,7 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
   };
 
   const handleSave = () => {
+    console.log(checkedTags);
     handleTags(checkedTags);
     handleClose();
   };
@@ -126,67 +127,144 @@ export default function Tags({ tags, handleTags, handleUpdate }) {
               campaignOwnerId={window.localStorage.getItem("id")}
             />
           </div>
-          {tags?.length === 0 && <p>No Tags Found</p>}
-          <div className="text-center">
-            {" "}
-            {!tags && (
-              <div
-                class="spinner-border text-danger text-center mt-3"
-                role="status"
-              >
-                <span class="sr-only">Loading...</span>
-              </div>
-            )}
-          </div>
-
-          {tags?.length > 0 && (
-            <List
-              sx={{
-                width: "100%",
-                // maxWidth: 360,
-                bgcolor: "background.paper",
-              }}
-            >
-              {tags?.length > 0 &&
-                tags?.map((value) => {
-                  const labelId = `checkbox-list-label-${value._id}`;
-
-                  return (
-                    <ListItem
-                      key={value._id}
-                      secondaryAction={
-                        <IconButton
-                          edge="end"
-                          aria-label="comments"
-                        ></IconButton>
-                      }
-                      disablePadding
-                      style={{ borderBottom: "1px solid grey" }}
+          <div className="container">
+            <div className="row">
+              <div className="col-6 ">
+                <h5 className="text-center text-danger mt-4">Admin Tags</h5>
+                {adminTags?.length === 0 && <p>No Admin Tags Found</p>}
+                <div className="text-center">
+                  {" "}
+                  {!adminTags && (
+                    <div
+                      class="spinner-border text-danger text-center mt-3"
+                      role="status"
                     >
-                      <ListItemButton
-                        role={undefined}
-                        onClick={handleToggle({
-                          tagId: value._id,
-                          tagName: value.tagName,
-                        })}
-                        dense
-                      >
-                        <ListItemIcon>
-                          <Checkbox
-                            edge="start"
-                            checked={checked.indexOf(value._id) !== -1}
-                            tabIndex={-1}
-                            disableRipple
-                            inputProps={{ "aria-labelledby": labelId }}
-                          />
-                        </ListItemIcon>
-                        <ListItemText id={labelId} primary={value.tagName} />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-            </List>
-          )}
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  )}
+                </div>
+
+                {adminTags?.length > 0 && (
+                  <List
+                    sx={{
+                      width: "100%",
+                      // maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    {adminTags?.length > 0 &&
+                      adminTags?.map((value) => {
+                        const labelId = `checkbox-list-label-${value._id}`;
+
+                        return (
+                          <ListItem
+                            key={value._id}
+                            secondaryAction={
+                              <IconButton
+                                edge="end"
+                                aria-label="comments"
+                              ></IconButton>
+                            }
+                            disablePadding
+                            style={{ borderBottom: "1px solid grey" }}
+                          >
+                            <ListItemButton
+                              role={undefined}
+                              onClick={handleToggle({
+                                tagId: value._id,
+                                tagName: value.tagName,
+                              })}
+                              dense
+                            >
+                              <ListItemIcon>
+                                <Checkbox
+                                  edge="start"
+                                  checked={checked.indexOf(value._id) !== -1}
+                                  tabIndex={-1}
+                                  disableRipple
+                                  inputProps={{ "aria-labelledby": labelId }}
+                                />
+                              </ListItemIcon>
+                              <ListItemText
+                                id={labelId}
+                                primary={value.tagName}
+                              />
+                            </ListItemButton>
+                          </ListItem>
+                        );
+                      })}
+                  </List>
+                )}
+              </div>
+              <div className="col-6 ">
+                <h5 className="text-center text-danger mt-4">Custom Tags</h5>
+                {tags?.length === 0 && <p>No Tags Found</p>}
+                <div className="text-center">
+                  {" "}
+                  {!tags && (
+                    <div
+                      class="spinner-border text-danger text-center mt-3"
+                      role="status"
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  )}
+                </div>
+
+                {tags?.length > 0 && (
+                  <List
+                    sx={{
+                      width: "100%",
+                      // maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    {tags?.length > 0 &&
+                      tags?.map((value) => {
+                        const labelId = `checkbox-list-label-${value._id}`;
+
+                        return (
+                          <ListItem
+                            key={value._id}
+                            secondaryAction={
+                              <IconButton
+                                edge="end"
+                                aria-label="comments"
+                              ></IconButton>
+                            }
+                            disablePadding
+                            style={{ borderBottom: "1px solid grey" }}
+                          >
+                            <ListItemButton
+                              role={undefined}
+                              onClick={handleToggle({
+                                tagId: value._id,
+                                tagName: value.tagName,
+                              })}
+                              dense
+                            >
+                              <ListItemIcon>
+                                <Checkbox
+                                  edge="start"
+                                  checked={checked.indexOf(value._id) !== -1}
+                                  tabIndex={-1}
+                                  disableRipple
+                                  inputProps={{ "aria-labelledby": labelId }}
+                                />
+                              </ListItemIcon>
+                              <ListItemText
+                                id={labelId}
+                                primary={value.tagName}
+                              />
+                            </ListItemButton>
+                          </ListItem>
+                        );
+                      })}
+                  </List>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <DialogActions>

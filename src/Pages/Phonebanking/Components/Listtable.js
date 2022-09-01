@@ -69,6 +69,7 @@ export default function Listtable({
             <TableCell align="right">Script</TableCell>
             <TableCell align="right">Voice Mail</TableCell>
             <TableCell align="right">Assigned Phonebankers</TableCell>
+            <TableCell align="right">Active</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
@@ -99,6 +100,19 @@ export default function Listtable({
                   {list.teamMembers?.length > 0
                     ? list?.teamMembers?.length
                     : "Not Assigned"}
+                </TableCell>
+                <TableCell align="right">
+                  <div
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: `${
+                        list.active === "Active" ? "#49C661" : "grey"
+                      }`,
+                      color: "green",
+                      borderRadius: "50%",
+                    }}
+                  ></div>
                 </TableCell>
 
                 <TableCell align="right">

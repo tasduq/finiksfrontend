@@ -17,6 +17,7 @@ import {
   getScript,
   getTags,
   getSurvey,
+  getAdminTags,
 } from "../../../Connection/Team";
 import {
   takeSurvey,
@@ -40,6 +41,14 @@ import Emailtovoter from "./VoterviewComponents/Emailtovoter";
 import Updatevoter from "./VoterviewComponents/Updatevoter";
 import Nextvoter from "./VoterviewComponents/Nextvoter";
 import Wrongnumber from "./VoterviewComponents/Wrongnumber";
+import {
+  Link,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
+} from "react-scroll";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -50,6 +59,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [tags, setTags] = React.useState();
+  const [adminTags, setAdminTags] = React.useState();
   const [voters, setVoters] = React.useState([]);
   const [script, setScript] = React.useState();
   const [checked, setChecked] = React.useState([]);
@@ -172,6 +182,16 @@ export default function Voterview({ data, handleUpdateTable }) {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
+
+    const res4 = await getAdminTags();
+    console.log(res4);
+    if (res4.data.success) {
+      setAdminTags(res4.data.tags);
+    } else {
+      toast.error(res4.data.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   const handleUpdate = async () => {
@@ -189,17 +209,21 @@ export default function Voterview({ data, handleUpdateTable }) {
   };
 
   const handleGetSurvey = async () => {
-    const res3 = await getSurvey({
-      id: window.localStorage.getItem("id"),
-    });
-    console.log(res3);
-    if (res3.data.success) {
-      setSurvey(res3.data.survey);
-      setView("survey");
-    } else {
-      toast.error(res3.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+    if (view !== "survey") {
+      const res3 = await getSurvey({
+        id: window.localStorage.getItem("id"),
       });
+      console.log(res3);
+      if (res3.data.success) {
+        setSurvey(res3.data.survey);
+        setView("survey");
+      } else {
+        toast.error(res3.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } else {
+      setView("voter");
     }
   };
 
@@ -214,26 +238,45 @@ export default function Voterview({ data, handleUpdateTable }) {
 
   const handleAnswer = (data, surveyId) => {
     console.log(data, surveyId);
-    setValues({
-      ...values,
-      voterAnswers: [...values.voterAnswers, data],
-      surveyData: [...values.surveyData, { surveyId: surveyId }],
-      tags: checkedTags,
-      voterId: currentVoter?._id,
-      voterName: currentVoter?.FIRSTNAME,
-    });
+    let isAnsweredBefore = values.voterAnswers.some(
+      (ans) => ans.surveyId === surveyId
+    );
+    console.log(isAnsweredBefore);
+    if (isAnsweredBefore) {
+      let oldAns = values.voterAnswers.filter(
+        (ans) => ans.surveyId !== surveyId
+      );
+      setValues({
+        ...values,
+        voterAnswers: [...oldAns, data],
+        surveyData: [...values.surveyData, { surveyId: surveyId }],
+        tags: checkedTags,
+        voterId: currentVoter?._id,
+        voterName: currentVoter?.FIRSTNAME,
+      });
+    } else {
+      setValues({
+        ...values,
+        voterAnswers: [...values.voterAnswers, data],
+        surveyData: [...values.surveyData, { surveyId: surveyId }],
+        tags: checkedTags,
+        voterId: currentVoter?._id,
+        voterName: currentVoter?.FIRSTNAME,
+      });
+    }
+
     setAnsweredSurveys([...answeredSurveys, surveyId]);
   };
   console.log(checkedTags);
 
   const handleTakeSurvey = async () => {
     console.log(values, currentVoter);
-    if (checkedTags.length === 0) {
-      toast.error("Check Atleast one Tag", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+    // if (checkedTags.length === 0) {
+    //   toast.error("Check Atleast one Tag", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
     setSaving(true);
     // console.table(currentVoter);
     // console.log(values);
@@ -289,6 +332,8 @@ export default function Voterview({ data, handleUpdateTable }) {
       //     position: toast.POSITION.TOP_RIGHT,
       //   });
       // }
+      setCurrentVoterIndex(currentVoterIndex + 1);
+      setCurrentVoter(voters[currentVoterIndex + 1]);
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -298,18 +343,18 @@ export default function Voterview({ data, handleUpdateTable }) {
 
   const handleNextVoterCheck = (interactionData) => {
     console.log(interactionData);
-    if (values.voterAnswers?.length > 0) {
-      toast.error("You havn't saved the survey", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    } else {
-      setValues({
-        ...values,
-        interaction: interactionData,
-      });
-      handleNextVoter(interactionData);
-    }
+    // if (values.voterAnswers?.length > 0) {
+    //   toast.error("You havn't saved the survey", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // } else {
+    setValues({
+      ...values,
+      interaction: interactionData,
+    });
+    handleNextVoter(interactionData);
+    // }
   };
 
   const handleNextVoter = async (interaction) => {
@@ -325,8 +370,10 @@ export default function Voterview({ data, handleUpdateTable }) {
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        setCurrentVoterIndex(currentVoterIndex + 1);
-        setCurrentVoter(voters[currentVoterIndex + 1]);
+
+        if (values.voterAnswers?.length > 0) {
+          handleTakeSurvey();
+        }
       } else {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
@@ -338,6 +385,9 @@ export default function Voterview({ data, handleUpdateTable }) {
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
+        if (values.voterAnswers?.length > 0) {
+          handleTakeSurvey();
+        }
         handleClose();
         toast.success("This was the last voter", {
           position: toast.POSITION.TOP_RIGHT,
@@ -346,10 +396,10 @@ export default function Voterview({ data, handleUpdateTable }) {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        handleClose();
-        toast.success("This was the last voter", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        // handleClose();
+        // toast.success("This was the last voter", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
       }
 
       // handleUpdateTable();
@@ -511,7 +561,27 @@ export default function Voterview({ data, handleUpdateTable }) {
                             <strong>Script</strong>
                           </p>
                           <div>
-                            <p>{script.description}</p>
+                            <Element
+                              className="element"
+                              id="scroll-container"
+                              style={{
+                                position: "relative",
+                                height: "420px",
+                                overflowY: "scroll",
+                                //   marginBottom: "100px",
+                              }}
+                            >
+                              <Element
+                                //   name="scroll-container-first-element"
+                                style={{
+                                  marginBottom: "200px",
+                                }}
+                              >
+                                <p style={{ whiteSpace: "pre-wrap" }}>
+                                  {script.script}
+                                </p>
+                              </Element>
+                            </Element>
                           </div>
                         </div>
                       )}
@@ -598,7 +668,6 @@ export default function Voterview({ data, handleUpdateTable }) {
                         >
                           Next Voter
                         </button> */}
-                        <Nextvoter handleNextVoter={handleNextVoterCheck} />
                         <div className="text-center">
                           {saving === true && (
                             <div
@@ -609,8 +678,22 @@ export default function Voterview({ data, handleUpdateTable }) {
                             </div>
                           )}
                         </div>
+                        {saving === false && (
+                          <Nextvoter handleNextVoter={handleNextVoterCheck} />
+                        )}
 
-                        {values.voterAnswers?.length > 0 && saving === false && (
+                        {/* <div className="text-center">
+                          {saving === true && (
+                            <div
+                              class="spinner-border text-danger text-center"
+                              role="status"
+                            >
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          )}
+                        </div> */}
+
+                        {/* {values.voterAnswers?.length > 0 && saving === false && (
                           <button
                             style={{
                               borderRadius: "8px",
@@ -625,7 +708,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                           >
                             Save Survey Before Next Voter
                           </button>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>
@@ -824,6 +907,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                   handleUpdate={handleUpdate}
                                   handleTags={handleTags}
                                   tags={tags}
+                                  adminTags={adminTags}
                                 />
                               )}
                             </div>
@@ -1769,6 +1853,7 @@ export default function Voterview({ data, handleUpdateTable }) {
           open={openSurveyQuestion}
           handleAnswer={handleAnswer}
           surveyIds={values?.surveyData}
+          takenSurveys={values.voterAnswers}
         />
       )}
     </div>

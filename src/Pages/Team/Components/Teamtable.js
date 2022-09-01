@@ -10,7 +10,12 @@ import { deleteList } from "../../../Connection/Phonebank";
 import { ToastContainer, toast } from "react-toastify";
 import Editmember from "./Editmember";
 
-export default function Listtable({ data, handleClick, handleUpdate }) {
+export default function Listtable({
+  teamAdmin,
+  data,
+  handleClick,
+  handleUpdate,
+}) {
   console.log(data);
   const handleDelete = async (data) => {
     console.log(data);
@@ -49,6 +54,49 @@ export default function Listtable({ data, handleClick, handleUpdate }) {
         </TableHead>
 
         <TableBody>
+          <TableRow
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            // onClick={() => handleClick(list)}
+          >
+            <TableCell component="th" scope="row">
+              {teamAdmin?.campaignName}
+            </TableCell>
+            <TableCell align="">Campaign Manager</TableCell>
+            <TableCell align="">Campaign Admin</TableCell>
+            <TableCell align=""></TableCell>
+            <TableCell align="">{teamAdmin?.email}</TableCell>
+            <TableCell align="">""</TableCell>
+            <TableCell align="">""</TableCell>
+            <TableCell align="">""</TableCell>
+            <TableCell align="">""</TableCell>
+            <TableCell align="">""</TableCell>
+            <TableCell align="">
+              {teamAdmin?.startDate?.split("T")[0]}
+            </TableCell>
+
+            <TableCell align="">
+              {/* <div class="dropdown">
+                <button
+                  style={{
+                    color: "white",
+                    backgroundColor: "#d12e2f",
+                    width: "88px",
+                    height: "36px",
+                  }}
+                  class="btn  dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Options
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <Editmember handleUpdate={handleUpdate} data={list} />
+                </div>
+              </div> */}
+            </TableCell>
+          </TableRow>
           {data?.map((list) => {
             console.log(list);
             return (

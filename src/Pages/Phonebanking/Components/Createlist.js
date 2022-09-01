@@ -391,6 +391,15 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
     );
   };
 
+  const handleSelectAllTeam = () => {
+    console.log(campaignTeammembers);
+    let emails = campaignTeammembers.map((member) => member.email);
+    setRecord({
+      ...record,
+      teamMembers: emails,
+    });
+  };
+
   return (
     <div>
       {console.log(foundLists, record, selectedList, locationFilters)}
@@ -754,6 +763,16 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
                       >
                         Who do you want Phonebanking this list?
                       </p>
+                      <div className="text-right">
+                        {" "}
+                        <button
+                          onClick={handleSelectAllTeam}
+                          className="btn text-danger"
+                        >
+                          Select All
+                        </button>
+                      </div>
+
                       <FormControl fullWidth size="small">
                         <InputLabel id="demo-simple-select-label">
                           Assign Phonebankers
@@ -764,7 +783,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
                           id="demo-simple-select"
                           multiple
                           //   value={age}
-                          label="District"
+                          label="Assign Phonebankers"
                           //   onChange={handleChange}
                           value={record.teamMembers}
                           onChange={handleChangeTeammembers}
@@ -808,7 +827,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={selectedScript}
-                            label="Election"
+                            label="Select Script"
                             onChange={handleSelectScript}
                           >
                             {scripts?.map((script) => {
@@ -932,7 +951,9 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
                               Script Name : {selectedScript.scriptName}
                             </p>
                             <div>
-                              <p>{selectedScript.script}</p>
+                              <p style={{ whiteSpace: "pre-wrap" }}>
+                                {selectedScript.script}
+                              </p>
                             </div>
                           </div>
                         )}

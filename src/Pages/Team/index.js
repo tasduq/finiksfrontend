@@ -3,12 +3,13 @@ import Header from "../../Components/Header";
 import Addnewmember from "./Components/Addnewmember";
 import Teamtable from "./Components/Teamtable";
 import { ToastContainer, toast } from "react-toastify";
-import { getTeam } from "../../Connection/Campaign";
+import { getTeam, getTeamAdmin } from "../../Connection/Campaign";
 import Addvotertoteam from "./Components/Addvotertoteam";
 
 const Team = () => {
   const [update, setUpdate] = React.useState(false);
   const [foundTeam, setFoundTeam] = React.useState();
+  const [foundTeamAdmin, setFoundTeamAdmin] = React.useState();
 
   const handleUpdate = () => {
     setUpdate(true);
@@ -29,7 +30,22 @@ const Team = () => {
       }
     };
 
+    const handleGetTeamAdmin = async () => {
+      const res = await getTeamAdmin({
+        campaignId: window.localStorage.getItem("id"),
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        setFoundTeamAdmin(res.data.team);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
+
     handleGetTeam();
+    handleGetTeamAdmin();
     setUpdate(false);
   }, [update === true]);
   return (
@@ -65,7 +81,11 @@ const Team = () => {
                 </div>
               )}
               {foundTeam && (
-                <Teamtable handleUpdate={handleUpdate} data={foundTeam} />
+                <Teamtable
+                  teamAdmin={foundTeamAdmin}
+                  handleUpdate={handleUpdate}
+                  data={foundTeam}
+                />
               )}
 
               {foundTeam?.length === 0 && <p>No Team Found Make One</p>}

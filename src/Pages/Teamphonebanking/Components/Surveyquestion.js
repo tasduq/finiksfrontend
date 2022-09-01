@@ -53,15 +53,10 @@ export default function CustomizedDialogs({
   handleOpen,
   data,
   handleAnswer,
+  takenSurveys,
 }) {
-  //   const [open, setOpen] = React.useState(false);
+  console.log(data, takenSurveys);
 
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
   const [voterAnswer, setVoterAnswer] = React.useState({
     surveyId: data?.surveyId,
     surveyQuestion: data?.surveyQuestion,
@@ -81,6 +76,30 @@ export default function CustomizedDialogs({
     handleOpen();
   };
 
+  const handleSelectAnswer = (ans) => {
+    if (voterAnswer.answer === ans) {
+      setVoterAnswer({
+        ...voterAnswer,
+        answer: "",
+      });
+    } else {
+      setVoterAnswer({
+        ...voterAnswer,
+        answer: ans,
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    let currentQuestion = takenSurveys?.find(
+      (sur) => sur.surveyId === data?.surveyId
+    );
+    console.log(currentQuestion);
+    setVoterAnswer({
+      ...voterAnswer,
+      ...currentQuestion,
+    });
+  }, [takenSurveys]);
   return (
     <div>
       {/* <Button variant="outlined" onClick={handleClickOpen}>
@@ -126,8 +145,10 @@ export default function CustomizedDialogs({
                       }`,
                     }}
                     className="btn shadow p-3 m-2 text-center"
-                    onClick={() =>
-                      setVoterAnswer({ ...voterAnswer, answer: ans })
+                    onClick={
+                      // () =>
+                      // setVoterAnswer({ ...voterAnswer, answer: ans })
+                      () => handleSelectAnswer(ans)
                     }
                   >
                     {ans}
@@ -141,7 +162,10 @@ export default function CustomizedDialogs({
             <button
               className="btn"
               style={{
-                backgroundColor: "#D12E2F",
+                // backgroundColor: "#D12E2F",
+                backgroundColor: `${
+                  voterAnswer.answer?.length > 0 ? "#D12E2F" : "grey"
+                }`,
                 width: "388px",
                 height: "49px",
                 color: "#FFFFFF",
