@@ -112,7 +112,7 @@ const Header = ({ name, purpose }) => {
                 </Link>
               )}
 
-              {role !== "superadmin" && (
+              {role !== "superadmin" && role !== "team" && (
                 <MenuItem
                   className="d-flex justify-content-between px-4"
                   // key={setting}
@@ -137,18 +137,21 @@ const Header = ({ name, purpose }) => {
                 <i class="fas fa-angle-right text-danger ml-5"></i>
               </MenuItem>
 
-              <Link to="/surveys">
-                <MenuItem
-                  className="d-flex justify-content-between px-4"
-                  // key={setting}
-                  // onClick={handleCloseUserMenu}
-                >
-                  <Typography className="text-dark" textAlign="center">
-                    Surveys
-                  </Typography>
-                  <i class="fas fa-angle-right text-danger ml-5"></i>
-                </MenuItem>
-              </Link>
+              {role !== "team" && (
+                <Link to="/surveys">
+                  <MenuItem
+                    className="d-flex justify-content-between px-4"
+                    // key={setting}
+                    // onClick={handleCloseUserMenu}
+                  >
+                    <Typography className="text-dark" textAlign="center">
+                      Surveys
+                    </Typography>
+                    <i class="fas fa-angle-right text-danger ml-5"></i>
+                  </MenuItem>
+                </Link>
+              )}
+
               {/* <Link to="/tags">
                 <MenuItem
                   className="d-flex justify-content-between px-4"

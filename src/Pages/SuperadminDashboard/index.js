@@ -125,7 +125,7 @@ const Superadmindashboard = (props) => {
                   <div className=" p-2">
                     <h5 className="box1heading mt-2">Texts Sent</h5>
                     <p className="box1value">
-                      12{" "}
+                      0{" "}
                       <i
                         style={{ color: "#00E38C" }}
                         class="fas fa-caret-up "
@@ -158,7 +158,7 @@ const Superadmindashboard = (props) => {
                   <div className=" p-2">
                     <h5 className="box1heading mt-2">Phones Called</h5>
                     <p className="box1value">
-                      17{" "}
+                      0{" "}
                       <i
                         style={{ color: "#D12E2F" }}
                         class="fas fa-caret-down "
@@ -169,7 +169,7 @@ const Superadmindashboard = (props) => {
                   <div className=" p-2">
                     <h5 className="box1heading mt-2">Doors Knocked</h5>
                     <p className="box1value">
-                      53
+                      0
                       <i
                         style={{ color: "#D12E2F" }}
                         class="fas fa-caret-down "

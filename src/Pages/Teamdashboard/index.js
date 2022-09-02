@@ -156,8 +156,8 @@ const Dashboardteam = (props) => {
                 >
                   <div className="col-4 p-2">
                     <h5 className="text-muted mt-2">Voters Influnced</h5>
-                    <h1>
-                      649{" "}
+                    <h1 style={{ textDecoration: "line-through" }}>
+                      0{" "}
                       <i
                         style={{ color: "#00E38C" }}
                         class="fas fa-caret-up "
@@ -168,8 +168,8 @@ const Dashboardteam = (props) => {
                   </div>
                   <div className="col-4 p-2">
                     <h5 className="text-muted mt-2">Phone Calls Made</h5>
-                    <h1>
-                      431{" "}
+                    <h1 style={{ textDecoration: "line-through" }}>
+                      0{" "}
                       <i
                         style={{ color: "#00E38C" }}
                         class="fas fa-caret-up "
@@ -179,8 +179,8 @@ const Dashboardteam = (props) => {
                   </div>
                   <div className="col-4 p-2">
                     <h5 className="text-muted mt-2">Doors Knocked</h5>
-                    <h1>
-                      649{" "}
+                    <h1 style={{ textDecoration: "line-through" }}>
+                      0{" "}
                       <i
                         style={{ color: "#D12E2F" }}
                         class="fas fa-caret-down "

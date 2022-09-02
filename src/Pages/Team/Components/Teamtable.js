@@ -48,6 +48,7 @@ export default function Listtable({
             <TableCell align="">Voters Messaged</TableCell>
             <TableCell align="">Phones Called</TableCell>
             <TableCell align="">Date Added</TableCell>
+            <TableCell align="">Active</TableCell>
 
             <TableCell align=""></TableCell>
           </TableRow>
@@ -129,6 +130,19 @@ export default function Listtable({
                   {list?.phonesCalled ? list.phonesCalled : 0}
                 </TableCell>
                 <TableCell align="">{list?.dateJoined}</TableCell>
+                <TableCell align="">
+                  <div
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      backgroundColor: `${
+                        list.disabled === false ? "#49C661" : "grey"
+                      }`,
+                      color: "green",
+                      borderRadius: "50%",
+                    }}
+                  ></div>
+                </TableCell>
 
                 <TableCell align="">
                   {/* <button

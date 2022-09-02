@@ -324,6 +324,7 @@ export default function Voterview({ data, handleUpdateTable }) {
         totalNumbers: data?.totalNumbers,
       });
       setSaving(false);
+      setAnsweredSurveys([]);
       // if (currentVoterIndex < voters?.length - 1) {
       //   //   handleNextVoter();
       //   // } else {
@@ -373,6 +374,9 @@ export default function Voterview({ data, handleUpdateTable }) {
 
         if (values.voterAnswers?.length > 0) {
           handleTakeSurvey();
+        } else {
+          setCurrentVoterIndex(currentVoterIndex + 1);
+          setCurrentVoter(voters[currentVoterIndex + 1]);
         }
       } else {
         toast.error(res.data.message, {
@@ -461,7 +465,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   return (
     <div>
       {console.log(values, answeredSurveys)}
-      <p onClick={handleClickOpen} className="text-danger">
+      <p onClick={handleClickOpen} className=" btn text-danger">
         {data.recordName}
       </p>
 
@@ -649,6 +653,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                             backgroundColor: `${
                               view === "survey" ? "#FF914D" : "#D9D9D9"
                             }`,
+                            color: `${view === "survey" ? "#FFFFFF" : "black"}`,
                           }}
                           className="btn w-50 p-2 m-1  text-center"
                           onClick={handleGetSurvey}
@@ -897,7 +902,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 )[0]
                               : "Not Contacted Yet"}
                           </p>
-                          {(voters[currentVoterIndex]?.voterTags?.length ===
+                          {/* {(voters[currentVoterIndex]?.voterTags?.length ===
                             0 ||
                             voters[currentVoterIndex]?.voterTags?.length ===
                               undefined) && (
@@ -911,27 +916,59 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 />
                               )}
                             </div>
-                          )}
-                          {voters[currentVoterIndex]?.voterTags?.length > 0 && (
-                            <div className="row px-2">
-                              {voters[currentVoterIndex]?.voterTags?.map(
-                                (tag) => {
-                                  return (
-                                    <div className="text-center mb-1">
-                                      <Tag value={tag} />
-                                    </div>
-                                  );
-                                }
+                          )} */}
+                          <div>
+                            <p
+                              style={{ fontSize: "15px" }}
+                              className="text-danger"
+                            >
+                              <strong>New Tags</strong>
+                            </p>
+                            <div className="d-flex">
+                              {checkedTags?.length > 0 && (
+                                <div className="row px-2">
+                                  {checkedTags?.map((tag) => {
+                                    return (
+                                      <div className="text-center mb-1">
+                                        <Tag value={tag} />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
                               )}
                               {tags && (
                                 <Tags
                                   handleUpdate={handleUpdate}
                                   handleTags={handleTags}
                                   tags={tags}
+                                  adminTags={adminTags}
                                 />
                               )}
                             </div>
-                          )}
+                          </div>
+                          <br />
+                          <div className="">
+                            <p
+                              style={{ fontSize: "15px" }}
+                              className="text-danger"
+                            >
+                              <strong>Applied Tags</strong>
+                            </p>
+                            {voters[currentVoterIndex]?.voterTags?.length >
+                              0 && (
+                              <div className="row px-2">
+                                {voters[currentVoterIndex]?.voterTags?.map(
+                                  (tag) => {
+                                    return (
+                                      <div className="text-center mb-1">
+                                        <Tag value={tag} />
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+                            )}
+                          </div>
 
                           <br />
                           <h5 className="text-muted">
@@ -957,12 +994,20 @@ export default function Voterview({ data, handleUpdateTable }) {
                           >
                             <strong>Address</strong>
                           </p>
-                          <p
-                            style={{ fontSize: "19px" }}
-                            className="text-muted"
-                          >
-                            {voters[currentVoterIndex]?.ADDRESS}
-                          </p>
+                          <div className="d-flex">
+                            <p
+                              style={{ fontSize: "19px" }}
+                              className="text-muted mr-2"
+                            >
+                              {voters[currentVoterIndex]?.STATE},
+                            </p>
+                            <p
+                              style={{ fontSize: "19px" }}
+                              className="text-muted"
+                            >
+                              {voters[currentVoterIndex]?.CITY}
+                            </p>
+                          </div>
 
                           <p
                             style={{ fontSize: "15px" }}

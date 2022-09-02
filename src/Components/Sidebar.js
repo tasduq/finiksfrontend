@@ -633,70 +633,76 @@ export default function Sidebar() {
                 </ListItemButton>
               </List>
             </Link>
-            <Link
+            {/* <Link
               className={clsx({
                 selected: checkRoute("/team/canvassing"),
                 "m-2": true,
                 nonselected: checkRoute("/team/canvassing") === false,
               })}
               to="/team/canvassing"
+            > */}
+            <List
+            // className={clsx({
+            //   selected: checkRoute("/canvassing"),
+            //   "m-2": true,
+            // })}
             >
-              <List
-              // className={clsx({
-              //   selected: checkRoute("/canvassing"),
-              //   "m-2": true,
-              // })}
+              <ListItemButton
+                // key={text}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
               >
-                <ListItemButton
-                  // key={text}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+                <div
+                  style={{ textDecoration: "line-through" }}
+                  className="text-center"
                 >
-                  <div className="text-center">
-                    <i class="fas fa-map-marked-alt "></i>
+                  <i class="fas fa-map-marked-alt "></i>
 
-                    <ListItemText
-                      primary="Canvassing"
-                      // sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </div>
-                </ListItemButton>
-              </List>
-            </Link>
+                  <ListItemText
+                    primary="Canvassing"
+                    // sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </div>
+              </ListItemButton>
+            </List>
+            {/* </Link> */}
 
-            <Link
+            {/* <Link
               className={clsx({
                 selected: checkRoute("/team/teammembers"),
                 "m-2": true,
                 nonselected: checkRoute("/team/teammembers") === false,
               })}
               to="/team/teammembers"
+            > */}
+            <List
+            // className={clsx({ selected: checkRoute("/team"), "m-2": true })}
             >
-              <List
-              // className={clsx({ selected: checkRoute("/team"), "m-2": true })}
+              <ListItemButton
+                // key={text}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
               >
-                <ListItemButton
-                  // key={text}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+                <div
+                  style={{ textDecoration: "line-through" }}
+                  className="text-center"
                 >
-                  <div className="text-center">
-                    <i class="fas fa-user-friends"></i>
+                  <i class="fas fa-user-friends"></i>
 
-                    <ListItemText
-                      primary="Team Members"
-                      // sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </div>
-                </ListItemButton>
-              </List>
-            </Link>
+                  <ListItemText
+                    primary="Team Members"
+                    // sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </div>
+              </ListItemButton>
+            </List>
+            {/* </Link> */}
 
             <List
               // className={clsx({

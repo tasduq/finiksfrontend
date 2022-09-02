@@ -26,6 +26,8 @@ export default function Location({
   const [date, setDate] = React.useState(null);
   const [prec, setPrec] = React.useState([]);
   const [zips, setZips] = React.useState([]);
+  const [city, setCity] = React.useState([]);
+  const [county, setCounty] = React.useState([]);
   const [applied, setApplied] = React.useState(false);
   const [values, setValues] = React.useState({
     STATE: "",
@@ -185,6 +187,34 @@ export default function Location({
         position: toast.POSITION.TOP_RIGHT,
       });
     }
+
+    let res3 = await getDistricts({
+      field: "CITY",
+      state: campaignFilterData?.state,
+      // fieldTwoName: "STATE",
+    });
+    console.log(res3);
+    if (res3.data.success === true) {
+      setCity(res3.data.districts);
+    } else {
+      toast.error("Error getting Zip Codes Values", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+
+    let res4 = await getDistricts({
+      field: "AI_COUNTY_NAME",
+      state: campaignFilterData?.state,
+      // fieldTwoName: "STATE",
+    });
+    console.log(res4);
+    if (res4.data.success === true) {
+      setCounty(res4.data.districts);
+    } else {
+      toast.error("Error getting Zip Codes Values", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   React.useEffect(
@@ -261,9 +291,13 @@ export default function Location({
               name="CITY"
               value={values.CITY}
               onChange={handleChange}
-              disabled={campaignFilterData?.city?.length > 0 ? false : true}
+              // disabled={campaignFilterData?.city?.length > 0 ? false : true}
             >
-              {campaignFilterData?.city.map((subCity) => {
+              {/* {campaignFilterData?.city.map((subCity) => {
+                return <MenuItem value={subCity}>{subCity}</MenuItem>;
+              })} */}
+              <MenuItem value="">Un Select</MenuItem>
+              {city.map((subCity) => {
                 return <MenuItem value={subCity}>{subCity}</MenuItem>;
               })}
 
@@ -282,9 +316,13 @@ export default function Location({
               name="AI_COUNTY_NAME"
               value={values.AI_COUNTY_NAME}
               onChange={handleChange}
-              disabled={campaignFilterData?.county?.length > 0 ? false : true}
+              // disabled={campaignFilterData?.county?.length > 0 ? false : true}
             >
-              {campaignFilterData?.county.map((subCounty) => {
+              {/* {campaignFilterData?.county.map((subCounty) => {
+                return <MenuItem value={subCounty}>{subCounty}</MenuItem>;
+              })} */}
+              <MenuItem value="">Un Select</MenuItem>
+              {county.map((subCounty) => {
                 return <MenuItem value={subCounty}>{subCounty}</MenuItem>;
               })}
             </Select>

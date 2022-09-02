@@ -116,6 +116,9 @@ export default function CustomizedDialogs({
         <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p>
 
         <DialogContent dividers>
+          <p className="text-danger text-center">
+            <strong>{data?.surveyPreview}</strong>
+          </p>
           <div
             style={{
               backgroundColor: "#F2F2F2",
@@ -129,34 +132,37 @@ export default function CustomizedDialogs({
           </div>
           <br />
           <div>
-            <p className="text-danger text-center">
-              <strong>{data?.surveyPreview}</strong>
-            </p>
-            <div className="d-flex justify-content-between">
+            <div className="row">
               {data?.surveyAnswers?.map((ans) => {
                 return (
-                  <button
-                    style={{
-                      width: "175px",
-                      height: "50px",
-                      borderRadius: "5px",
-                      backgroundColor: `${
-                        voterAnswer.answer === ans ? "#FF914D" : "white"
-                      }`,
-                    }}
-                    className="btn shadow p-3 m-2 text-center"
-                    onClick={
-                      // () =>
-                      // setVoterAnswer({ ...voterAnswer, answer: ans })
-                      () => handleSelectAnswer(ans)
-                    }
-                  >
-                    {ans}
-                  </button>
+                  <div className="col-6">
+                    <button
+                      style={{
+                        width: "175px",
+                        height: "50px",
+                        borderRadius: "5px",
+                        backgroundColor: `${
+                          voterAnswer.answer === ans ? "#FF914D" : "white"
+                        }`,
+                        color: `${
+                          voterAnswer.answer === ans ? "white" : "black"
+                        }`,
+                      }}
+                      className="btn shadow p-2 m-2 text-center"
+                      onClick={
+                        // () =>
+                        // setVoterAnswer({ ...voterAnswer, answer: ans })
+                        () => handleSelectAnswer(ans)
+                      }
+                    >
+                      {ans}
+                    </button>
+                  </div>
                 );
               })}
             </div>
           </div>
+          <br />
           <div className="text-center">
             {" "}
             <button
@@ -166,8 +172,10 @@ export default function CustomizedDialogs({
                 backgroundColor: `${
                   voterAnswer.answer?.length > 0 ? "#D12E2F" : "grey"
                 }`,
+
                 width: "388px",
-                height: "49px",
+                minHeight: "49px",
+                height: "auto",
                 color: "#FFFFFF",
               }}
               disabled={voterAnswer.answer?.length > 0 && false}

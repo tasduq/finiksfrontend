@@ -65,7 +65,8 @@ const Clients = () => {
               <div
                 className=" p-3"
                 style={{
-                  height: "500px",
+                  minHeight: "500px",
+                  height: "auto",
                   backgroundColor: "#FFFFFF",
                   borderRadius: "12px",
                   boxShadow: " 0px 10px 24px #00000029",
