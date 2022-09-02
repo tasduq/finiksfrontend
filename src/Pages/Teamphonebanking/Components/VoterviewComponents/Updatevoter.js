@@ -75,7 +75,7 @@ export default function Addtoteam({ data, listId }) {
 
       <div
         style={{ color: "#D12E2F" }}
-        className="text-center mx-2"
+        className="text-center  btn"
         onClick={handleClickOpen}
       >
         <i style={{ fontSize: "25px" }} class="fas fa-ellipsis-h"></i>

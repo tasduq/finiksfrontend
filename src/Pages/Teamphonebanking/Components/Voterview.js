@@ -501,10 +501,7 @@ export default function Voterview({ data, handleUpdateTable }) {
         </AppBar>
         <div>
           <div className="mt-5 container">
-            <Header
-              name="Voter Record"
-              purpose="Information for Voters - Tags"
-            />
+            <Header name="Phone Bank" purpose=" " />
             <div
               className="shadow px-4 py-4"
               style={{
@@ -524,6 +521,15 @@ export default function Voterview({ data, handleUpdateTable }) {
               <div className="row mt-2">
                 <div className="col-12 col-md-4 text-left">
                   <div>
+                    <p
+                      style={{
+                        color: "#D12E2F",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {data.recordName}
+                    </p>
                     <p
                       style={{
                         color: "#D12E2F",
@@ -823,7 +829,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                               <div className="d-flex justify-content-between mt-2">
                                 <div
                                   style={{ color: "#D12E2F" }}
-                                  className="text-center mx-2"
+                                  className="text-center btn"
                                 >
                                   <i
                                     style={{ fontSize: "25px" }}
@@ -834,7 +840,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 </div>
                                 <div
                                   style={{ color: "#D12E2F" }}
-                                  className="text-center mx-2"
+                                  className="text-center btn"
                                 >
                                   <i
                                     style={{ fontSize: "25px" }}

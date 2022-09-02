@@ -54,7 +54,7 @@ export default function Addtoteam({ data }) {
       </Button> */}
       <div
         style={{ color: "#D12E2F" }}
-        className="text-center mx-2"
+        className="text-center  btn"
         //   onClick = {handleAddToTeam}
         onClick={handleClickOpen}
       >
