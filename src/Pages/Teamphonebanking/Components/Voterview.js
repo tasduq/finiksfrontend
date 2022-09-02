@@ -377,6 +377,7 @@ export default function Voterview({ data, handleUpdateTable }) {
         } else {
           setCurrentVoterIndex(currentVoterIndex + 1);
           setCurrentVoter(voters[currentVoterIndex + 1]);
+          setCheckedTags([]);
         }
       } else {
         toast.error(res.data.message, {
