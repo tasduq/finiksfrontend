@@ -204,7 +204,7 @@ export default function Legislativedistrict({
     // if (campaignFilterData?.level === "State - House") {
     console.log("useeffect is running");
     let res3 = await getDistricts({
-      field: "ST_UP_HOUS",
+      field: "ST_LO_HOUS",
       state: campaignFilterData?.state,
       // fieldTwoName: "STATE",
     });
