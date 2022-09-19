@@ -7,7 +7,8 @@ const Tag = ({ value }) => {
         backgroundColor: "#d12e2f",
         minHeight: "35px",
         height: "auto",
-        width: "100px",
+        minWidth: "100px",
+        width: "auto",
         color: "white",
         borderRadius: "50px",
       }}

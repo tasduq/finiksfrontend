@@ -62,6 +62,7 @@ export default function Tableclients({ data, handleUpdate }) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell align="">Active</TableCell>
             <TableCell>Campaign Name</TableCell>
             <TableCell align="">District</TableCell>
             <TableCell align="">Primary/General</TableCell>
@@ -70,7 +71,7 @@ export default function Tableclients({ data, handleUpdate }) {
             <TableCell align="">Tags</TableCell>
             <TableCell align="">Team Members</TableCell>
             <TableCell align="">Spent</TableCell>
-            <TableCell align="">Active</TableCell>
+
             <TableCell align=""></TableCell>
             <TableCell align=""></TableCell>
           </TableRow>
@@ -82,6 +83,22 @@ export default function Tableclients({ data, handleUpdate }) {
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                  <TableCell className="text-danger" align="">
+                    {/* {client.active === true ? "Yes" : "No"} */}
+                    <div className="d-flex justify-content-center align-items-center">
+                      <div
+                        style={{
+                          width: "10px",
+                          height: "10px",
+                          backgroundColor: `${
+                            client.active === true ? "#49C661" : "grey"
+                          }`,
+                          color: "green",
+                          borderRadius: "50%",
+                        }}
+                      ></div>
+                    </div>
+                  </TableCell>
                   <TableCell component="th" scope="row">
                     {client.campaignName}
                   </TableCell>
@@ -121,9 +138,7 @@ export default function Tableclients({ data, handleUpdate }) {
                     </button>
                   </TableCell>
                   <TableCell align="">0$</TableCell>
-                  <TableCell className="text-danger" align="">
-                    {client.active === true ? "Yes" : "No"}
-                  </TableCell>
+
                   <TableCell align="">
                     {/* <button
                     style={{

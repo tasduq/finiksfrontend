@@ -11,6 +11,7 @@ import Finikstable from "./Components/Finikstable";
 
 const Voterdata = () => {
   const [voters, setVoters] = useState([]);
+  const [totalVoters, setTotalVoters] = useState("Counting");
   const [finiksVotersData, setFiniksVotersData] = useState();
   const [update, setUpdate] = useState(false);
   const [page, setPage] = useState(1);
@@ -32,6 +33,7 @@ const Voterdata = () => {
     if (res.data.success) {
       setVoters([...voters, ...res.data.finiksData]);
       setLoadingMore(false);
+      setTotalVoters(res.data.totalVoters);
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -87,40 +89,47 @@ const Voterdata = () => {
                   boxShadow: " 0px 10px 24px #00000029",
                 }}
               >
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-between">
                   {/* <Newcampaign /> */}
-                  <button
-                    style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
-                    className="btn mr-2"
-                  >
-                    <Link
-                      style={{ color: "white", textDecoration: "none" }}
-                      to="/upload"
-                    >
-                      Upload Aristotle Data
-                    </Link>
-                  </button>
+                  <p className="text-danger ml-2">
+                    Total Voters : {totalVoters}
+                  </p>
+                  <div className="d-flex">
+                    <div>
+                      <button
+                        style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
+                        className="btn mr-2"
+                      >
+                        <Link
+                          style={{ color: "white", textDecoration: "none" }}
+                          to="/upload"
+                        >
+                          Upload Aristotle Data
+                        </Link>
+                      </button>
+                    </div>
 
-                  <Aristotledatapage />
+                    <Aristotledatapage />
 
-                  {/* <button
+                    {/* <button
                     style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}
                     className="btn mr-2"
                   >
                     Advance Search
                   </button> */}
-                  <input
-                    type="text"
-                    className="form-control w-25"
-                    placeholder="Search"
-                    style={{
-                      width: "350px",
-                      backgroundColor: "#F2F2F2",
-                      border: "none",
-                      // boxShadow: "0px 3px 10px #00000029",
-                      // borderRadius: "15px",
-                    }}
-                  ></input>
+                    <input
+                      type="text"
+                      className="form-control w-25"
+                      placeholder="Search"
+                      style={{
+                        width: "350px",
+                        backgroundColor: "#F2F2F2",
+                        border: "none",
+                        // boxShadow: "0px 3px 10px #00000029",
+                        // borderRadius: "15px",
+                      }}
+                    ></input>
+                  </div>
                 </div>
                 <br />
                 {voters.length === 0 && (

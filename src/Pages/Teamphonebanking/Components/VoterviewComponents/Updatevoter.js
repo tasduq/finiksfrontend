@@ -131,7 +131,7 @@ export default function Addtoteam({ data, listId }) {
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
                     >
-                      First Name
+                      Prefered Name
                     </label>
                     <input
                       type="text"
@@ -143,7 +143,7 @@ export default function Addtoteam({ data, listId }) {
                       name="firstName"
                     />
                   </div>
-                  <div class="form-group text-left">
+                  {/* <div class="form-group text-left">
                     <label
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
@@ -159,7 +159,7 @@ export default function Addtoteam({ data, listId }) {
                       onChange={handleChange}
                       name="lastName"
                     />
-                  </div>
+                  </div> */}
                   <div class="form-group text-left">
                     <label
                       style={{ color: "#d12e2f" }}
@@ -212,7 +212,7 @@ export default function Addtoteam({ data, listId }) {
                       //   disabled
                     />
                   </div>
-                  <div class="form-group text-left">
+                  {/* <div class="form-group text-left">
                     <label
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
@@ -228,7 +228,7 @@ export default function Addtoteam({ data, listId }) {
                       onChange={handleChange}
                       name="address"
                     />
-                  </div>
+                  </div> */}
                   <br />
                 </div>
               </div>

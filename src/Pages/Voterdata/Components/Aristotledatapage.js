@@ -30,6 +30,7 @@ export default function Finiksdatapage({ data }) {
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [totalVoters, setTotalVoters] = useState("Counting");
 
   const handleLoadMore = () => {
     setLoadingMore(true);
@@ -63,6 +64,7 @@ export default function Finiksdatapage({ data }) {
       ]);
 
       setLoadingMore(false);
+      setTotalVoters(finiksDataRes.data.totalVoters);
     } else {
       toast.error(finiksDataRes.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -129,9 +131,13 @@ export default function Finiksdatapage({ data }) {
                 borderRadius: "12px",
               }}
             >
-              <p onClick={handleClose} style={{ color: "#d12e2f" }}>
-                <i class="fas fa-angle-left mx-2"></i> Back
-              </p>
+              <div>
+                <p onClick={handleClose} style={{ color: "#d12e2f" }}>
+                  <i class="fas fa-angle-left mx-2"></i> Back
+                </p>
+                <p className="text-danger ml-2">Total Voters : {totalVoters}</p>
+              </div>
+
               {finiksVotersData.length === 0 && (
                 <div class="spinner-border text-danger" role="status">
                   <span class="sr-only">Loading...</span>

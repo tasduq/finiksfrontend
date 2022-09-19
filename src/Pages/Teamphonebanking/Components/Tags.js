@@ -116,11 +116,11 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Tags
+          Voter Tags
         </BootstrapDialogTitle>
         <div className="">
           <div className="text-center">
-            <h5 className="my-2 text-danger ">Campaign Tags</h5>
+            {/* <h5 className="my-2 text-danger ">Campaign Tags</h5> */}
 
             <Addnewtag
               handleUpdate={handleUpdate}
@@ -130,8 +130,8 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
           <div className="container">
             <div className="row">
               <div className="col-6 ">
-                <h5 className="text-center text-danger mt-4">Admin Tags</h5>
-                {adminTags?.length === 0 && <p>No Admin Tags Found</p>}
+                <h5 className="text-center text-danger mt-4">Campaign Tags</h5>
+                {adminTags?.length === 0 && <p>No Campaign Tags Found</p>}
                 <div className="text-center">
                   {" "}
                   {!adminTags && (
@@ -189,6 +189,12 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
                                 id={labelId}
                                 primary={value.tagName}
                               />
+                              <button
+                                title={value.description}
+                                className="btn text-muted"
+                              >
+                                i
+                              </button>
                             </ListItemButton>
                           </ListItem>
                         );
@@ -256,6 +262,12 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
                                 id={labelId}
                                 primary={value.tagName}
                               />
+                              <button
+                                title={value.description}
+                                className="btn text-muted"
+                              >
+                                i
+                              </button>
                             </ListItemButton>
                           </ListItem>
                         );

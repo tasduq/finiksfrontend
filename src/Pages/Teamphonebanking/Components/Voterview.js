@@ -372,6 +372,10 @@ export default function Voterview({ data, handleUpdateTable }) {
           position: toast.POSITION.TOP_RIGHT,
         });
 
+        if (interaction === "doNotCall") {
+          handleDoNotCall();
+        }
+
         if (values.voterAnswers?.length > 0) {
           handleTakeSurvey();
         } else {
@@ -390,6 +394,10 @@ export default function Voterview({ data, handleUpdateTable }) {
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
+
+        if (interaction === "doNotCall") {
+          handleDoNotCall();
+        }
         if (values.voterAnswers?.length > 0) {
           handleTakeSurvey();
         }
@@ -412,17 +420,17 @@ export default function Voterview({ data, handleUpdateTable }) {
   };
 
   const handleContactLater = () => {
-    if (values.voterAnswers?.length > 0) {
-      toast.error("You havn't saved the survey", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    } else {
-      // toast.success("You can proceed with next voter", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      // });
-      handleNextVoterCheck("Contact Later");
-    }
+    // if (values.voterAnswers?.length > 0) {
+    //   toast.error("You havn't saved the survey", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // } else {
+    // toast.success("You can proceed with next voter", {
+    //   position: toast.POSITION.TOP_RIGHT,
+    // });
+    handleNextVoterCheck("Contact Later");
+    // }
   };
 
   const handleDoNotCall = async () => {
@@ -530,15 +538,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                     >
                       {data.recordName}
                     </p>
-                    <p
-                      style={{
-                        color: "#D12E2F",
-                        fontSize: "20px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Preview
-                    </p>
+
                     {/* <ButtonMailto
                       label="Write me an E-Mail"
                       mailto="mailto:no-reply@example.com"
@@ -635,15 +635,18 @@ export default function Voterview({ data, handleUpdateTable }) {
                         <button
                           style={{
                             borderRadius: "8px",
-                            backgroundColor: "#D9D9D9",
+                            backgroundColor: `${
+                              view === "survey" ? "#FF914D" : "#D9D9D9"
+                            }`,
+                            color: `${view === "survey" ? "#FFFFFF" : "black"}`,
                           }}
-                          className="btn w-50 p-2 m-1 text-center"
-                          onClick={handleDoNotCall}
+                          className="btn w-50 p-2 m-1  text-center"
+                          onClick={handleGetSurvey}
                         >
-                          Do Not Call
+                          Survey
                         </button>
                       </div>
-                      <div className="d-flex">
+                      {/* <div className="d-flex">
                         <button
                           style={{
                             borderRadius: "8px",
@@ -657,17 +660,14 @@ export default function Voterview({ data, handleUpdateTable }) {
                         <button
                           style={{
                             borderRadius: "8px",
-                            backgroundColor: `${
-                              view === "survey" ? "#FF914D" : "#D9D9D9"
-                            }`,
-                            color: `${view === "survey" ? "#FFFFFF" : "black"}`,
+                            backgroundColor: "#D9D9D9",
                           }}
-                          className="btn w-50 p-2 m-1  text-center"
-                          onClick={handleGetSurvey}
+                          className="btn w-50 p-2 m-1 text-center"
+                          onClick={handleDoNotCall}
                         >
-                          Survey
+                          Do Not Call
                         </button>
-                      </div>
+                      </div> */}
                       <div>
                         {/* <button
                           style={{
@@ -829,7 +829,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                               <div className="d-flex justify-content-between mt-2">
                                 <div
                                   style={{ color: "#D12E2F" }}
-                                  className="text-center btn"
+                                  className="text-center btn text-muted"
                                 >
                                   <i
                                     style={{ fontSize: "25px" }}
@@ -840,7 +840,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 </div>
                                 <div
                                   style={{ color: "#D12E2F" }}
-                                  className="text-center btn"
+                                  className="text-center btn text-muted"
                                 >
                                   <i
                                     style={{ fontSize: "25px" }}
@@ -954,7 +954,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                             </div>
                           </div>
                           <br />
-                          <div className="">
+                          {/* <div className="">
                             <p
                               style={{ fontSize: "15px" }}
                               className="text-danger"
@@ -975,7 +975,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 )}
                               </div>
                             )}
-                          </div>
+                          </div> */}
 
                           <br />
                           <h5 className="text-muted">
@@ -1004,15 +1004,15 @@ export default function Voterview({ data, handleUpdateTable }) {
                           <div className="d-flex">
                             <p
                               style={{ fontSize: "19px" }}
-                              className="text-muted mr-2"
+                              className="text-muted"
                             >
-                              {voters[currentVoterIndex]?.STATE},
+                              {voters[currentVoterIndex]?.CITY},
                             </p>
                             <p
                               style={{ fontSize: "19px" }}
-                              className="text-muted"
+                              className="text-muted mr-2"
                             >
-                              {voters[currentVoterIndex]?.CITY}
+                              {voters[currentVoterIndex]?.STATE}
                             </p>
                           </div>
 
@@ -1025,24 +1025,26 @@ export default function Voterview({ data, handleUpdateTable }) {
                           <div className="d-flex justify-content-between text-muted text-center ">
                             <p
                               style={{
-                                borderRight: "1px solid #707070",
+                                // borderRight: "1px solid #707070",
                                 fontSize: "19px",
                               }}
-                              className="pr-3"
                             >
                               {voters[currentVoterIndex]?.SEX === "M"
                                 ? "Male"
                                 : "Female"}
                             </p>
+
+                            <p>|</p>
                             <p
                               style={{
-                                borderRight: "1px solid #707070",
+                                // borderRight: "1px solid #707070",
                                 fontSize: "19px",
                               }}
-                              className="pr-3"
+                              className="text-center"
                             >
                               {voters[currentVoterIndex]?.AGE} Years Old
                             </p>
+                            <p>|</p>
                             {voters[currentVoterIndex]?.PARTY_CODE === "A" && (
                               <p style={{ fontSize: "19px" }} align="">
                                 American Independent
@@ -1108,17 +1110,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                             {voters[currentVoterIndex]?.PARTY_CODE === "N" && (
                               <p style={{ fontSize: "19px" }} align="">
                                 {" "}
-                                None/Non-Partisan/
-                                <br />
-                                No Party/No Preference/
-                                <br />
-                                Undeclared/
-                                <br />
-                                Declined to State/
-                                <br />
-                                Undecided/
-                                <br />
-                                Unaffiliated
+                                No Party
                               </p>
                             )}
                             {voters[currentVoterIndex]?.PARTY_CODE === "O" && (
@@ -1198,622 +1190,714 @@ export default function Voterview({ data, handleUpdateTable }) {
                 <div className="col-12 col-md-3">
                   <h5 className="my-2 text-danger ">Profiled Information</h5>
                   <hr />
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_2NDAMEND &&
-                      voters[currentVoterIndex]?.PRFL_2NDAMEND === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_2NDAMEND === "Y"
-                        ? "2nd Amendment Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_ACTIVE &&
-                      voters[currentVoterIndex]?.PRFL_ACTIVE === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_ACTIVE === "Y"
-                        ? "Active Military"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                  <div>
+                    <div>
+                      <Element
+                        className="element"
+                        id="scroll-container"
+                        style={{
+                          position: "relative",
+                          height: "420px",
+                          overflowY: "scroll",
+                          //   marginBottom: "100px",
+                        }}
+                      >
+                        <Element
+                          //   name="scroll-container-first-element"
+                          style={{
+                            marginBottom: "200px",
+                          }}
+                        >
+                          <div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_2NDAMEND &&
+                                voters[currentVoterIndex]?.PRFL_2NDAMEND === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_2NDAMEND ===
+                                "Y"
+                                  ? "2nd Amendment Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_ACTIVE &&
+                                voters[currentVoterIndex]?.PRFL_ACTIVE === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_ACTIVE === "Y"
+                                  ? "Active Military"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_AMZN_PRIME &&
-                      voters[currentVoterIndex]?.PRFL_AMZN_PRIME === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_AMZN_PRIME === "Y"
-                        ? "Amazon Prime Subscriber"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_AMZN_PRIME &&
+                                voters[currentVoterIndex]?.PRFL_AMZN_PRIME ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_AMZN_PRIME ===
+                                "Y"
+                                  ? "Amazon Prime Subscriber"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_ANML_RIGHTS &&
-                      voters[currentVoterIndex]?.PRFL_ANML_RIGHTS === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_ANML_RIGHTS === "Y"
-                        ? "Animal Rights Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_ANML_RIGHTS &&
+                                voters[currentVoterIndex]?.PRFL_ANML_RIGHTS ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_ANML_RIGHTS ===
+                                "Y"
+                                  ? "Animal Rights Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT === "Y"
-                        ? "Likely Biden Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_BIDEN_SUPPORT &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_BIDEN_SUPPORT === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_BIDEN_SUPPORT === "Y"
+                                  ? "Likely Biden Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_BLM_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_BLM_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_BLM_SUPPORT === "Y"
-                        ? "Likely Black Lives Matter Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_BLM_SUPPORT &&
+                                voters[currentVoterIndex]?.PRFL_BLM_SUPPORT ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_BLM_SUPPORT ===
+                                "Y"
+                                  ? "Likely Black Lives Matter Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_BORDER_SECURITY &&
-                      voters[currentVoterIndex]?.PRFL_BORDER_SECURITY === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_BORDER_SECURITY === "Y"
-                        ? " Interest in Border Security"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_BORDER_SECURITY &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_BORDER_SECURITY === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_BORDER_SECURITY === "Y"
+                                  ? " Interest in Border Security"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_CHOICELIFE &&
-                      voters[currentVoterIndex]?.PRFL_CHOICELIFE === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_CHOICELIFE === "Y"
-                        ? " Pro Life"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_CHOICELIFE &&
+                                voters[currentVoterIndex]?.PRFL_CHOICELIFE ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_CHOICELIFE ===
+                                "Y"
+                                  ? " Pro Life"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_CLINTON_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_CLINTON_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_CLINTON_SUPPORT === "Y"
-                        ? " Likely Hillary Clinton Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_CLINTON_SUPPORT &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_CLINTON_SUPPORT === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_CLINTON_SUPPORT === "Y"
+                                  ? " Likely Hillary Clinton Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_CONSERVATIVE_NEWS &&
-                      voters[currentVoterIndex]?.PRFL_CONSERVATIVE_NEWS === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_CONSERVATIVE_NEWS === "Y"
-                        ? " Likely to watch Conservative News Outlets"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_CONSERVATIVE_NEWS &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_CONSERVATIVE_NEWS === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_CONSERVATIVE_NEWS === "Y"
+                                  ? " Likely to watch Conservative News Outlets"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_EDUCATION &&
-                      voters[currentVoterIndex]?.PRFL_EDUCATION === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_EDUCATION === "Y"
-                        ? "Interest in Education Issues"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_EDUCATION &&
+                                voters[currentVoterIndex]?.PRFL_EDUCATION ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_EDUCATION ===
+                                "Y"
+                                  ? "Interest in Education Issues"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_ENVIRONMENT &&
-                      voters[currentVoterIndex]?.PRFL_ENVIRONMENT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_ENVIRONMENT === "Y"
-                        ? "Environmentalist"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_ENVIRONMENT &&
+                                voters[currentVoterIndex]?.PRFL_ENVIRONMENT ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_ENVIRONMENT ===
+                                "Y"
+                                  ? "Environmentalist"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_EVANGELICAL &&
-                      voters[currentVoterIndex]?.PRFL_EVANGELICAL === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_EVANGELICAL === "Y"
-                        ? " Evangelical"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_EVANGELICAL &&
+                                voters[currentVoterIndex]?.PRFL_EVANGELICAL ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_EVANGELICAL ===
+                                "Y"
+                                  ? " Evangelical"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_FENCE_SITTER &&
-                      voters[currentVoterIndex]?.PRFL_FENCE_SITTER === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_FENCE_SITTER === "Y"
-                        ? "Likely Fence Sitter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_FENCE_SITTER &&
+                                voters[currentVoterIndex]?.PRFL_FENCE_SITTER ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_FENCE_SITTER === "Y"
+                                  ? "Likely Fence Sitter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_GUN_CONTROL &&
-                      voters[currentVoterIndex]?.PRFL_GUN_CONTROL === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_GUN_CONTROL === "Y"
-                        ? "Gun Control Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_GUN_CONTROL &&
+                                voters[currentVoterIndex]?.PRFL_GUN_CONTROL ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_GUN_CONTROL ===
+                                "Y"
+                                  ? "Gun Control Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM &&
-                      voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM.length >
-                        0
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM === "Y"
-                        ? " Healthcare Reform Supporter"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_HEALTHCARE_REFORM === "N"
-                        ? "Against Healthcare Reform"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_HEALTHCARE_REFORM &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_HEALTHCARE_REFORM.length > 0
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_HEALTHCARE_REFORM === "Y"
+                                  ? " Healthcare Reform Supporter"
+                                  : ""}
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_HEALTHCARE_REFORM === "N"
+                                  ? "Against Healthcare Reform"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_HEALTHCARE &&
-                      voters[currentVoterIndex]?.PRFL_HEALTHCARE === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_HEALTHCARE === "Y"
-                        ? "Healthcare Professional"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_HEALTHCARE &&
+                                voters[currentVoterIndex]?.PRFL_HEALTHCARE ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_HEALTHCARE ===
+                                "Y"
+                                  ? "Healthcare Professional"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_IMMIGRATION_REFORM &&
-                      voters[currentVoterIndex]?.PRFL_IMMIGRATION_REFORM === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_IMMIGRATION_REFORM ===
-                      "Y"
-                        ? "Interested in Immigration Reform"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_IMMIGRATION_REFORM &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_IMMIGRATION_REFORM === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_IMMIGRATION_REFORM === "Y"
+                                  ? "Interested in Immigration Reform"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_INFLUENCER &&
-                      voters[currentVoterIndex]?.PRFL_INFLUENCER === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_INFLUENCER === "Y"
-                        ? "Voter Is An Influencer"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_INFLUENCER &&
+                                voters[currentVoterIndex]?.PRFL_INFLUENCER ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_INFLUENCER ===
+                                "Y"
+                                  ? "Voter Is An Influencer"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_INSURANCE &&
-                      voters[currentVoterIndex]?.PRFL_INSURANCE === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_INSURANCE === "Y"
-                        ? "Likely To Have Workplace Insurance"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_INSURANCE &&
+                                voters[currentVoterIndex]?.PRFL_INSURANCE ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_INSURANCE ===
+                                "Y"
+                                  ? "Likely To Have Workplace Insurance"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_LABOR &&
-                      voters[currentVoterIndex]?.PRFL_LABOR === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_LABOR === "Y"
-                        ? "Organized Labor Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_LABOR &&
+                                voters[currentVoterIndex]?.PRFL_LABOR === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_LABOR === "Y"
+                                  ? "Organized Labor Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT > 0
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT === 1
-                        ? "LGBT Donor"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT === 2
-                        ? "LGBT Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT &&
+                                voters[currentVoterIndex]?.PRFL_LGBT_SUPPORT > 0
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_LGBT_SUPPORT === 1
+                                  ? "LGBT Donor"
+                                  : ""}
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_LGBT_SUPPORT === 2
+                                  ? "LGBT Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS &&
-                      voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS === "Y"
-                        ? "Likely to Watch Liberal News Outlets"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS &&
+                                voters[currentVoterIndex]?.PRFL_LIBERAL_NEWS ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_LIBERAL_NEWS === "Y"
+                                  ? "Likely to Watch Liberal News Outlets"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_MARIJUANA_REFORM &&
-                      voters[currentVoterIndex]?.PRFL_MARIJUANA_REFORM === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_MARIJUANA_REFORM === "Y"
-                        ? "Marijuana Policy Reform Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_MARIJUANA_REFORM &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_MARIJUANA_REFORM === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_MARIJUANA_REFORM === "Y"
+                                  ? "Marijuana Policy Reform Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY &&
-                      voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY > 0
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY === 1
-                        ? "Supports Marriage Equality"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_MARRIAGE_EQUALITY === 2
-                        ? "Opposes Marriage Equality"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_MARRIAGE_EQUALITY &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_MARRIAGE_EQUALITY > 0
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_MARRIAGE_EQUALITY === 1
+                                  ? "Supports Marriage Equality"
+                                  : ""}
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_MARRIAGE_EQUALITY === 2
+                                  ? "Opposes Marriage Equality"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_METOO_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_METOO_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_METOO_SUPPORT === "Y"
-                        ? "Likely to Support the MeToo Movement"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_METOO_SUPPORT &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_METOO_SUPPORT === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_METOO_SUPPORT === "Y"
+                                  ? "Likely to Support the MeToo Movement"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_MIL_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_MIL_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_MIL_SUPPORT === "Y"
-                        ? " Military Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_MIL_SUPPORT &&
+                                voters[currentVoterIndex]?.PRFL_MIL_SUPPORT ===
+                                  "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_MIL_SUPPORT ===
+                                "Y"
+                                  ? " Military Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_MINWAGE &&
-                      voters[currentVoterIndex]?.PRFL_MINWAGE > 0
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_MINWAGE === 1
-                        ? "Likely to Support Minimum Wage Increase"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_MINWAGE === 2
-                        ? "Likely to Oppose Minimum Wage Increase"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_MINWAGE &&
+                                voters[currentVoterIndex]?.PRFL_MINWAGE > 0
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_MINWAGE === 1
+                                  ? "Likely to Support Minimum Wage Increase"
+                                  : ""}
+                                {voters[currentVoterIndex]?.PRFL_MINWAGE === 2
+                                  ? "Likely to Oppose Minimum Wage Increase"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_OBAMA &&
-                      voters[currentVoterIndex]?.PRFL_OBAMA === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_OBAMA === "Y"
-                        ? " Likely Obama"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_OBAMA &&
+                                voters[currentVoterIndex]?.PRFL_OBAMA === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_OBAMA === "Y"
+                                  ? " Likely Obama"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_PERSUADABLE_VOTER &&
-                      voters[currentVoterIndex]?.PRFL_PERSUADABLE_VOTER === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_PERSUADABLE_VOTER === "Y"
-                        ? "Persuadable/Swing Voter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_PERSUADABLE_VOTER &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_PERSUADABLE_VOTER === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_PERSUADABLE_VOTER === "Y"
+                                  ? "Persuadable/Swing Voter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY &&
-                      voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY
-                        .length > 0
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY ===
-                      "C"
-                        ? " Conservative"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY ===
-                      "M"
-                        ? " Moderate"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_POLITICAL_IDEOLOGY ===
-                      "L"
-                        ? " Liberal"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_POLITICAL_IDEOLOGY &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_POLITICAL_IDEOLOGY.length > 0
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_POLITICAL_IDEOLOGY === "C"
+                                  ? " Conservative"
+                                  : ""}
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_POLITICAL_IDEOLOGY === "M"
+                                  ? " Moderate"
+                                  : ""}
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_POLITICAL_IDEOLOGY === "L"
+                                  ? " Liberal"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_SANDERS_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_SANDERS_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_SANDERS_SUPPORT === "Y"
-                        ? "Likely Sanders Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_SANDERS_SUPPORT &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_SANDERS_SUPPORT === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_SANDERS_SUPPORT === "Y"
+                                  ? "Likely Sanders Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_TAXES &&
-                      voters[currentVoterIndex]?.PRFL_TAXES === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_TAXES === "Y"
-                        ? "Interested in Taxes and Tax Reform"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_TAXES &&
+                                voters[currentVoterIndex]?.PRFL_TAXES === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_TAXES === "Y"
+                                  ? "Interested in Taxes and Tax Reform"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_TEACHERS_UNION &&
-                      voters[currentVoterIndex]?.PRFL_TEACHERS_UNION === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_TEACHERS_UNION === "Y"
-                        ? "Likely Teachers Union Member"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]
+                                  ?.PRFL_TEACHERS_UNION &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_TEACHERS_UNION === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_TEACHERS_UNION === "Y"
+                                  ? "Likely Teachers Union Member"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_TEAPARTY &&
-                      voters[currentVoterIndex]?.PRFL_TEAPARTY > 0
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_TEAPARTY === 1
-                        ? " Tea Party Donor"
-                        : ""}
-                      {voters[currentVoterIndex]?.PRFL_TEAPARTY === 2
-                        ? "Likely Tea Party Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_TEAPARTY &&
+                                voters[currentVoterIndex]?.PRFL_TEAPARTY > 0
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_TEAPARTY === 1
+                                  ? " Tea Party Donor"
+                                  : ""}
+                                {voters[currentVoterIndex]?.PRFL_TEAPARTY === 2
+                                  ? "Likely Tea Party Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT &&
-                      voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT === "Y"
-                        ? "Likely Trump Supporter"
-                        : ""}
-                    </p>
-                    <hr />
-                  </div>
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_TRUMP_SUPPORT &&
+                                voters[currentVoterIndex]
+                                  ?.PRFL_TRUMP_SUPPORT === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]
+                                  ?.PRFL_TRUMP_SUPPORT === "Y"
+                                  ? "Likely Trump Supporter"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
 
-                  <div
-                    className={`my-4 ${
-                      voters[currentVoterIndex]?.PRFL_VETERAN &&
-                      voters[currentVoterIndex]?.PRFL_VETERAN === "Y"
-                        ? ""
-                        : "d-none"
-                    }`}
-                  >
-                    <p>
-                      {voters[currentVoterIndex]?.PRFL_VETERAN === "Y"
-                        ? "Veteran"
-                        : ""}
-                    </p>
-                    <hr />
+                            <div
+                              className={`my-2 ${
+                                voters[currentVoterIndex]?.PRFL_VETERAN &&
+                                voters[currentVoterIndex]?.PRFL_VETERAN === "Y"
+                                  ? ""
+                                  : "d-none"
+                              }`}
+                            >
+                              <p>
+                                {voters[currentVoterIndex]?.PRFL_VETERAN === "Y"
+                                  ? "Veteran"
+                                  : ""}
+                              </p>
+                              <hr />
+                            </div>
+                          </div>
+                        </Element>
+                      </Element>
+                    </div>
                   </div>
                 </div>
                 {/* <div className="col-12 col-md-3">

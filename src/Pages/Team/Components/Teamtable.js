@@ -37,6 +37,7 @@ export default function Listtable({
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell align="">Active</TableCell>
             <TableCell>Team Member</TableCell>
             <TableCell align="">Campaign permission</TableCell>
             <TableCell align="">Campaign Position</TableCell>
@@ -48,7 +49,7 @@ export default function Listtable({
             <TableCell align="">Voters Messaged</TableCell>
             <TableCell align="">Phones Called</TableCell>
             <TableCell align="">Date Added</TableCell>
-            <TableCell align="">Active</TableCell>
+            {/* <TableCell align="">Active</TableCell> */}
 
             <TableCell align=""></TableCell>
           </TableRow>
@@ -59,6 +60,7 @@ export default function Listtable({
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             // onClick={() => handleClick(list)}
           >
+            <TableCell align=""></TableCell>
             <TableCell component="th" scope="row">
               {teamAdmin?.campaignName}
             </TableCell>
@@ -105,6 +107,21 @@ export default function Listtable({
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 // onClick={() => handleClick(list)}
               >
+                <TableCell align="center">
+                  <div className="d-flex justify-content-center align-items-center">
+                    <div
+                      style={{
+                        width: "10px",
+                        height: "10px",
+                        backgroundColor: `${
+                          list.disabled === false ? "#49C661" : "grey"
+                        }`,
+                        color: "green",
+                        borderRadius: "50%",
+                      }}
+                    ></div>
+                  </div>
+                </TableCell>
                 <TableCell component="th" scope="row">
                   {list?.memberName}
                 </TableCell>
@@ -130,19 +147,6 @@ export default function Listtable({
                   {list?.phonesCalled ? list.phonesCalled : 0}
                 </TableCell>
                 <TableCell align="">{list?.dateJoined}</TableCell>
-                <TableCell align="">
-                  <div
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      backgroundColor: `${
-                        list.disabled === false ? "#49C661" : "grey"
-                      }`,
-                      color: "green",
-                      borderRadius: "50%",
-                    }}
-                  ></div>
-                </TableCell>
 
                 <TableCell align="">
                   {/* <button

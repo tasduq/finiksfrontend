@@ -58,7 +58,7 @@ export default function CustomizedDialogs({ handleNextVoter }) {
   const [open, setOpen] = React.useState(false);
   const [yes, setYes] = React.useState(false);
   const [connected, setConnected] = React.useState();
-  const [value, setValue] = React.useState("sentText");
+  const [value, setValue] = React.useState("");
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -77,17 +77,19 @@ export default function CustomizedDialogs({ handleNextVoter }) {
 
   const handleNo = () => {
     setYes(false);
+    setConnected();
+    setValue("");
     handleClose();
   };
 
   const handleConnected = () => {
     setConnected(true);
-    setValue("Called");
+    // setValue("Called");
   };
 
   const handleNotConnected = () => {
     setConnected(false);
-    setValue("sentText");
+    // setValue("sentText");
   };
 
   const handleNext = () => {
@@ -95,7 +97,6 @@ export default function CustomizedDialogs({ handleNextVoter }) {
     handleClose();
     setYes(false);
     setConnected();
-    setValue("sentText");
   };
 
   return (
@@ -120,11 +121,13 @@ export default function CustomizedDialogs({ handleNextVoter }) {
         aria-labelledby="customized-dialog-title"
         open={open}
         fullWidth
+        className="text-light"
+        style={{ color: "white" }}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
           onClose={handleClose}
-          className="text-center"
+          className="text-center "
           style={{ backgroundColor: "#FF914D", color: "white" }}
         >
           Record Interaction
@@ -141,6 +144,7 @@ export default function CustomizedDialogs({ handleNextVoter }) {
                   width: "208px",
                   height: "49px",
                   backgroundColor: `${yes === true ? "#FF914D" : ""}`,
+                  color: `${yes === true ? "white" : "black"}`,
                 }}
                 className="btn shadow-sm mx-1"
                 onClick={handleYes}
@@ -170,6 +174,7 @@ export default function CustomizedDialogs({ handleNextVoter }) {
                     width: "208px",
                     height: "49px",
                     backgroundColor: `${connected === true ? "#FF914D" : ""}`,
+                    color: `${connected === true ? "white" : "black"}`,
                   }}
                   className="btn shadow-sm mx-1"
                   onClick={handleConnected}
@@ -181,6 +186,7 @@ export default function CustomizedDialogs({ handleNextVoter }) {
                     width: "208px",
                     height: "49px",
                     backgroundColor: `${connected === false ? "#FF914D" : ""}`,
+                    color: `${connected === false ? "white" : "black"}`,
                   }}
                   className="btn shadow-sm mx-1"
                   onClick={handleNotConnected}
@@ -225,15 +231,43 @@ export default function CustomizedDialogs({ handleNextVoter }) {
               </FormControl>
             </div>
           )}
+          {connected === true && (
+            <div>
+              <FormControl>
+                <RadioGroup
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  value={value}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel
+                    value="doNotCall"
+                    control={<Radio />}
+                    label="Do Not Call"
+                  />
+                  <FormControlLabel
+                    value="contactLater"
+                    control={<Radio />}
+                    label="Contact Later"
+                  />
+                  <FormControlLabel
+                    value="surveyed"
+                    control={<Radio />}
+                    label="Surveyed"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+          )}
           {(connected === true || connected === false) && (
             <button
               style={{
                 borderRadius: "8px",
-                backgroundColor: "#FF914D",
+                backgroundColor: `${value?.length > 0 ? "#FF914D" : "grey"}`,
                 color: "white",
               }}
               className="btn w-75 p-2 m-1  text-center"
-              onClick={handleNext}
+              onClick={value?.length > 0 && handleNext}
             >
               Next Voter
             </button>

@@ -66,51 +66,54 @@ export default function Listtable({
             <TableCell align="right">Total Called</TableCell> */}
             {/* <TableCell align="right">Numbers Left</TableCell> */}
             {/* <TableCell align="right">Script</TableCell> */}
-            <TableCell align="">Active</TableCell>
+            <TableCell className="mr-3" align="center">
+              Active
+            </TableCell>
           </TableRow>
         </TableHead>
 
-        <TableBody>
-          {data?.map((list) => {
-            console.log(list);
-            return (
-              <TableRow
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                // onClick={() => handleClick(list)}
-                className="shadow-sm"
-              >
-                <TableCell component="th" scope="row">
-                  <Voterview handleUpdateTable={handleUpdate} data={list} />
-                </TableCell>
-                {/* <TableCell align="right">{list?.totalNumbers}</TableCell>
-                <TableCell align="right">
-                  {list?.totalCalled ? list?.totalCalled : "0"}
-                </TableCell> */}
-                {/* <TableCell align="right">
-                  {list?.numbersLeft ? list?.numbersLeft : "All"}
-                </TableCell> */}
-                {/* <TableCell align="right">
-                  {list?.scriptName ? list?.scriptName : "No Script Found"}
-                </TableCell> */}
-                <TableCell align="">
-                  {/* {list?.Active ? list?.scriptName : "No Script Found"} */}
-                  <div
-                    style={{
-                      width: "10px",
-                      height: "10px",
-                      backgroundColor: `${
-                        list.active === "Active" ? "#49C661" : "grey"
-                      }`,
-                      color: "green",
-                      borderRadius: "50%",
-                    }}
-                  ></div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
+        {/* <TableBody> */}
+
+        {/* </TableBody> */}
       </Table>
+      {data?.map((list) => {
+        console.log(list);
+        return (
+          // <TableRow
+          //   // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          //   // onClick={() => handleClick(list)}
+          //   className="mx-2"
+          //   // style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
+          // >
+          <div className="my-2">
+            <div
+              style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
+              className="d-flex justify-content-between shadow-sm "
+            >
+              <div className=" w-50">
+                <Voterview handleUpdateTable={handleUpdate} data={list} />
+              </div>
+
+              <div className="mt-3 ml-5 w-50 text-center d-flex justify-content-center">
+                <div
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: `${
+                      list.active === "Active" ? "#49C661" : "grey"
+                    }`,
+                    color: "green",
+                    borderRadius: "50%",
+                    className: "",
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          // </TableRow>
+        );
+      })}
     </TableContainer>
   );
 }

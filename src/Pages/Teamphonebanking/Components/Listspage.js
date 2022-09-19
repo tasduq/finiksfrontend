@@ -96,7 +96,7 @@ export default function Listspage({ data }) {
                 height: "auto",
                 backgroundColor: "#FFFFFF",
                 borderRadius: "12px",
-                boxShadow: " 0px 10px 24px #00000029",
+                // boxShadow: " 0px 10px 24px #00000029",
               }}
             >
               <Listtable data={data} />

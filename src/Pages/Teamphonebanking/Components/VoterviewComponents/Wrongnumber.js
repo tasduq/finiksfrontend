@@ -165,28 +165,43 @@ export default function CustomizedDialogs({
         open={open}
         fullWidth
       >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
+        {/* <BootstrapDialogTitle
+          // id="customized-dialog-title"
           onClose={handleOpen}
           className="text-center"
           style={{ backgroundColor: "#FF914D", color: "white" }}
         >
-          Point Wrong Number
-        </BootstrapDialogTitle>
+          hello
+        </BootstrapDialogTitle> */}
+        <div
+          onClose={handleOpen}
+          className="text-center pt-3"
+          style={{ backgroundColor: "#FF914D", color: "white" }}
+        >
+          <p> Please select which number is incorrect</p>
+        </div>
         <DialogContent className="text-center" dividers>
           <div>
             {value?.map((val, i) => {
               console.log(val);
               return (
                 <>
-                  <Checkbox
-                    checked={wrongNumber[i]?.number?.includes(val?.toString())}
-                    onChange={(evt) => handleChange(evt, i)}
-                    inputProps={{ "aria-label": "controlled" }}
-                    value={i === 0 ? "MOBILE_NUM" : "PHONE_NUM"}
-                  />
-                  {i === 0 ? "Mobile Number" : "Phone Number"} :{val}
-                  <br />
+                  <div className="d-flex jutify-content-between">
+                    <Checkbox
+                      checked={wrongNumber[i]?.number?.includes(
+                        val?.toString()
+                      )}
+                      onChange={(evt) => handleChange(evt, i)}
+                      inputProps={{ "aria-label": "controlled" }}
+                      value={i === 0 ? "MOBILE_NUM" : "PHONE_NUM"}
+                    />
+                    <p className="mt-3">
+                      {" "}
+                      {i === 0 ? "Mobile Number" : "Phone Number"} :{val}
+                    </p>
+
+                    <br />
+                  </div>
                 </>
               );
             })}
@@ -206,7 +221,10 @@ export default function CustomizedDialogs({
           )} */}
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleNext}>
+          <button onClick={handleOpen} className="btn text-primary">
+            Close
+          </button>
+          <Button className="text-danger" autoFocus onClick={handleNext}>
             Save
           </Button>
         </DialogActions>
