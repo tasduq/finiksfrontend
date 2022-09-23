@@ -1,6 +1,7 @@
 import axios from "axios";
+import url from "./API/api";
 // let url = "http://localhost:3001";
-let url = "https://finiksbackend.herokuapp.com";
+// let url = "https://finiksbackend.herokuapp.com";
 
 const addTag = async (data) => {
   console.log(data);

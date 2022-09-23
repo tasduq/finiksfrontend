@@ -1,5 +1,6 @@
 import axios from "axios";
-let url = "http://localhost:3001";
+import url from "./API/api";
+// let url = "http://localhost:3001";
 // let url = "https://finiksbackend.herokuapp.com";
 
 const getLists = async (data) => {
