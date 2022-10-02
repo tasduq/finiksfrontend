@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// let url = "https://finiksbackend.herokuapp.com";
-let url = "http://localhost:3001";
+let url = "https://finiksbackend.herokuapp.com";
+// let url = "http://localhost:3001";
 
 const instance = axios.create({
   baseURL: url,
