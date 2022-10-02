@@ -156,7 +156,17 @@ export default function Sidebar() {
           {/* <Typography variant="h6" noWrap component="div">
             Finiks
           </Typography> */}
-          <img style={{ width: "90px" }} src={Logo} />
+          <Link
+            // className={clsx({
+            //   selected: checkRoute("/clients"),
+            //   "m-2": true,
+            //   nonselected: checkRoute("/clients") === false,
+            // })}
+            to="/logins"
+          >
+            <img style={{ width: "90px" }} src={Logo} />
+          </Link>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {/* {pages.map((page) => (
               <Button

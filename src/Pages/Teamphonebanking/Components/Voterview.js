@@ -57,6 +57,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Voterview({ data, handleUpdateTable }) {
   console.log(data);
   const [open, setOpen] = React.useState(false);
+  const [openNextVoter, setOpenNextVoter] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [tags, setTags] = React.useState();
   const [adminTags, setAdminTags] = React.useState();
@@ -99,6 +100,8 @@ export default function Voterview({ data, handleUpdateTable }) {
     totalNumbers: data?.totalNumbers,
     interaction: "",
   });
+  const [doNotCallSelected, setDoNotCallSelected] = React.useState(false);
+  const [contactLaterSelected, setContactLaterSelected] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -112,6 +115,9 @@ export default function Voterview({ data, handleUpdateTable }) {
 
   const hanldeOpenWrongNumber = () => {
     setOpenWrongNumber(!openWrongNumber);
+  };
+  const handleOpenNextVoter = () => {
+    setOpenNextVoter(!openNextVoter);
   };
 
   // const handleToggle = (value) => () => {
@@ -429,8 +435,15 @@ export default function Voterview({ data, handleUpdateTable }) {
     // toast.success("You can proceed with next voter", {
     //   position: toast.POSITION.TOP_RIGHT,
     // });
-    handleNextVoterCheck("Contact Later");
+    // handleNextVoterCheck("Contact Later");
     // }
+    setContactLaterSelected(true);
+    handleOpenNextVoter();
+  };
+
+  const handleDoNotCallSelect = async () => {
+    setDoNotCallSelected(true);
+    handleOpenNextVoter();
   };
 
   const handleDoNotCall = async () => {
@@ -474,9 +487,31 @@ export default function Voterview({ data, handleUpdateTable }) {
   return (
     <div>
       {console.log(values, answeredSurveys)}
-      <p onClick={handleClickOpen} className=" btn text-danger">
-        {data.recordName}
-      </p>
+      <div
+        style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
+        className="d-flex justify-content-between shadow-sm "
+        onClick={handleClickOpen}
+      >
+        <div className=" w-50">
+          {/* <Voterview handleUpdateTable={handleUpdate} data={list} /> */}
+          <p className=" btn text-danger ml-1 mt-3">{data.recordName}</p>
+        </div>
+
+        <div className="mt-4  w-50 text-center d-flex justify-content-center">
+          <div
+            style={{
+              width: "10px",
+              height: "10px",
+              backgroundColor: `${
+                data?.active === "Active" ? "#49C661" : "grey"
+              }`,
+              color: "green",
+              borderRadius: "50%",
+              className: "",
+            }}
+          ></div>
+        </div>
+      </div>
 
       <Dialog
         fullScreen
@@ -646,7 +681,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                           Survey
                         </button>
                       </div>
-                      {/* <div className="d-flex">
+                      <div className="d-flex">
                         <button
                           style={{
                             borderRadius: "8px",
@@ -663,11 +698,11 @@ export default function Voterview({ data, handleUpdateTable }) {
                             backgroundColor: "#D9D9D9",
                           }}
                           className="btn w-50 p-2 m-1 text-center"
-                          onClick={handleDoNotCall}
+                          onClick={handleDoNotCallSelect}
                         >
                           Do Not Call
                         </button>
-                      </div> */}
+                      </div>
                       <div>
                         {/* <button
                           style={{
@@ -691,7 +726,13 @@ export default function Voterview({ data, handleUpdateTable }) {
                           )}
                         </div>
                         {saving === false && (
-                          <Nextvoter handleNextVoter={handleNextVoterCheck} />
+                          <Nextvoter
+                            open={openNextVoter}
+                            handleOpen={handleOpenNextVoter}
+                            handleNextVoter={handleNextVoterCheck}
+                            doNotCall={doNotCallSelected}
+                            contactLater={contactLaterSelected}
+                          />
                         )}
 
                         {/* <div className="text-center">
@@ -1187,7 +1228,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                     )}
                   </div>
                 </div>
-                <div className="col-12 col-md-3">
+                <div className="col-12 col-md-3 p-0">
                   <h5 className="my-2 text-danger ">Profiled Information</h5>
                   <hr />
                   <div>

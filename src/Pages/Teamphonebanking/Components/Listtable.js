@@ -61,7 +61,7 @@ export default function Listtable({
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>List Name</TableCell>
+            <TableCell className="w-50">List Name</TableCell>
             {/* <TableCell align="right">Total Numbers</TableCell>
             <TableCell align="right">Total Called</TableCell> */}
             {/* <TableCell align="right">Numbers Left</TableCell> */}
@@ -85,13 +85,17 @@ export default function Listtable({
           //   className="mx-2"
           //   // style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
           // >
-          <div className="my-2">
+
+          <div className="my-3">
+            <Voterview handleUpdateTable={handleUpdate} data={list} />
+
+            {/* <div className="my-2">
             <div
               style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
               className="d-flex justify-content-between shadow-sm "
             >
               <div className=" w-50">
-                <Voterview handleUpdateTable={handleUpdate} data={list} />
+            
               </div>
 
               <div className="mt-3 ml-5 w-50 text-center d-flex justify-content-center">
@@ -109,6 +113,7 @@ export default function Listtable({
                 ></div>
               </div>
             </div>
+          </div> */}
           </div>
 
           // </TableRow>

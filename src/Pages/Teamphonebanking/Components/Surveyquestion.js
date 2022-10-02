@@ -71,7 +71,7 @@ export default function CustomizedDialogs({
   console.log(data);
 
   const handleVoterAnswer = () => {
-    console.log(voterAnswer);
+    console.log(voterAnswer, "i ran");
     handleAnswer(voterAnswer, data.surveyId);
     handleOpen();
   };
@@ -106,11 +106,14 @@ export default function CustomizedDialogs({
         Open dialog
       </Button> */}
       <BootstrapDialog
-        onClose={handleOpen}
+        onClose={handleVoterAnswer}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleOpen}>
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleVoterAnswer}
+        >
           {`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}
         </BootstrapDialogTitle>
         <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p>
@@ -135,11 +138,13 @@ export default function CustomizedDialogs({
             <div className="row">
               {data?.surveyAnswers?.map((ans) => {
                 return (
-                  <div className="col-6">
+                  <div className="col-6 text-center">
                     <button
                       style={{
-                        width: "175px",
-                        height: "50px",
+                        minWidth: "175px",
+                        minHeight: "50px",
+                        width: "auto",
+                        height: "auto",
                         borderRadius: "5px",
                         backgroundColor: `${
                           voterAnswer.answer === ans ? "#FF914D" : "white"

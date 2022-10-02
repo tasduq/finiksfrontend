@@ -39,7 +39,7 @@ const BootstrapDialogTitle = (props) => {
             position: "absolute",
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: "white",
           }}
         >
           <CloseIcon />
@@ -54,8 +54,14 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs({ handleNextVoter }) {
-  const [open, setOpen] = React.useState(false);
+export default function CustomizedDialogs({
+  handleNextVoter,
+  open,
+  handleOpen,
+  doNotCall,
+  contactLater,
+}) {
+  // const [open, setOpen] = React.useState(false);
   const [yes, setYes] = React.useState(false);
   const [connected, setConnected] = React.useState();
   const [value, setValue] = React.useState("");
@@ -64,12 +70,12 @@ export default function CustomizedDialogs({ handleNextVoter }) {
     setValue(event.target.value);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
+  // const handleOpen = () => {
+  //   setOpen(false);
+  // };
 
   const handleYes = () => {
     setYes(true);
@@ -79,7 +85,7 @@ export default function CustomizedDialogs({ handleNextVoter }) {
     setYes(false);
     setConnected();
     setValue("");
-    handleClose();
+    handleOpen();
   };
 
   const handleConnected = () => {
@@ -94,14 +100,26 @@ export default function CustomizedDialogs({ handleNextVoter }) {
 
   const handleNext = () => {
     handleNextVoter(value);
-    handleClose();
+    handleOpen();
     setYes(false);
     setConnected();
   };
+  React.useEffect(() => {
+    if (doNotCall === true) {
+      setValue("doNotCall");
+      handleYes();
+      handleConnected();
+    }
+    if (contactLater === true) {
+      setValue("contactLater");
+      handleYes();
+      handleConnected();
+    }
+  }, [doNotCall === true, contactLater === true]);
 
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
+      {/* <Button variant="outlined" onClick={handleOpen}>
         Open dialog
       </Button> */}
       <button
@@ -112,12 +130,12 @@ export default function CustomizedDialogs({ handleNextVoter }) {
         }}
         className="btn w-100 p-2 m-1  text-center"
         //   onClick={handleNextVoterCheck}
-        onClick={handleClickOpen}
+        onClick={handleOpen}
       >
         Next Voter
       </button>
       <BootstrapDialog
-        onClose={handleClose}
+        onClose={handleOpen}
         aria-labelledby="customized-dialog-title"
         open={open}
         fullWidth
@@ -126,7 +144,7 @@ export default function CustomizedDialogs({ handleNextVoter }) {
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
-          onClose={handleClose}
+          onClose={handleOpen}
           className="text-center "
           style={{ backgroundColor: "#FF914D", color: "white" }}
         >
@@ -208,6 +226,11 @@ export default function CustomizedDialogs({ handleNextVoter }) {
                   onChange={handleChange}
                 >
                   <FormControlLabel
+                    value=""
+                    control={<Radio />}
+                    label="Un Select"
+                  />
+                  <FormControlLabel
                     value="sentText"
                     control={<Radio />}
                     label="Sent Text"
@@ -241,6 +264,11 @@ export default function CustomizedDialogs({ handleNextVoter }) {
                   onChange={handleChange}
                 >
                   <FormControlLabel
+                    value=""
+                    control={<Radio />}
+                    label="Un Select"
+                  />
+                  <FormControlLabel
                     value="doNotCall"
                     control={<Radio />}
                     label="Do Not Call"
@@ -263,18 +291,20 @@ export default function CustomizedDialogs({ handleNextVoter }) {
             <button
               style={{
                 borderRadius: "8px",
-                backgroundColor: `${value?.length > 0 ? "#FF914D" : "grey"}`,
+                // backgroundColor: `${value?.length > 0 ? "#FF914D" : "grey"}`,
+                backgroundColor: `${"#FF914D"}`,
                 color: "white",
               }}
               className="btn w-75 p-2 m-1  text-center"
-              onClick={value?.length > 0 && handleNext}
+              // onClick={value?.length > 0 && handleNext}
+              onClick={handleNext}
             >
               Next Voter
             </button>
           )}
         </DialogContent>
         <DialogActions>
-          {/* <Button autoFocus onClick={handleClose}>
+          {/* <Button autoFocus onClick={handleOpen}>
             Save changes
           </Button> */}
         </DialogActions>
