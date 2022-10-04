@@ -116,7 +116,15 @@ export default function CustomizedDialogs({
         >
           {`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}
         </BootstrapDialogTitle>
-        <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p>
+        {/* <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p> */}
+        <div className="d-flex">
+          <p style={{ fontSize: "19px" }} className="text-muted ml-3 mr-1">
+            {data?.voter?.CITY},
+          </p>
+          <p style={{ fontSize: "19px" }} className="text-muted mr-2">
+            {data?.voter?.STATE}
+          </p>
+        </div>
 
         <DialogContent dividers>
           <p className="text-danger text-center">

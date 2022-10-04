@@ -103,6 +103,8 @@ export default function Voterview({ data, handleUpdateTable }) {
   const [doNotCallSelected, setDoNotCallSelected] = React.useState(false);
   const [contactLaterSelected, setContactLaterSelected] = React.useState(false);
 
+  console.log(values, answeredSurveys);
+
   const handleClickOpen = () => {
     setOpen(true);
     handleGetData();
@@ -148,7 +150,8 @@ export default function Voterview({ data, handleUpdateTable }) {
     console.log(res);
     if (res.data.success) {
       let unSurveyedVoters = res.data.list?.voters.filter((voter) => {
-        return !voter.surveyed || voter.surveyed === false;
+        // return !voter.surveyed || voter.surveyed === false;
+        return !voter.voterDone;
       });
       console.log(unSurveyedVoters.length);
       if (unSurveyedVoters.length > 0) {
@@ -248,18 +251,41 @@ export default function Voterview({ data, handleUpdateTable }) {
       (ans) => ans.surveyId === surveyId
     );
     console.log(isAnsweredBefore);
+    let surveyIdExist = answeredSurveys.some(
+      (surveyid) => surveyid === surveyId
+    );
     if (isAnsweredBefore) {
       let oldAns = values.voterAnswers.filter(
         (ans) => ans.surveyId !== surveyId
       );
-      setValues({
-        ...values,
-        voterAnswers: [...oldAns, data],
-        surveyData: [...values.surveyData, { surveyId: surveyId }],
-        tags: checkedTags,
-        voterId: currentVoter?._id,
-        voterName: currentVoter?.FIRSTNAME,
-      });
+      let isSurveyDataExist = values.surveyData.some(
+        (subSurvey) => subSurvey.surveyId === surveyId
+      );
+      console.log(isSurveyDataExist, "i am");
+      let oldSurveyData = values.surveyData.filter(
+        (subSurvey) => subSurvey.surveyId !== surveyId
+      );
+      console.log(oldSurveyData, "i am");
+
+      if (data.answer.length === 0) {
+        setValues({
+          ...values,
+          voterAnswers: [...oldAns, ...(data.answer?.length > 0 ? [data] : [])],
+          surveyData: [...oldSurveyData],
+          tags: checkedTags,
+          voterId: currentVoter?._id,
+          voterName: currentVoter?.FIRSTNAME,
+        });
+      } else {
+        setValues({
+          ...values,
+          voterAnswers: [...oldAns, ...(data.answer?.length > 0 ? [data] : [])],
+          surveyData: [...values.surveyData],
+          tags: checkedTags,
+          voterId: currentVoter?._id,
+          voterName: currentVoter?.FIRSTNAME,
+        });
+      }
     } else {
       setValues({
         ...values,
@@ -271,7 +297,13 @@ export default function Voterview({ data, handleUpdateTable }) {
       });
     }
 
-    setAnsweredSurveys([...answeredSurveys, surveyId]);
+    if (surveyIdExist === false) {
+      setAnsweredSurveys([...answeredSurveys, surveyId]);
+    }
+    if (data.answer?.length === 0) {
+      let filteredSureyAns = answeredSurveys.filter((ans) => ans !== surveyId);
+      setAnsweredSurveys(filteredSureyAns);
+    }
   };
   console.log(checkedTags);
 
@@ -378,9 +410,9 @@ export default function Voterview({ data, handleUpdateTable }) {
           position: toast.POSITION.TOP_RIGHT,
         });
 
-        if (interaction === "doNotCall") {
-          handleDoNotCall();
-        }
+        // if (interaction === "doNotCall") {
+        //   handleDoNotCall();
+        // }
 
         if (values.voterAnswers?.length > 0) {
           handleTakeSurvey();
@@ -401,9 +433,9 @@ export default function Voterview({ data, handleUpdateTable }) {
           position: toast.POSITION.TOP_RIGHT,
         });
 
-        if (interaction === "doNotCall") {
-          handleDoNotCall();
-        }
+        // if (interaction === "doNotCall") {
+        //   handleDoNotCall();
+        // }
         if (values.voterAnswers?.length > 0) {
           handleTakeSurvey();
         }
@@ -1045,7 +1077,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                           <div className="d-flex">
                             <p
                               style={{ fontSize: "19px" }}
-                              className="text-muted"
+                              className="text-muted mr-1"
                             >
                               {voters[currentVoterIndex]?.CITY},
                             </p>
