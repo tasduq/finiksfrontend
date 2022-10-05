@@ -182,17 +182,19 @@ export default function CustomizedDialogs({
               className="btn"
               style={{
                 // backgroundColor: "#D12E2F",
-                backgroundColor: `${
-                  voterAnswer.answer?.length > 0 ? "#D12E2F" : "grey"
-                }`,
+                // backgroundColor: `${
+                //   voterAnswer.answer?.length > 0 ? "#D12E2F" : "grey"
+                // }`,
+                backgroundColor: "#D12E2F",
 
                 width: "388px",
                 minHeight: "49px",
                 height: "auto",
                 color: "#FFFFFF",
               }}
-              disabled={voterAnswer.answer?.length > 0 && false}
-              onClick={voterAnswer.answer?.length > 0 && handleVoterAnswer}
+              // disabled={voterAnswer.answer?.length > 0 && false}
+              // onClick={voterAnswer.answer?.length > 0 && handleVoterAnswer}
+              onClick={handleVoterAnswer}
             >
               Save Answer
             </button>

@@ -258,13 +258,13 @@ const Dashboardteam = (props) => {
                   <p className="mt-1">
                     {campaignTeammembers?.length} Team Members
                   </p>
-                  <Link
-                    // className={clsx({
-                    //   selected: checkRoute("/surveys"),
-                    //   "m-2": true,
-                    //   nonselected: checkRoute("/surveys") === false,
-                    // })}
-                    to="/team"
+                  {/* <Link
+                  // className={clsx({
+                  //   selected: checkRoute("/surveys"),
+                  //   "m-2": true,
+                  //   nonselected: checkRoute("/surveys") === false,
+                  // })}
+                  to="/team"
                   >
                     {" "}
                     <p
@@ -273,7 +273,7 @@ const Dashboardteam = (props) => {
                     >
                       View All
                     </p>
-                  </Link>
+                  </Link> */}
                 </div>
                 <div>
                   {campaignTeammembers?.map((member) => {

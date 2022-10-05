@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { updateVoterInfo } from "../../../../Connection/Team";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function Addtoteam({ data, listId }) {
+export default function Addtoteam({ data, listId, handleUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState({
     firstName: "",
@@ -48,6 +48,7 @@ export default function Addtoteam({ data, listId }) {
         position: toast.POSITION.TOP_RIGHT,
       });
       handleClose();
+      handleUpdate();
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,

@@ -102,6 +102,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   });
   const [doNotCallSelected, setDoNotCallSelected] = React.useState(false);
   const [contactLaterSelected, setContactLaterSelected] = React.useState(false);
+  const [update, setUpdate] = React.useState(false);
 
   console.log(values, answeredSurveys);
 
@@ -201,20 +202,23 @@ export default function Voterview({ data, handleUpdateTable }) {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
+
+    setUpdate(false);
   };
 
   const handleUpdate = async () => {
-    const res3 = await getTags({
-      id: window.localStorage.getItem("id"),
-    });
-    console.log(res3);
-    if (res3.data.success) {
-      setTags(res3.data.tags);
-    } else {
-      toast.error(res3.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
+    // const res3 = await getTags({
+    //   id: window.localStorage.getItem("id"),
+    // });
+    // console.log(res3);
+    // if (res3.data.success) {
+    //   setTags(res3.data.tags);
+    // } else {
+    //   toast.error(res3.data.message, {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    // }
+    setUpdate(true);
   };
 
   const handleGetSurvey = async () => {
@@ -478,6 +482,11 @@ export default function Voterview({ data, handleUpdateTable }) {
     handleOpenNextVoter();
   };
 
+  const handleUnSelectChoosedOption = async () => {
+    setDoNotCallSelected(false);
+    setContactLaterSelected(false);
+  };
+
   const handleDoNotCall = async () => {
     let res = await doNotCall({
       listId: data?.list,
@@ -514,19 +523,21 @@ export default function Voterview({ data, handleUpdateTable }) {
     }
   };
 
-  //   React.useEffect(() => {}, [open === true]);
+  React.useEffect(() => {
+    handleGetData();
+  }, [update === true]);
 
   return (
     <div>
       {console.log(values, answeredSurveys)}
-      <div
+      <button
         style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
-        className="d-flex justify-content-between shadow-sm "
+        className="btn w-100 d-flex justify-content-between shadow-sm "
         onClick={handleClickOpen}
       >
-        <div className=" w-50">
+        <div className="text-left w-50">
           {/* <Voterview handleUpdateTable={handleUpdate} data={list} /> */}
-          <p className=" btn text-danger ml-1 mt-3">{data.recordName}</p>
+          <p className=" btn text-danger ml-1 mt-2">{data.recordName}</p>
         </div>
 
         <div className="mt-4  w-50 text-center d-flex justify-content-center">
@@ -543,7 +554,7 @@ export default function Voterview({ data, handleUpdateTable }) {
             }}
           ></div>
         </div>
-      </div>
+      </button>
 
       <Dialog
         fullScreen
@@ -758,13 +769,22 @@ export default function Voterview({ data, handleUpdateTable }) {
                           )}
                         </div>
                         {saving === false && (
-                          <Nextvoter
-                            open={openNextVoter}
-                            handleOpen={handleOpenNextVoter}
-                            handleNextVoter={handleNextVoterCheck}
-                            doNotCall={doNotCallSelected}
-                            contactLater={contactLaterSelected}
-                          />
+                          <div>
+                            {/* {(openNextVoter === true ||
+                              contactLaterSelected === true ||
+                              doNotCallSelected === true) && ( */}
+                            <Nextvoter
+                              open={openNextVoter}
+                              handleOpen={handleOpenNextVoter}
+                              handleNextVoter={handleNextVoterCheck}
+                              doNotCall={doNotCallSelected}
+                              contactLater={contactLaterSelected}
+                              handleUnSelectChoosedOption={
+                                handleUnSelectChoosedOption
+                              }
+                            />
+                            {/* )} */}
+                          </div>
                         )}
 
                         {/* <div className="text-center">
@@ -950,6 +970,10 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 </div> */}
                                 <Emailtovoter
                                   data={`mailto:${currentVoter?.EMAIL}`}
+                                  emails={{
+                                    email1: currentVoter?.EMAIL,
+                                    email2: currentVoter?.EMAIL2,
+                                  }}
                                 />
                                 {/* <div
                                   style={{ color: "#D12E2F" }}
@@ -965,6 +989,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 <Updatevoter
                                   data={currentVoter}
                                   listId={data?.list}
+                                  handleUpdate={handleGetData}
                                 />
                               </div>
                             </div>
@@ -1002,7 +1027,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                               style={{ fontSize: "15px" }}
                               className="text-danger"
                             >
-                              <strong>New Tags</strong>
+                              <strong>Tags</strong>
                             </p>
                             <div className="d-flex">
                               {checkedTags?.length > 0 && (
@@ -1270,7 +1295,8 @@ export default function Voterview({ data, handleUpdateTable }) {
                         id="scroll-container"
                         style={{
                           position: "relative",
-                          height: "420px",
+                          minHeight: "530px",
+                          height: "auto",
                           overflowY: "scroll",
                           //   marginBottom: "100px",
                         }}

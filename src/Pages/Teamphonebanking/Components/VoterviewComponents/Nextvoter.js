@@ -60,7 +60,9 @@ export default function CustomizedDialogs({
   handleOpen,
   doNotCall,
   contactLater,
+  handleUnSelectChoosedOption,
 }) {
+  console.log(doNotCall, contactLater);
   // const [open, setOpen] = React.useState(false);
   const [yes, setYes] = React.useState(false);
   const [connected, setConnected] = React.useState();
@@ -85,17 +87,18 @@ export default function CustomizedDialogs({
     setYes(false);
     setConnected();
     setValue("");
+    handleUnSelectChoosedOption();
     handleOpen();
   };
 
   const handleConnected = () => {
     setConnected(true);
-    // setValue("Called");
+    setValue("");
   };
 
   const handleNotConnected = () => {
     setConnected(false);
-    // setValue("sentText");
+    setValue("");
   };
 
   const handleNext = () => {
@@ -103,19 +106,25 @@ export default function CustomizedDialogs({
     handleOpen();
     setYes(false);
     setConnected();
+    handleUnSelectChoosedOption();
+    setValue("");
   };
   React.useEffect(() => {
     if (doNotCall === true) {
-      setValue("doNotCall");
+      console.log("do not call running");
+
       handleYes();
       handleConnected();
+      setValue("doNotCall");
     }
     if (contactLater === true) {
-      setValue("contactLater");
+      console.log("contact later running");
+
       handleYes();
       handleConnected();
+      setValue("contactLater");
     }
-  }, [doNotCall === true, contactLater === true]);
+  }, [doNotCall, contactLater]);
 
   return (
     <div>
@@ -130,12 +139,12 @@ export default function CustomizedDialogs({
         }}
         className="btn w-100 p-2 m-1  text-center"
         //   onClick={handleNextVoterCheck}
-        onClick={handleOpen}
+        onClick={handleNo}
       >
         Next Voter
       </button>
       <BootstrapDialog
-        onClose={handleOpen}
+        onClose={handleNo}
         aria-labelledby="customized-dialog-title"
         open={open}
         fullWidth
@@ -153,7 +162,7 @@ export default function CustomizedDialogs({
         <DialogContent className="text-center" dividers>
           <div>
             <h5 className="text-danger mt-4">
-              Are you finish Calling this voter
+              Are You Finished Calling This Voter?
             </h5>
             <br />
             <div>
@@ -225,11 +234,7 @@ export default function CustomizedDialogs({
                   value={value}
                   onChange={handleChange}
                 >
-                  <FormControlLabel
-                    value=""
-                    control={<Radio />}
-                    label="Un Select"
-                  />
+                  <FormControlLabel value="" control={<Radio />} label="None" />
                   <FormControlLabel
                     value="sentText"
                     control={<Radio />}
@@ -263,26 +268,32 @@ export default function CustomizedDialogs({
                   value={value}
                   onChange={handleChange}
                 >
-                  <FormControlLabel
+                  {/* <FormControlLabel
                     value=""
                     control={<Radio />}
                     label="Un Select"
-                  />
-                  <FormControlLabel
-                    value="doNotCall"
-                    control={<Radio />}
-                    label="Do Not Call"
-                  />
-                  <FormControlLabel
-                    value="contactLater"
-                    control={<Radio />}
-                    label="Contact Later"
-                  />
-                  <FormControlLabel
+                  /> */}
+                  {doNotCall === true && (
+                    <FormControlLabel
+                      value="doNotCall"
+                      control={<Radio />}
+                      label="Do Not Call"
+                    />
+                  )}
+
+                  {contactLater === true && (
+                    <FormControlLabel
+                      value="contactLater"
+                      control={<Radio />}
+                      label="Contact Later"
+                    />
+                  )}
+
+                  {/* <FormControlLabel
                     value="surveyed"
                     control={<Radio />}
                     label="Surveyed"
-                  />
+                  /> */}
                 </RadioGroup>
               </FormControl>
             </div>

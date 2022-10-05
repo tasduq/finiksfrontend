@@ -62,11 +62,11 @@ export default function Addtoteam({ data }) {
         <br /> <p style={{ fontSize: "12px" }}>Add to Team</p>
       </div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Invite Voter to Team</DialogTitle>
+        <DialogTitle>Grow Our Team</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Here you can invite the Voter with email. The voter will recieve the
-            Campaign Code to join the campaign
+            You can invite them to join our team by adding their email address
+            and sending an invite code
           </DialogContentText>
           <TextField
             autoFocus

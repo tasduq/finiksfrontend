@@ -103,7 +103,7 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
             // height: "35px",
             fontSize: "25px",
           }}
-          class="fas fa-plus-circle mt-3"
+          class="fas fa-plus-circle "
         ></i>
       </button>
       <BootstrapDialog
