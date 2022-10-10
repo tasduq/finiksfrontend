@@ -323,7 +323,7 @@ export const UnAuthenticatedRoutes = () => {
             }}
           />
 
-          <Route render={() => <Redirect to="/logincampaign" />} />
+          <Route render={() => <Redirect to="/logins" />} />
         </Switch>
         {/* <Footer /> */}
       </Router>
