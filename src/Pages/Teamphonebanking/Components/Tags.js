@@ -192,6 +192,7 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
                               <button
                                 title={value.description}
                                 className="btn text-muted"
+                                onClick={() => alert(value.description)}
                               >
                                 i
                               </button>
@@ -265,6 +266,7 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
                               <button
                                 title={value.description}
                                 className="btn text-muted"
+                                onClick={() => alert(value.description)}
                               >
                                 i
                               </button>

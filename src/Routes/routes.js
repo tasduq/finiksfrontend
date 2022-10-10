@@ -125,33 +125,87 @@ export const AuthenticatedRoutes = ({ role }) => {
           <Route
             exact
             path="/phonebanking"
-            render={(routeProps) => <Phonebank {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "campaignManager" || role === "superadmin") {
+                return <Phonebank {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
           <Route
             exact
             path="/canvassing"
-            render={(routeProps) => <Canvassing {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "campaignManager" || role === "superadmin") {
+                return <Canvassing {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
           <Route
             exact
             path="/team"
-            render={(routeProps) => <Team {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "campaignManager" || role === "superadmin") {
+                return <Team {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
           <Route
             exact
             path="/upload"
-            render={(routeProps) => <Upload {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "superadmin") {
+                return <Upload {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
           <Route
             exact
             path="/clients"
-            render={(routeProps) => <Clients {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "superadmin") {
+                return <Clients {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
 
           <Route
             exact
             path="/voterdata"
-            render={(routeProps) => <Voterdata {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "superadmin") {
+                return <Voterdata {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
 
           <Route
@@ -163,13 +217,31 @@ export const AuthenticatedRoutes = ({ role }) => {
           <Route
             exact
             path="/surveys"
-            render={(routeProps) => <Surveys {...routeProps} />}
+            render={(routeProps) => {
+              if (role === "campaignManager" || role === "superadmin") {
+                return <Surveys {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
 
           <Route
             exact
             path="/team/phonebanking"
-            render={(routeProps) => <Teamphonebank {...routeProps} />}
+            render={(routeProps) => {
+              if (role !== "campaignManager" && role !== "superadmin") {
+                return <Teamphonebank {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
           />
 
           <Route render={() => <Redirect to="/" />} />

@@ -1000,7 +1000,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                             style={{ fontWeight: "bold" }}
                             className="text-danger"
                           >
-                            Last Contacted :
+                            Last Contacted:
                             {voters[currentVoterIndex]?.lastInfluenced
                               ? voters[currentVoterIndex]?.lastInfluenced.split(
                                   "T"
@@ -1080,13 +1080,13 @@ export default function Voterview({ data, handleUpdateTable }) {
                             {" "}
                             <strong>
                               {" "}
-                              Phone Number :{" "}
+                              Phone Number:
                               {voters[currentVoterIndex]?.PHONE_NUM}
                             </strong>
                           </h5>
                           <h5 className="text-muted">
                             <strong>
-                              Cell Number :{" "}
+                              Cell Number:
                               {voters[currentVoterIndex]?.MOBILE_NUM}
                             </strong>
                           </h5>
@@ -1285,7 +1285,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                     )}
                   </div>
                 </div>
-                <div className="col-12 col-md-3 p-0">
+                <div className="col-12 col-md-3 p-3">
                   <h5 className="my-2 text-danger ">Profiled Information</h5>
                   <hr />
                   <div>
@@ -1295,7 +1295,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                         id="scroll-container"
                         style={{
                           position: "relative",
-                          minHeight: "530px",
+                          minHeight: "500px",
                           height: "auto",
                           overflowY: "scroll",
                           //   marginBottom: "100px",

@@ -137,9 +137,9 @@ export default function CustomizedDialogs({
           backgroundColor: "#FF914D",
           color: "white",
         }}
-        className="btn w-100 p-2 m-1  text-center"
+        className="btn w-100 p-2 mr-1  text-center"
         //   onClick={handleNextVoterCheck}
-        onClick={handleNo}
+        onClick={handleOpen}
       >
         Next Voter
       </button>
@@ -153,7 +153,7 @@ export default function CustomizedDialogs({
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"
-          onClose={handleOpen}
+          onClose={handleNo}
           className="text-center "
           style={{ backgroundColor: "#FF914D", color: "white" }}
         >
