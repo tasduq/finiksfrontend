@@ -86,7 +86,8 @@ export default function Addtoteam({ data, listId, handleUpdate }) {
         <DialogTitle>Update Voter Info</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Here you can update the Voter info provided by him/her
+            Is this person’s contact information incorrect? You can update it
+            here!
           </DialogContentText>
           {/* <TextField
             autoFocus

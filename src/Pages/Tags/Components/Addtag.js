@@ -103,7 +103,9 @@ export default function FormDialog({ handleUpdate, campaignOwnerId }) {
         <DialogTitle className="text-danger">Create New Tag</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            There you can make a new tag for the platform which clients can use
+            Write a short tag that will be easy to understand and add a detailed
+            description to explain what it is. (i.e.) Biden Supporter | This
+            voter is a supporter of Joe Biden
           </DialogContentText>
           <br />
           <div class="form-group">

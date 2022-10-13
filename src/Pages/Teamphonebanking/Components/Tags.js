@@ -118,6 +118,11 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
         >
           Voter Tags
         </BootstrapDialogTitle>
+        <p className="text-muted mx-3">
+          Did you find out something interesting in your conversation? Let’s
+          create a Tag to help you remember it! If you don’t see what you are
+          looking for under Campaign Tags, create your own!
+        </p>
         <div className="">
           <div className="text-center">
             {/* <h5 className="my-2 text-danger ">Campaign Tags</h5> */}

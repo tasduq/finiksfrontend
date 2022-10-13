@@ -922,7 +922,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                               <div className="d-flex justify-content-between mt-2">
                                 <div
                                   style={{ color: "#D12E2F" }}
-                                  className="text-center btn text-muted"
+                                  className="text-center m-2 text-muted"
                                 >
                                   <i
                                     style={{ fontSize: "25px" }}
@@ -933,7 +933,7 @@ export default function Voterview({ data, handleUpdateTable }) {
                                 </div>
                                 <div
                                   style={{ color: "#D12E2F" }}
-                                  className="text-center btn text-muted"
+                                  className="text-center m-2 text-muted"
                                 >
                                   <i
                                     style={{ fontSize: "25px" }}
@@ -996,17 +996,26 @@ export default function Voterview({ data, handleUpdateTable }) {
                           )}
                         </div>
                         <div style={{ height: "auto" }} className="p-3">
-                          <p
-                            style={{ fontWeight: "bold" }}
-                            className="text-danger"
-                          >
-                            Last Contacted:
-                            {voters[currentVoterIndex]?.lastInfluenced
-                              ? voters[currentVoterIndex]?.lastInfluenced.split(
-                                  "T"
-                                )[0]
-                              : "Not Contacted Yet"}
-                          </p>
+                          <div className=" d-flex">
+                            <p
+                              style={{ fontWeight: "bold" }}
+                              className="text-danger"
+                            >
+                              Last Contacted
+                            </p>
+                            <p
+                              className=" text-muted"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              :{" "}
+                              {voters[currentVoterIndex]?.lastInfluenced
+                                ? voters[
+                                    currentVoterIndex
+                                  ]?.lastInfluenced.split("T")[0]
+                                : " Not Contacted Yet"}
+                            </p>
+                          </div>
+
                           {/* {(voters[currentVoterIndex]?.voterTags?.length ===
                             0 ||
                             voters[currentVoterIndex]?.voterTags?.length ===
@@ -1076,20 +1085,28 @@ export default function Voterview({ data, handleUpdateTable }) {
                           </div> */}
 
                           <br />
-                          <h5 className="text-muted">
-                            {" "}
-                            <strong>
+                          <div className="d-flex">
+                            <h5 className="text-muted">
                               {" "}
-                              Phone Number:
-                              {voters[currentVoterIndex]?.PHONE_NUM}
-                            </strong>
-                          </h5>
-                          <h5 className="text-muted">
-                            <strong>
-                              Cell Number:
-                              {voters[currentVoterIndex]?.MOBILE_NUM}
-                            </strong>
-                          </h5>
+                              <strong> Phone Number</strong>
+                            </h5>
+                            <h5 className="text-muted">
+                              <strong>
+                                : {voters[currentVoterIndex]?.PHONE_NUM}
+                              </strong>
+                            </h5>
+                          </div>
+                          <div className="d-flex">
+                            <h5 className="text-muted">
+                              {" "}
+                              <strong>Cell Number</strong>
+                            </h5>
+                            <h5 className="text-muted">
+                              <strong>
+                                : {voters[currentVoterIndex]?.MOBILE_NUM}
+                              </strong>
+                            </h5>
+                          </div>
 
                           <br />
                           <br />
@@ -1295,8 +1312,8 @@ export default function Voterview({ data, handleUpdateTable }) {
                         id="scroll-container"
                         style={{
                           position: "relative",
-                          minHeight: "500px",
-                          height: "auto",
+                          height: "570px",
+                          // height: "auto",
                           overflowY: "scroll",
                           //   marginBottom: "100px",
                         }}
