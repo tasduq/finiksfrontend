@@ -20,6 +20,7 @@ import Logo from "../../../Assets/logoword.png";
 import { getCampaignTeammembers } from "../../../Connection/Campaign";
 import { ToastContainer, toast } from "react-toastify";
 import Teamtable from "../../Team/Components/Teamtable";
+import Addnewmember from "../../Team/Components/Addnewmember";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,6 +31,7 @@ export default function Viewteammemberspage({
   open,
   handleOpenTeammembers,
 }) {
+  console.log(data);
   // const [open, setOpen] = React.useState(false);
   const [foundTeammembers, setFoundTeammembers] = useState();
   const [page, setPage] = useState(1);
@@ -134,9 +136,17 @@ export default function Viewteammemberspage({
                 borderRadius: "12px",
               }}
             >
-              <p onClick={handleOpenTeammembers} style={{ color: "#d12e2f" }}>
-                <i class="fas fa-angle-left mx-2"></i> Back
-              </p>
+              <div className="d-flex justify-content-between">
+                <p onClick={handleOpenTeammembers} style={{ color: "#d12e2f" }}>
+                  <i class="fas fa-angle-left mx-2"></i> Back
+                </p>
+                <Addnewmember
+                  campaignId={data?.campaignId}
+                  data=""
+                  handleUpdateData={handleUpdate}
+                />
+              </div>
+
               <div className="text-center">
                 {foundTeammembers === undefined && (
                   <div class="spinner-border text-danger" role="status">

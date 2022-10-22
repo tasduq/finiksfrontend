@@ -19,7 +19,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
-import { inviteTeamMember } from "../../../Connection/Campaign";
+import {
+  inviteTeamMember,
+  getCampaignData,
+} from "../../../Connection/Campaign";
 import TextField from "@mui/material/TextField";
 
 import Logo from "../../../Assets/logoword.png";
@@ -28,7 +31,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Campaignsettings({ handleUpdate, data }) {
+export default function Addnewmember({ handleUpdate, data, campaignId }) {
+  // console.log(campaignData, "i am campaigndata");
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -44,6 +48,8 @@ export default function Campaignsettings({ handleUpdate, data }) {
     campaignName: window.localStorage.getItem("username"),
     campaignCode: window.localStorage.getItem("campaignCode"),
   });
+
+  // const handle
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,33 +83,68 @@ export default function Campaignsettings({ handleUpdate, data }) {
       return;
     }
     setSaving(true);
-    let res = await inviteTeamMember({ ...values });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+    let campaignCode = window.localStorage.getItem("campaignCode");
+    if (campaignCode) {
+      let res = await inviteTeamMember({
+        ...values,
+        inviterEmail: window.localStorage.getItem("email"),
       });
-      setValues({
-        // firstName: "",
-        // lastName: "",
-        // phoneNumber: "",
-        email: "",
-        // address: "",
-        permission: "",
-        campaignPosition: "",
-        // image: "",
-        about: "",
-        campaignId: window.localStorage.getItem("id"),
-        campaignName: window.localStorage.getItem("username"),
-        campaignCode: window.localStorage.getItem("campaignCode"),
-      });
-      setSaving(false);
-      handleClose();
-      handleUpdate();
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setValues({
+          email: "",
+          permission: "",
+          campaignPosition: "",
+          about: "",
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: window.localStorage.getItem("username"),
+          campaignCode: window.localStorage.getItem("campaignCode"),
+        });
+        setSaving(false);
+        handleClose();
+        handleUpdate();
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+      let campaignData = await getCampaignData({
+        campaignId: campaignId,
       });
+      console.log(campaignData, "i am campaignData");
+      let res = await inviteTeamMember({
+        ...values,
+        campaignId: campaignId ? campaignId : window.localStorage.getItem("id"),
+        inviterEmail: window.localStorage.getItem("email"),
+        campaignCode: campaignData?.data.values.campaignCode,
+        campaignName: campaignData?.data.values.campaignName,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setValues({
+          email: "",
+          permission: "",
+          campaignPosition: "",
+          about: "",
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: window.localStorage.getItem("username"),
+          campaignCode: window.localStorage.getItem("campaignCode"),
+        });
+        setSaving(false);
+        handleClose();
+        handleUpdate();
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     }
   };
 
@@ -171,105 +212,8 @@ export default function Campaignsettings({ handleUpdate, data }) {
                 <i class="fas fa-angle-left mx-2"></i> Back
               </p> */}
               <div className="row">
-                <div className="col-12 col-md-6 text-center">
+                <div className="col-12 col-md-6 text-left">
                   <h3 style={{ color: "#d12e2f" }}>Invite Team Member</h3>
-                  {/* <div className=" d-flex justify-content-center">
-                    <Avatar
-                      sx={{ bgcolor: "#FF914D", width: 100, height: 100 }}
-                      src={values.image ? values.image : ""}
-                    >
-                      {values.firstName?.length > 0 && values.firstName[0]}
-                      {values.lastName?.length > 0 && values.lastName[0]}
-                    </Avatar>
-                  </div>
-                  <Imagepicker selectedImage={handleSelectedImage} />
-                  <br /> */}
-                  <br />
-                  <div>
-                    <div class="form-group text-left">
-                      <label for="exampleFormControlTextarea1">
-                        About Your Campaign
-                      </label>
-                      <textarea
-                        class="form-control shadow-sm"
-                        id="exampleFormControlTextarea1"
-                        rows="3"
-                        value={values.about}
-                        onChange={handleChange}
-                        name="about"
-                        style={{ borderRadius: "12px" }}
-                      ></textarea>
-                    </div>
-                    <div className="text-left">
-                      {" "}
-                      <div className="text-center">
-                        {saving === true && (
-                          <div className="text-center">
-                            <div
-                              class="spinner-border text-danger"
-                              role="status"
-                            >
-                              <span class="sr-only">Loading...</span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {saving === false && (
-                        <button
-                          style={{
-                            color: "#FFFFFF",
-                            backgroundColor: "#d12e2f",
-                            width: "124.9px",
-                            height: "35px",
-                          }}
-                          // className={`btn btn-sm mx-4 px-3 py-2 ${
-                          //   locationActive === true ? "" : "disabled"
-                          // }`}
-                          onClick={handleSubmit}
-                          className="btn btn-sm  px-3 py-2"
-                        >
-                          Invite
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-12 col-md-6">
-                  {/* <div class="form-group">
-                    <label
-                      style={{ color: "#d12e2f" }}
-                      for="exampleInputEmail1"
-                    >
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control shadow "
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      // style={{ border: "none" }}
-                      value={values.firstName}
-                      onChange={handleChange}
-                      name="firstName"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label
-                      style={{ color: "#d12e2f" }}
-                      for="exampleInputEmail1"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control shadow-sm"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      value={values.lastName}
-                      onChange={handleChange}
-                      name="lastName"
-                    />
-                  </div> */}
 
                   <div class="form-group">
                     <label
@@ -329,25 +273,42 @@ export default function Campaignsettings({ handleUpdate, data }) {
                     size="small"
                   />
 
-                  {/* <FormControl fullWidth size="small">
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      //   value={age}
-                      label="Campaign Position"
-                      name="campaignPosition"
-                      value={values.campaignPosition}
-                      onChange={handleChange}
-                    >
-                      <MenuItem value="Campaign Manager">
-                        Campaign Manager
-                      </MenuItem>
-                      <MenuItem value="Volunteer">Volunteer</MenuItem>
-                      <MenuItem value="Intern Level 1">Intern Level 1</MenuItem>
-                      <MenuItem value="Intern Level 2">Intern Level 2</MenuItem>
-                      <MenuItem value="Director">Director</MenuItem>
-                    </Select>
-                  </FormControl> */}
+                  <br />
+                  <br />
+                  <div>
+                    <div className="text-left">
+                      {" "}
+                      <div className="text-center">
+                        {saving === true && (
+                          <div className="text-center">
+                            <div
+                              class="spinner-border text-danger"
+                              role="status"
+                            >
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      {saving === false && (
+                        <button
+                          style={{
+                            color: "#FFFFFF",
+                            backgroundColor: "#d12e2f",
+                            width: "124.9px",
+                            height: "35px",
+                          }}
+                          // className={`btn btn-sm mx-4 px-3 py-2 ${
+                          //   locationActive === true ? "" : "disabled"
+                          // }`}
+                          onClick={handleSubmit}
+                          className="btn btn-sm  px-3 py-2"
+                        >
+                          Invite
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
