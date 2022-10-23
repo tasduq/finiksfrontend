@@ -19,7 +19,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
-import { inviteTeamMember } from "../../../Connection/Campaign";
+import {
+  inviteTeamMember,
+  getCampaignData,
+} from "../../../Connection/Campaign";
 import TextField from "@mui/material/TextField";
 
 import Logo from "../../../Assets/logoword.png";
@@ -28,7 +31,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Campaignsettings({ handleUpdate, data }) {
+export default function Addnewmember({ handleUpdate, data, campaignId }) {
+  // console.log(campaignData, "i am campaigndata");
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -44,6 +48,8 @@ export default function Campaignsettings({ handleUpdate, data }) {
     campaignName: window.localStorage.getItem("username"),
     campaignCode: window.localStorage.getItem("campaignCode"),
   });
+
+  // const handle
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,33 +83,64 @@ export default function Campaignsettings({ handleUpdate, data }) {
       return;
     }
     setSaving(true);
-    let res = await inviteTeamMember({ ...values });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setValues({
-        // firstName: "",
-        // lastName: "",
-        // phoneNumber: "",
-        email: "",
-        // address: "",
-        permission: "",
-        campaignPosition: "",
-        // image: "",
-        about: "",
-        campaignId: window.localStorage.getItem("id"),
-        campaignName: window.localStorage.getItem("username"),
-        campaignCode: window.localStorage.getItem("campaignCode"),
-      });
-      setSaving(false);
-      handleClose();
-      handleUpdate();
+    let campaignCode = window.localStorage.getItem("campaignCode");
+    if (campaignCode) {
+      let res = await inviteTeamMember({ ...values });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setValues({
+          email: "",
+          permission: "",
+          campaignPosition: "",
+          about: "",
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: window.localStorage.getItem("username"),
+          campaignCode: window.localStorage.getItem("campaignCode"),
+        });
+        setSaving(false);
+        handleClose();
+        handleUpdate();
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+      let campaignData = await getCampaignData({
+        campaignId: campaignId,
       });
+      console.log(campaignData, "i am campaignData");
+      let res = await inviteTeamMember({
+        ...values,
+        campaignId: campaignId ? campaignId : window.localStorage.getItem("id"),
+        campaignCode: campaignData?.data.values.campaignCode,
+        campaignName: campaignData?.data.values.campaignName,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setValues({
+          email: "",
+          permission: "",
+          campaignPosition: "",
+          about: "",
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: window.localStorage.getItem("username"),
+          campaignCode: window.localStorage.getItem("campaignCode"),
+        });
+        setSaving(false);
+        handleClose();
+        handleUpdate();
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     }
   };
 

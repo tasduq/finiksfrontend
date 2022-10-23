@@ -56,7 +56,7 @@ export default function Listtable({
         </TableHead>
 
         <TableBody>
-          <TableRow
+          {/* <TableRow
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             // onClick={() => handleClick(list)}
           >
@@ -77,79 +77,59 @@ export default function Listtable({
               {teamAdmin?.startDate?.split("T")[0]}
             </TableCell>
 
-            <TableCell align="">
-              {/* <div class="dropdown">
-                <button
-                  style={{
-                    color: "white",
-                    backgroundColor: "#d12e2f",
-                    width: "88px",
-                    height: "36px",
-                  }}
-                  class="btn  dropdown-toggle"
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
+            
+          </TableRow> */}
+          {data
+            ?.map((list) => {
+              console.log(list);
+              return (
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  // onClick={() => handleClick(list)}
                 >
-                  Options
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <Editmember handleUpdate={handleUpdate} data={list} />
-                </div>
-              </div> */}
-            </TableCell>
-          </TableRow>
-          {data?.map((list) => {
-            console.log(list);
-            return (
-              <TableRow
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                // onClick={() => handleClick(list)}
-              >
-                <TableCell align="center">
-                  <div className="d-flex justify-content-center align-items-center">
-                    <div
-                      style={{
-                        width: "10px",
-                        height: "10px",
-                        backgroundColor: `${
-                          list.disabled === false ? "#49C661" : "grey"
-                        }`,
-                        color: "green",
-                        borderRadius: "50%",
-                      }}
-                    ></div>
-                  </div>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                  {list?.memberName}
-                </TableCell>
-                <TableCell align="">
-                  {list?.permission?.toUpperCase()}
-                </TableCell>
-                <TableCell align="">{list?.campaignPosition}</TableCell>
-                <TableCell align="">{list?.phoneNumber}</TableCell>
-                <TableCell align="">{list?.email}</TableCell>
-                <TableCell align="">
-                  {list?.votersInfluenced ? list.votersInfluenced : 0}
-                </TableCell>
-                <TableCell align="">
-                  {list?.doorsKnocked ? list.doorsKnocked : 0}
-                </TableCell>
-                <TableCell align="">
-                  {list?.votersSurveyed ? list.votersSurveyed : 0}
-                </TableCell>
-                <TableCell align="">
-                  {list?.votersMessaged ? list.votersMessaged : 0}
-                </TableCell>
-                <TableCell align="">
-                  {list?.phonesCalled ? list.phonesCalled : 0}
-                </TableCell>
-                <TableCell align="">{list?.dateJoined}</TableCell>
+                  <TableCell align="center">
+                    <div className="d-flex justify-content-center align-items-center">
+                      <div
+                        style={{
+                          width: "10px",
+                          height: "10px",
+                          backgroundColor: `${
+                            list.disabled === false ? "#49C661" : "grey"
+                          }`,
+                          color: "green",
+                          borderRadius: "50%",
+                        }}
+                      ></div>
+                    </div>
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {list?.memberName}
+                  </TableCell>
+                  <TableCell align="">
+                    {list?.permission?.toUpperCase()}
+                  </TableCell>
+                  <TableCell align="">{list?.campaignPosition}</TableCell>
+                  <TableCell align="">{list?.phoneNumber}</TableCell>
+                  <TableCell align="">{list?.email}</TableCell>
+                  <TableCell align="">
+                    {list?.votersInfluenced ? list.votersInfluenced : 0}
+                  </TableCell>
+                  <TableCell align="">
+                    {list?.doorsKnocked ? list.doorsKnocked : 0}
+                  </TableCell>
+                  <TableCell align="">
+                    {list?.votersSurveyed ? list.votersSurveyed : 0}
+                  </TableCell>
+                  <TableCell align="">
+                    {list?.votersMessaged ? list.votersMessaged : 0}
+                  </TableCell>
+                  <TableCell align="">
+                    {list?.phonesCalled ? list.phonesCalled : 0}
+                  </TableCell>
+                  <TableCell align="">{list?.dateJoined}</TableCell>
 
-                <TableCell align="">
-                  {/* <button
+                  <TableCell align="">
+                    {/* <button
                     style={{
                       color: "white",
                       backgroundColor: "#d12e2f",
@@ -160,42 +140,43 @@ export default function Listtable({
                   >
                     Options
                   </button> */}
-                  <div class="dropdown">
-                    <button
-                      style={{
-                        color: "white",
-                        backgroundColor: "#d12e2f",
-                        width: "88px",
-                        height: "36px",
-                      }}
-                      class="btn  dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      Options
-                    </button>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      {/* <a class="dropdown-item" href="#">
+                    <div class="dropdown">
+                      <button
+                        style={{
+                          color: "white",
+                          backgroundColor: "#d12e2f",
+                          width: "88px",
+                          height: "36px",
+                        }}
+                        class="btn  dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Options
+                      </button>
+                      <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        {/* <a class="dropdown-item" href="#">
                         Edit
                       </a> */}
-                      {/* <Editlist data={list} handleUpdateData={handleUpdate} /> */}
-                      {/* <Confirmdelete handleDelete={handleDelete} data={list} /> */}
+                        {/* <Editlist data={list} handleUpdateData={handleUpdate} /> */}
+                        {/* <Confirmdelete handleDelete={handleDelete} data={list} /> */}
 
-                      {/* <a class="dropdown-item" href="#">
+                        {/* <a class="dropdown-item" href="#">
                         Re-Use
                       </a> */}
-                      <Editmember handleUpdate={handleUpdate} data={list} />
+                        <Editmember handleUpdate={handleUpdate} data={list} />
+                      </div>
                     </div>
-                  </div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+                  </TableCell>
+                </TableRow>
+              );
+            })
+            .reverse()}
         </TableBody>
       </Table>
     </TableContainer>
