@@ -131,6 +131,23 @@ const getInvitedVoters = async (data) => {
   return res;
 };
 
+const getInvitedTeamMembers = async (data) => {
+  console.log(data);
+  let res = await axios.post(
+    `${url}/api/teammember/getinvitedteammembers`,
+    data
+  );
+  console.log(res);
+  return res;
+};
+
+const cancelInvite = async (data) => {
+  console.log(data);
+  let res = await axios.post(`${url}/api/teammember/cancelinvite`, data);
+  console.log(res);
+  return res;
+};
+
 export {
   register,
   loginTeam,
@@ -149,4 +166,6 @@ export {
   updateVoterInfo,
   getInvitedVoters,
   getAdminTags,
+  getInvitedTeamMembers,
+  cancelInvite,
 };

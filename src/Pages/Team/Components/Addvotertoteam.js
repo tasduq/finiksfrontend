@@ -186,11 +186,11 @@ export default function Invitedvoters({ handleUpdateData }) {
 
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
-            Cancel
+            Close
           </Button>
-          <Button className="text-danger" autoFocus>
+          {/* <Button className="text-danger" autoFocus>
             Save
-          </Button>
+          </Button> */}
         </DialogActions>
       </BootstrapDialog>
     </div>

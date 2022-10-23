@@ -5,6 +5,7 @@ import Teamtable from "./Components/Teamtable";
 import { ToastContainer, toast } from "react-toastify";
 import { getTeam, getTeamAdmin } from "../../Connection/Campaign";
 import Addvotertoteam from "./Components/Addvotertoteam";
+import Invitedteammembers from "./Components/Invitedteammembers";
 
 const Team = () => {
   const [update, setUpdate] = React.useState(false);
@@ -71,6 +72,7 @@ const Team = () => {
             >
               <div className="text-right d-flex justify-content-end">
                 {" "}
+                <Invitedteammembers />
                 <Addnewmember data="" handleUpdateData={handleUpdate} />
                 <Addvotertoteam handleUpdateData={handleUpdate} />
               </div>
