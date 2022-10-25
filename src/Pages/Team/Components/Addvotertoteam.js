@@ -58,7 +58,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function Invitedvoters({ handleUpdateData }) {
+export default function Invitedvoters({ handleUpdateData, campaignId }) {
   const [open, setOpen] = React.useState(false);
   //   const [checked, setChecked] = React.useState([]);
   //   const [checkedTags, setCheckedTags] = React.useState([]);
@@ -74,7 +74,9 @@ export default function Invitedvoters({ handleUpdateData }) {
   React.useEffect(() => {
     const handleGetTeam = async () => {
       const res = await getInvitedVoters({
-        campaignId: window.localStorage.getItem("id"),
+        campaignId: !window.localStorage.getItem("campaignCode")
+          ? campaignId
+          : window.localStorage.getItem("id"),
       });
       console.log(res);
       if (res.data.success === true) {

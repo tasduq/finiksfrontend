@@ -51,7 +51,7 @@ const Logincamapaign = () => {
               <div>
                 <h2>Campaign Manager</h2>
                 <p>If you are an admin</p>
-                <p>click Here :</p>
+                <p>Click Here:</p>
                 <div>
                   <Link
                     //   className={clsx({
@@ -81,7 +81,7 @@ const Logincamapaign = () => {
               <div>
                 <h2>Volunteer</h2>
                 <p>If you are a campaign member</p>
-                <p>click Here :</p>
+                <p>Click Here:</p>
                 <div>
                   <Link
                     //   className={clsx({

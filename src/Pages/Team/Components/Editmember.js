@@ -19,7 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
-import { editTeamMember } from "../../../Connection/Campaign";
+import { editTeamMember, getCampaignData } from "../../../Connection/Campaign";
 import TextField from "@mui/material/TextField";
 
 import Logo from "../../../Assets/logoword.png";
@@ -28,8 +28,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Editmember({ handleUpdate, data }) {
-  console.log(data);
+export default function Editmember({ handleUpdate, data, campaignId }) {
+  console.log(data, campaignId);
   const [open, setOpen] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -68,34 +68,79 @@ export default function Editmember({ handleUpdate, data }) {
       return;
     }
     setSaving(true);
-    let res = await editTeamMember({ ...values });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      setValues({
-        // firstName: "",
-        // lastName: "",
-        // phoneNumber: "",
-        email: "",
-        // address: "",
-        permission: "",
-        campaignPosition: "",
-        // image: "",
-        about: "",
-        campaignId: window.localStorage.getItem("id"),
-        campaignName: window.localStorage.getItem("username"),
-        campaignCode: window.localStorage.getItem("campaignCode"),
-        disabled: false,
-      });
-      setSaving(false);
-      handleClose();
-      handleUpdate();
+    let campaignCode = window.localStorage.getItem("campaignCode");
+    console.log("i am campaigncode", campaignCode);
+    if (campaignCode) {
+      let res = await editTeamMember({ ...values });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setValues({
+          // firstName: "",
+          // lastName: "",
+          // phoneNumber: "",
+          email: "",
+          // address: "",
+          permission: "",
+          campaignPosition: "",
+          // image: "",
+          about: "",
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: window.localStorage.getItem("username"),
+          campaignCode: window.localStorage.getItem("campaignCode"),
+          disabled: false,
+        });
+        setSaving(false);
+        handleClose();
+        handleUpdate();
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+      console.log("in else");
+      let campaignData = await getCampaignData({
+        campaignId: campaignId,
       });
+      console.log(campaignData, "i am campaignData");
+      let res = await editTeamMember({
+        ...values,
+        campaignId: campaignId ? campaignId : window.localStorage.getItem("id"),
+        inviterEmail: window.localStorage.getItem("email"),
+        campaignCode: campaignData?.data.values.campaignCode,
+        campaignName: campaignData?.data.values.campaignName,
+      });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setValues({
+          // firstName: "",
+          // lastName: "",
+          // phoneNumber: "",
+          email: "",
+          // address: "",
+          permission: "",
+          campaignPosition: "",
+          // image: "",
+          about: "",
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: window.localStorage.getItem("username"),
+          campaignCode: window.localStorage.getItem("campaignCode"),
+          disabled: false,
+        });
+        setSaving(false);
+        handleClose();
+        handleUpdate();
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     }
   };
 

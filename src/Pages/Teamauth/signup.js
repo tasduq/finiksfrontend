@@ -114,7 +114,7 @@ const Registerteam = () => {
                     className="text-danger d-flex"
                     for="exampleInputEmail1"
                   >
-                    last Name
+                    Last Name
                   </label>
                   <input
                     type="text"

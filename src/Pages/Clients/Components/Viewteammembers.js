@@ -21,6 +21,8 @@ import { getCampaignTeammembers } from "../../../Connection/Campaign";
 import { ToastContainer, toast } from "react-toastify";
 import Teamtable from "../../Team/Components/Teamtable";
 import Addnewmember from "../../Team/Components/Addnewmember";
+import Addvotertoteam from "../../Team/Components/Addvotertoteam";
+import Invitedteammembers from "../../Team/Components/Invitedteammembers";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -140,11 +142,18 @@ export default function Viewteammemberspage({
                 <p onClick={handleOpenTeammembers} style={{ color: "#d12e2f" }}>
                   <i class="fas fa-angle-left mx-2"></i> Back
                 </p>
-                <Addnewmember
-                  campaignId={data?.campaignId}
-                  data=""
-                  handleUpdateData={handleUpdate}
-                />
+                <div className="text-right d-flex justify-content-end">
+                  <Invitedteammembers campaignId={data?.campaignId} />
+                  <Addnewmember
+                    campaignId={data?.campaignId}
+                    data=""
+                    handleUpdateData={handleUpdate}
+                  />
+                  <Addvotertoteam
+                    campaignId={data?.campaignId}
+                    handleUpdateData={handleUpdate}
+                  />
+                </div>
               </div>
 
               <div className="text-center">
@@ -153,7 +162,13 @@ export default function Viewteammemberspage({
                     <span class="sr-only">Loading...</span>
                   </div>
                 )}
-                {foundTeammembers && <Teamtable data={foundTeammembers} />}
+                {foundTeammembers && (
+                  <Teamtable
+                    campaignId={data?.campaignId}
+                    data={foundTeammembers}
+                    handleUpdate={handleUpdate}
+                  />
+                )}
 
                 {foundTeammembers?.length === 0 && <p>No Team Members Found</p>}
               </div>

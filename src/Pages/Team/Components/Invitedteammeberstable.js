@@ -15,13 +15,16 @@ export default function Listtable({
   data,
   handleClick,
   handleUpdate,
+  campaignId,
 }) {
   console.log(data);
   const handleCancelInvite = async (data) => {
     console.log(data);
     const res = await cancelInvite({
       email: data,
-      campaignId: window.localStorage.getItem("id"),
+      campaignId: !window.localStorage.getItem("campaignCode")
+        ? campaignId
+        : window.localStorage.getItem("id"),
     });
     console.log(res);
     if (res.data.success === true) {

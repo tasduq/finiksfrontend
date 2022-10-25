@@ -15,8 +15,9 @@ export default function Listtable({
   data,
   handleClick,
   handleUpdate,
+  campaignId,
 }) {
-  console.log(data);
+  console.log(data, campaignId);
   const handleDelete = async (data) => {
     console.log(data);
     const res = await deleteList({ id: data._id });
@@ -170,7 +171,11 @@ export default function Listtable({
                         {/* <a class="dropdown-item" href="#">
                         Re-Use
                       </a> */}
-                        <Editmember handleUpdate={handleUpdate} data={list} />
+                        <Editmember
+                          campaignId={campaignId}
+                          handleUpdate={handleUpdate}
+                          data={list}
+                        />
                       </div>
                     </div>
                   </TableCell>
@@ -269,7 +274,11 @@ export default function Listtable({
                         {/* <a class="dropdown-item" href="#">
                         Re-Use
                       </a> */}
-                        <Editmember handleUpdate={handleUpdate} data={list} />
+                        <Editmember
+                          campaignId={campaignId}
+                          handleUpdate={handleUpdate}
+                          data={list}
+                        />
                       </div>
                     </div>
                   </TableCell>
