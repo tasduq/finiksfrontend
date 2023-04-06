@@ -91,6 +91,28 @@ const editList = async (data) => {
   return res;
 };
 
+const searchVotersForcanvassing = async (data) => {
+  console.log(data);
+  let res = await axios.post(
+    `${url}/api/canvassing/searchvotersforcanvassing`,
+    data
+  );
+
+  console.log(res);
+  return res;
+};
+
+const searchCanvassingList = async (data) => {
+  console.log(data);
+  let res = await axios.post(
+    `${url}/api/canvassing/searchcanvassinglists`,
+    data
+  );
+
+  console.log(res);
+  return res;
+};
+
 export {
   getLists,
   searchVoters,
@@ -101,4 +123,6 @@ export {
   saveRecord,
   getRecords,
   updateRecord,
+  searchVotersForcanvassing,
+  searchCanvassingList,
 };

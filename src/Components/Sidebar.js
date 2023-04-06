@@ -633,19 +633,19 @@ export default function Sidebar() {
                 </ListItemButton>
               </List>
             </Link>
-            {/* <Link
+            <Link
               className={clsx({
                 selected: checkRoute("/team/canvassing"),
                 "m-2": true,
                 nonselected: checkRoute("/team/canvassing") === false,
               })}
               to="/team/canvassing"
-            > */}
+            >
             <List
-            // className={clsx({
-            //   selected: checkRoute("/canvassing"),
-            //   "m-2": true,
-            // })}
+            className={clsx({
+              selected: checkRoute("/canvassing"),
+              "m-2": true,
+            })}
             >
               <ListItemButton
                 // key={text}
@@ -656,7 +656,7 @@ export default function Sidebar() {
                 }}
               >
                 <div
-                  style={{ textDecoration: "line-through" }}
+                  // style={{ textDecoration: "line-through" }}
                   className="text-center"
                 >
                   <i class="fas fa-map-marked-alt "></i>
@@ -668,7 +668,7 @@ export default function Sidebar() {
                 </div>
               </ListItemButton>
             </List>
-            {/* </Link> */}
+            </Link>
 
             {/* <Link
               className={clsx({

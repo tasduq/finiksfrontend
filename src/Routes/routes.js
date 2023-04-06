@@ -31,6 +31,7 @@ import Profile from "../Pages/Finiksgeneral/Profile";
 import Registerteam from "../Pages/Teamauth/signup";
 import Otp from "../Pages/Teamauth/otp";
 import Teamphonebank from "../Pages/Teamphonebanking/index";
+import Teamcanvassing from "../Pages/Teamcanvassing/index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -235,6 +236,21 @@ export const AuthenticatedRoutes = ({ role }) => {
             render={(routeProps) => {
               if (role !== "campaignManager" && role !== "superadmin") {
                 return <Teamphonebank {...routeProps} />;
+              } else {
+                toast.error("You dont have permission", {
+                  position: toast.POSITION.TOP_RIGHT,
+                });
+                return <Route render={() => <Redirect to="/" />} />;
+              }
+            }}
+          />
+
+<Route
+            exact
+            path="/team/canvassing"
+            render={(routeProps) => {
+              if (role !== "campaignManager" && role !== "superadmin") {
+                return <Teamcanvassing {...routeProps} />;
               } else {
                 toast.error("You dont have permission", {
                   position: toast.POSITION.TOP_RIGHT,

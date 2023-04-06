@@ -63,7 +63,20 @@ const getCampaignSurveys = async (data) => {
 
 const takeSurvey = async (data) => {
   console.log(data);
+  // return;
   let res = await axios.post(`${url}/api/survey/takesurvey`, data);
+
+  console.log(res);
+  return res;
+};
+
+const takeSurveyCanvassingSinglePerson = async (data) => {
+  console.log(data);
+  // return;
+  let res = await axios.post(
+    `${url}/api/survey/takeSurveyCanvassingSinglePerson`,
+    data
+  );
 
   console.log(res);
   return res;
@@ -102,6 +115,7 @@ export {
   getClientSurveyResponses,
   getCampaignSurveys,
   takeSurvey,
+  takeSurveyCanvassingSinglePerson,
   doNotCall,
   saveInteraction,
   wrongNumber,

@@ -331,6 +331,9 @@ export default function Voterview({ data, handleUpdateTable }) {
       list: data?.list,
       recordId: data?._id,
       totalNumbers: data?.totalNumbers,
+      campaignName: window.localStorage.getItem("campaignName")
+        ? window.localStorage.getItem("campaignName")
+        : "unknown",
     });
     console.log(res);
     if (res.data.success === true) {
@@ -524,7 +527,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   };
 
   React.useEffect(() => {
-    handleGetData();
+    open === true && handleGetData();
   }, [update === true]);
 
   return (
