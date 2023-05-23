@@ -90,7 +90,11 @@ const Teamcanvassing = (props) => {
       }
     } else {
       setListView(false);
-      res = await searchVotersForcanvassing(filterObj);
+      res = await searchVotersForcanvassing({
+        filters: filterObj,
+        campaignId: window.localStorage.getItem("id"),
+        teamMemberId: window.localStorage.getItem("userId"),
+      });
       console.log(res, "i am res");
       if (res.data.success === true) {
         setLoadingResults(false);
