@@ -24,6 +24,7 @@ import {
   doNotCall,
   saveInteraction,
   wrongNumber,
+  takeSurvey,
 } from "../../../Connection/Survey";
 import Logo from "../../../Assets/logoword.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -54,8 +55,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Voterview({ data, open, handleOpen, campaignData }) {
-  console.log(data);
+export default function Voterview({
+  data,
+  open,
+  handleOpen,
+  campaignData,
+  listView,
+}) {
+  console.log(data, "i am voterdata");
   // const [open, setOpen] = React.useState(false);
   const [openNextVoter, setOpenNextVoter] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
@@ -147,29 +154,34 @@ export default function Voterview({ data, open, handleOpen, campaignData }) {
   };
 
   const handleGetData = async () => {
-    // const res = await getList({ id: data?.list });
-    // console.log(res);
-    // if (res.data.success) {
-    //   let unSurveyedVoters = res.data.list?.voters.filter((voter) => {
-    //     // return !voter.surveyed || voter.surveyed === false;
-    //     return !voter.voterDone;
-    //   });
-    //   console.log(unSurveyedVoters.length);
-    //   if (unSurveyedVoters.length > 0) {
-    //     setVoters(unSurveyedVoters);
-    //     setCurrentVoter(unSurveyedVoters[0]);
-    //     setCurrentVoterIndex(0);
-    //   } else {
-    //     handleOpen();
-    //     toast.success("This list is completed", {
-    //       position: toast.POSITION.TOP_RIGHT,
-    //     });
-    //   }
-    // } else {
-    //   toast.error(res.data.message, {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    // }
+    if (listView) {
+      const res = await getList({ id: data?.list });
+      console.log(res);
+      if (res.data.success) {
+        let unSurveyedVoters = res.data.list?.voters.filter((voter) => {
+          // return !voter.surveyed || voter.surveyed === false;
+          return !voter.voterDone;
+        });
+        console.log(unSurveyedVoters.length);
+        if (unSurveyedVoters.length > 0) {
+          setVoters(unSurveyedVoters);
+          setCurrentVoter(unSurveyedVoters[0]);
+          setCurrentVoterIndex(0);
+        } else {
+          handleOpen();
+          toast.success("This list is completed", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    } else {
+      setCurrentVoter(data);
+      setCurrentVoterIndex(0);
+    }
 
     // const res2 = await getScript({ id: data?.scriptId });
     // console.log(res2);
@@ -180,9 +192,6 @@ export default function Voterview({ data, open, handleOpen, campaignData }) {
     //     position: toast.POSITION.TOP_RIGHT,
     //   });
     // }
-
-    setCurrentVoter(data);
-    setCurrentVoterIndex(0);
 
     handleGetSurvey();
 
@@ -318,79 +327,135 @@ export default function Voterview({ data, open, handleOpen, campaignData }) {
 
   const handleTakeSurvey = async () => {
     console.log(values, currentVoter);
-    // return;
-    // if (checkedTags.length === 0) {
-    //   toast.error("Check Atleast one Tag", {
-    //     position: toast.POSITION.TOP_RIGHT,
-    //   });
-    //   return;
-    // }
-    setSaving(true);
-    // console.table(currentVoter);
-    // console.log(values);
 
-    const res = await takeSurveyCanvassingSinglePerson({
-      ...values,
-      tags: checkedTags,
-      voterId: currentVoter?._id,
-      voterName: currentVoter?.FIRSTNAME,
-      list: data?.list,
-      recordId: data?._id,
-      totalNumbers: data?.totalNumbers,
-      interaction: "canvassing",
-      campaignName: window.localStorage.getItem("campaignName")
-        ? window.localStorage.getItem("campaignName")
-        : "unknown",
-    });
-    console.log(res);
-    if (res.data.success === true) {
-      toast.success(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+    setSaving(true);
+    if (listView) {
+      const res = await takeSurvey({
+        ...values,
+        tags: checkedTags,
+        voterId: currentVoter?._id,
+        voterName: currentVoter?.FIRSTNAME,
+        list: data?.list,
+        recordId: data?._id,
+        totalNumbers: data?.totalNumbers,
+        campaignName: window.localStorage.getItem("campaignName")
+          ? window.localStorage.getItem("campaignName")
+          : "unknown",
       });
-      // setChecked([]);
-      // setCheckedTags([]);
-      // setView("voter");
-      // setValues({
-      //   campaignId: window.localStorage.getItem("id"),
-      //   campaignName: undefined,
-      //   voterId: currentVoter?._id,
-      //   voterName: currentVoter?.FIRSTNAME,
-      //   surveyData: [],
-      //   voterAnswers: [],
-      //   recordType: "canvassing",
-      //   geoLocation: "",
-      //   date: new Date(),
-      //   time: new Date(),
-      //   subUserId: window.localStorage.getItem("userId"),
-      //   subUserName: window.localStorage.getItem("username"),
-      //   actions: {
-      //     votersInfluenced: true,
-      //     doorsKnocked: true,
-      //     votersSurveyed: true,
-      //     votersMessaged: false,
-      //     phonesCalled: false,
-      //   },
-      //   contactedWay: "Canvassing",
-      //   tags: checkedTags,
-      //   recordId: data?._id,
-      //   totalNumbers: data?.totalNumbers,
-      // });
-      setSaving(false);
-      // setAnsweredSurveys([]);
-      // if (currentVoterIndex < voters?.length - 1) {
-      //   //   handleNextVoter();
-      //   // } else {
-      //   handleOpen();
-      //   toast.success("This was the last voter", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //   });
-      // }
-      // setCurrentVoterIndex(currentVoterIndex + 1);
-      // setCurrentVoter(voters[currentVoterIndex + 1]);
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setChecked([]);
+        setCheckedTags([]);
+        setView("voter");
+        setValues({
+          campaignId: window.localStorage.getItem("id"),
+          campaignName: undefined,
+          voterId: currentVoter?._id,
+          voterName: currentVoter?.FIRSTNAME,
+          surveyData: [],
+          voterAnswers: [],
+          recordType: "phonebanking",
+          geoLocation: "",
+          date: new Date(),
+          time: new Date(),
+          subUserId: window.localStorage.getItem("userId"),
+          subUserName: window.localStorage.getItem("username"),
+          actions: {
+            votersInfluenced: true,
+            doorsKnocked: false,
+            votersSurveyed: true,
+            votersMessaged: false,
+            phonesCalled: true,
+          },
+          contactedWay: "Phone Call",
+          tags: checkedTags,
+          recordId: data?._id,
+          totalNumbers: data?.totalNumbers,
+        });
+        setSaving(false);
+        setAnsweredSurveys([]);
+        // if (currentVoterIndex < voters?.length - 1) {
+        //   //   handleNextVoter();
+        //   // } else {
+        //   handleClose();
+        //   toast.success("This was the last voter", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //   });
+        // }
+        setCurrentVoterIndex(currentVoterIndex + 1);
+        setCurrentVoter(voters[currentVoterIndex + 1]);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     } else {
-      toast.error(res.data.message, {
-        position: toast.POSITION.TOP_RIGHT,
+      const res = await takeSurveyCanvassingSinglePerson({
+        ...values,
+        tags: checkedTags,
+        voterId: currentVoter?._id,
+        voterName: currentVoter?.FIRSTNAME,
+        list: data?.list,
+        recordId: data?._id,
+        totalNumbers: data?.totalNumbers,
+        interaction: "canvassing",
+        campaignName: window.localStorage.getItem("campaignName")
+          ? window.localStorage.getItem("campaignName")
+          : "unknown",
       });
+      console.log(res);
+      if (res.data.success === true) {
+        toast.success(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        // setChecked([]);
+        // setCheckedTags([]);
+        // setView("voter");
+        // setValues({
+        //   campaignId: window.localStorage.getItem("id"),
+        //   campaignName: undefined,
+        //   voterId: currentVoter?._id,
+        //   voterName: currentVoter?.FIRSTNAME,
+        //   surveyData: [],
+        //   voterAnswers: [],
+        //   recordType: "canvassing",
+        //   geoLocation: "",
+        //   date: new Date(),
+        //   time: new Date(),
+        //   subUserId: window.localStorage.getItem("userId"),
+        //   subUserName: window.localStorage.getItem("username"),
+        //   actions: {
+        //     votersInfluenced: true,
+        //     doorsKnocked: true,
+        //     votersSurveyed: true,
+        //     votersMessaged: false,
+        //     phonesCalled: false,
+        //   },
+        //   contactedWay: "Canvassing",
+        //   tags: checkedTags,
+        //   recordId: data?._id,
+        //   totalNumbers: data?.totalNumbers,
+        // });
+        setSaving(false);
+        // setAnsweredSurveys([]);
+        // if (currentVoterIndex < voters?.length - 1) {
+        //   //   handleNextVoter();
+        //   // } else {
+        //   handleOpen();
+        //   toast.success("This was the last voter", {
+        //     position: toast.POSITION.TOP_RIGHT,
+        //   });
+        // }
+        // setCurrentVoterIndex(currentVoterIndex + 1);
+        // setCurrentVoter(voters[currentVoterIndex + 1]);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
     }
   };
 
@@ -705,7 +770,11 @@ export default function Voterview({ data, open, handleOpen, campaignData }) {
                             color: "white",
                           }}
                           className="btn w-100 p-2 mr-1  text-center"
-                          onClick={handleTakeSurvey}
+                          onClick={
+                            listView
+                              ? () => handleNextVoterCheck("Canvassing")
+                              : handleTakeSurvey
+                          }
                         >
                           Save Survey
                         </button>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-const Foundvoterlist = ({ data }) => {
+const Foundvoterlist = ({ data, handleSelectedVoter }) => {
   const [page, setPage] = useState(1);
   console.log(data?.slice(0, 5), "i am data");
   const handleLoad = () => {
@@ -24,6 +24,7 @@ const Foundvoterlist = ({ data }) => {
               key={voter?._id}
               style={{ height: "102px", borderRight: "5px red #00000029" }}
               className="p-2 text-left m-3 border-top "
+              onClick={() => handleSelectedVoter(voter)}
             >
               <h5 className="text-danger">{voter?.recordName}</h5>
               {/* <p className="text-muted">{voter?.ADDRESS}</p> */}

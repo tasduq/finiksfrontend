@@ -400,7 +400,10 @@ const Teamcanvassing = (props) => {
                           {loadingResults === false &&
                             foundResults?.length > 0 &&
                             (listView ? (
-                              <Foundcanvassinglists data={foundResults} />
+                              <Foundcanvassinglists
+                                data={foundResults}
+                                handleSelectedVoter={handleSelectedVoter}
+                              />
                             ) : (
                               <Foundvoterlist
                                 data={foundResults}
@@ -423,6 +426,7 @@ const Teamcanvassing = (props) => {
             data={selectedVoter}
             campaignData={campaignData?.campaignDates}
             handleOpen={handleOpen}
+            listView={listView}
           />
         )}
       </div>

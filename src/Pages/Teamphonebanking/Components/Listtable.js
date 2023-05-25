@@ -77,7 +77,7 @@ export default function Listtable({
         {/* </TableBody> */}
       </Table>
       {data?.map((list) => {
-        console.log(list);
+        console.log(list, "listtttttt");
         return (
           // <TableRow
           //   // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

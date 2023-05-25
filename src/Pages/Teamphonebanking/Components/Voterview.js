@@ -55,7 +55,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Voterview({ data, handleUpdateTable }) {
-  console.log(data);
+  console.log(data, "i am voterdata");
   const [open, setOpen] = React.useState(false);
   const [openNextVoter, setOpenNextVoter] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
