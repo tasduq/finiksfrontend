@@ -43,6 +43,12 @@ const Teamcanvassing = (props) => {
     setSelectedVoter(voter);
   };
 
+  const handleSelectedWalkBook = (walkbook, numberOfVoters) => {
+    console.log(walkbook, numberOfVoters, "i am walkbook");
+    let divideTime = walkbook?.totalNumbers / numberOfVoters;
+    console.log(divideTime, "divedddddd");
+  };
+
   const handleUpdate = () => {
     setUpdate(true);
   };
@@ -403,6 +409,7 @@ const Teamcanvassing = (props) => {
                               <Foundcanvassinglists
                                 data={foundResults}
                                 handleSelectedVoter={handleSelectedVoter}
+                                handleSelectedWalkBook={handleSelectedWalkBook}
                               />
                             ) : (
                               <Foundvoterlist
