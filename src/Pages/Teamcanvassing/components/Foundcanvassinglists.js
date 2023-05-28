@@ -34,17 +34,23 @@ const Foundvoterlist = ({
           <div>
             <div
               key={voter?._id}
-              style={{ height: "102px", borderRight: "5px red #00000029" }}
+              style={{
+                height: "auto",
+                minHeight: "102px",
+                borderRight: "5px red #00000029",
+                // position: "relative",
+              }}
               className="p-2 text-left m-3 border-top "
               onClick={
                 voter?.walkBooks?.length > 0
                   ? () => handleWalkBooks(voter)
-                  : () => handleSelectedVoter(voter)
+                  : () =>
+                      handleSelectedVoter(voter, { walkbookAvailable: false })
               }
             >
               <h5 className="text-danger">{voter?.recordName}</h5>
               {/* <p className="text-muted">{voter?.ADDRESS}</p> */}
-              <div className="pb-2">
+              <div className="pb-2" id="parent">
                 <div className="d-flex justify-content-between text-muted text-center ">
                   <p
                     style={{
@@ -71,10 +77,11 @@ const Foundvoterlist = ({
                   </p>
                 </div>
               </div>
-              <div className="pb-2 mb-5">
+
+              <div className="">
                 {selectedWalkBook === voter?._id &&
                   voter?.walkBooks?.length > 0 &&
-                  voter?.walkBooks?.map((walkbook) => {
+                  voter?.walkBooks?.map((walkbook, i) => {
                     return (
                       <div>
                         <div className="d-flex justify-content-between text-muted text-center ">
@@ -84,10 +91,15 @@ const Foundvoterlist = ({
                               fontSize: "19px",
                             }}
                             className="text-danger"
-                            onClick={handleSelectedWalkBook(
-                              voter,
-                              walkbook?.voters
-                            )}
+                            onClick={() =>
+                              handleSelectedVoter(voter, {
+                                walkbookAvailable: true,
+                                walkBookProps: walkbook,
+                                walkBookIndex: i,
+                                numberOfWalkbooks: voter?.walkBooks?.length,
+                                walkbookDivider: voter?.walkBooks[0]?.voters,
+                              })
+                            }
                           >
                             {walkbook?.name}
                           </p>

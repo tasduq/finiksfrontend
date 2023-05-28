@@ -25,6 +25,7 @@ const Teamcanvassing = (props) => {
   const [loadingResults, setLoadingResults] = useState(false);
   const [listView, setListView] = useState(false);
   const [selectedVoter, setSelectedVoter] = useState();
+  const [selectedWalkbook, setSelectedWalkBook] = useState();
   const history = useHistory();
 
   const [searchValues, setSearchValues] = useState({
@@ -37,10 +38,11 @@ const Teamcanvassing = (props) => {
     setOpenVoterview(!openVoterview);
   };
 
-  const handleSelectedVoter = (voter) => {
-    console.log(voter, "i am voter");
+  const handleSelectedVoter = (voter, walkobookParams) => {
+    console.log(voter, walkobookParams, "i am voter");
     handleOpen();
     setSelectedVoter(voter);
+    setSelectedWalkBook(walkobookParams);
   };
 
   const handleSelectedWalkBook = (walkbook, numberOfVoters) => {
@@ -409,7 +411,7 @@ const Teamcanvassing = (props) => {
                               <Foundcanvassinglists
                                 data={foundResults}
                                 handleSelectedVoter={handleSelectedVoter}
-                                handleSelectedWalkBook={handleSelectedWalkBook}
+                                // handleSelectedWalkBook={handleSelectedWalkBook}
                               />
                             ) : (
                               <Foundvoterlist
@@ -434,6 +436,7 @@ const Teamcanvassing = (props) => {
             campaignData={campaignData?.campaignDates}
             handleOpen={handleOpen}
             listView={listView}
+            selectedWalkbook={selectedWalkbook}
           />
         )}
       </div>

@@ -61,6 +61,7 @@ export default function Voterview({
   handleOpen,
   campaignData,
   listView,
+  selectedWalkbook,
 }) {
   console.log(data, "i am voterdata");
   // const [open, setOpen] = React.useState(false);
@@ -153,6 +154,23 @@ export default function Voterview({
     setCheckedTags(data);
   };
 
+  const handleArrayDivider = (votersList, walkbookParams) => {
+    console.log(votersList, walkbookParams, "checkparams");
+    let subArrays = [];
+    let pickupPoint = 0;
+    for (let i = 1; i <= walkbookParams?.numberOfWalkbooks; i++) {
+      let pickedPart = votersList.slice(
+        pickupPoint,
+        walkbookParams?.walkbookDivider * i
+      );
+      subArrays.push(pickedPart);
+      pickupPoint = pickupPoint + walkbookParams?.walkbookDivider;
+    }
+
+    console.log(subArrays, "i am subarrays");
+    return subArrays;
+  };
+
   const handleGetData = async () => {
     if (listView) {
       const res = await getList({ id: data?.list });
@@ -162,8 +180,19 @@ export default function Voterview({
           // return !voter.surveyed || voter.surveyed === false;
           return !voter.voterDone;
         });
-        console.log(unSurveyedVoters.length);
+        console.log(unSurveyedVoters.length, "divideddd");
         if (unSurveyedVoters.length > 0) {
+          if (selectedWalkbook?.walkbookAvailable) {
+            console.log("i am finalvoters inside");
+            let dividedVotersList = handleArrayDivider(
+              unSurveyedVoters,
+              selectedWalkbook
+            );
+            console.log(dividedVotersList, "i a divideddd");
+            unSurveyedVoters =
+              dividedVotersList[selectedWalkbook?.walkBookIndex];
+          }
+          console.log(unSurveyedVoters, "i am finalvoters");
           setVoters(unSurveyedVoters);
           setCurrentVoter(unSurveyedVoters[0]);
           setCurrentVoterIndex(0);
