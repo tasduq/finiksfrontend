@@ -64,7 +64,9 @@ const Teamcanvassing = (props) => {
   const handleFilter = (filterType) => {
     setLocationFilter(filterType);
   };
-  const handleSearch = async () => {
+  const handleSearch = async (event) => {
+    console.log("search trigered ----------");
+    event.preventDefault();
     let filterObj = {};
     if (searchValues?.voterName?.length > 0) {
       filterObj = {
@@ -189,10 +191,10 @@ const Teamcanvassing = (props) => {
                       </p>
                       <br></br>
                       <h3 style={{ fontSize: "66px", color: "#D12E2F" }}>
-                        Search
+                        Search:
                       </h3>
 
-                      <div>
+                      <form onSubmit={handleSearch}>
                         <div class="form-group text-left">
                           <label
                             style={{ color: "#d12e2f" }}
@@ -202,21 +204,29 @@ const Teamcanvassing = (props) => {
                           </label>
                           <div className="input-group">
                             <input
+                              style={{
+                                width: "661px",
+                                height: "106px",
+                                borderRadius: "5px",
+                                boxShadow: "0px 3px 26px #00000029",
+                                border: "none",
+                                padding: "50px",
+                              }}
                               type="text"
-                              className="form-control shadow-sm"
+                              // className="form-control shadow-sm"
                               id="exampleInputEmail1"
                               aria-describedby="emailHelp"
                               value={searchValues?.voterName}
                               onChange={handleChange}
                               name="voterName"
-                              placeholder="Search by Name"
+                              placeholder="Name:"
                               disabled={
                                 searchValues?.votersList?.length > 0
                                   ? true
                                   : false
                               }
                             />
-                            <div className="input-group-append">
+                            {/* <div className="input-group-append">
                               <button
                                 className="btn btn-danger border border-danger"
                                 type="button"
@@ -229,29 +239,37 @@ const Teamcanvassing = (props) => {
                               >
                                 &times;
                               </button>
-                            </div>
+                            </div> */}
                           </div>
 
                           <br />
                           <div className="d-flex justify-content-between ">
                             <div className="input-group">
                               <input
+                                style={{
+                                  width: "661px",
+                                  height: "106px",
+                                  borderRadius: "5px",
+                                  boxShadow: "0px 3px 26px #00000029",
+                                  border: "none",
+                                  padding: "50px",
+                                }}
                                 type="text"
-                                className="form-control shadow-sm"
+                                // className="form-control shadow-sm"
                                 id="exampleInputEmail1"
                                 aria-describedby="emailHelp"
                                 value={searchValues?.voterLocation}
                                 onChange={handleChange}
                                 name="voterLocation"
                                 placeholder="Search by Location or Address"
-                                disabled={
-                                  searchValues?.votersList?.length > 0 ||
-                                  locationFilter?.length === 0
-                                    ? true
-                                    : false
-                                }
+                                // disabled={
+                                //   searchValues?.votersList?.length > 0 ||
+                                //   locationFilter?.length === 0
+                                //     ? true
+                                //     : false
+                                // }
                               />
-                              <div className="input-group-append">
+                              {/* <div className="input-group-append">
                                 <button
                                   className="btn btn-danger border border-danger"
                                   type="button"
@@ -264,10 +282,10 @@ const Teamcanvassing = (props) => {
                                 >
                                   &times;
                                 </button>
-                              </div>
+                              </div> */}
                             </div>
 
-                            <div class="dropdown mx-1">
+                            {/* <div class="dropdown mx-1">
                               <button
                                 style={{
                                   color: "white",
@@ -319,7 +337,7 @@ const Teamcanvassing = (props) => {
                                   County
                                 </a>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                         <div class="form-group text-left">
@@ -331,22 +349,30 @@ const Teamcanvassing = (props) => {
                           </label>
                           <div className="input-group">
                             <input
+                              style={{
+                                width: "661px",
+                                height: "106px",
+                                borderRadius: "5px",
+                                boxShadow: "0px 3px 26px #00000029",
+                                border: "none",
+                                padding: "50px",
+                              }}
                               type="text"
-                              className="form-control shadow-sm"
+                              // className="form-control shadow-sm"
                               id="exampleInputEmail1"
                               aria-describedby="emailHelp"
                               value={searchValues?.votersList}
                               onChange={handleChange}
                               name="votersList"
                               placeholder="Search List Name"
-                              disabled={
-                                searchValues?.voterLocation?.length > 0 ||
-                                searchValues?.voterName.length > 0
-                                  ? true
-                                  : false
-                              }
+                              // disabled={
+                              //   searchValues?.voterLocation?.length > 0 ||
+                              //   searchValues?.voterName.length > 0
+                              //     ? true
+                              //     : false
+                              // }
                             />
-                            <div className="input-group-append">
+                            {/* <div className="input-group-append">
                               <button
                                 className="btn btn-danger border border-danger"
                                 type="button"
@@ -359,10 +385,10 @@ const Teamcanvassing = (props) => {
                               >
                                 &times;
                               </button>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
-                        <div className="text-left">
+                        {/* <div className="text-left">
                           <button
                             className="btn btn-danger"
                             onClick={handleSearch}
@@ -376,8 +402,8 @@ const Teamcanvassing = (props) => {
                           >
                             Search
                           </button>
-                        </div>
-                      </div>
+                        </div> */}
+                      </form>
                     </div>
                     <div className="col-5">
                       <div
