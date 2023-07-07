@@ -248,6 +248,61 @@ const Teamcanvassing = (props) => {
                           </div>
 
                           <br />
+                          <div className="d-flex justify-content-end mb-2">
+                            <div class="dropdown mx-1">
+                              <button
+                                style={{
+                                  color: "white",
+                                  backgroundColor: "#d12e2f",
+                                  minWidth: "88px",
+                                  width: "auto",
+                                  height: "36px",
+                                }}
+                                class="btn  dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                {locationFilter?.length > 0
+                                  ? locationFilter
+                                  : "Filter By"}
+                              </button>
+                              <div
+                                class="dropdown-menu"
+                                aria-labelledby="dropdownMenuButton"
+                              >
+                                <a
+                                  onClick={() => handleFilter("ADDRESS")}
+                                  class="dropdown-item"
+                                >
+                                  {" "}
+                                  Address
+                                </a>
+                                <a
+                                  onClick={() => handleFilter("CITY")}
+                                  class="dropdown-item"
+                                >
+                                  {" "}
+                                  City
+                                </a>
+                                <a
+                                  onClick={() => handleFilter("STATE")}
+                                  class="dropdown-item"
+                                >
+                                  {" "}
+                                  State
+                                </a>
+                                <a
+                                  onClick={() => handleFilter("AI_COUNTY_NAME")}
+                                  class="dropdown-item"
+                                >
+                                  {" "}
+                                  County
+                                </a>
+                              </div>
+                            </div>
+                          </div>
                           <div className="d-flex justify-content-between ">
                             <div className="input-group">
                               <input
@@ -289,60 +344,6 @@ const Teamcanvassing = (props) => {
                                 </button>
                               </div> */}
                             </div>
-
-                            {/* <div class="dropdown mx-1">
-                              <button
-                                style={{
-                                  color: "white",
-                                  backgroundColor: "#d12e2f",
-                                  minWidth: "88px",
-                                  width: "auto",
-                                  height: "36px",
-                                }}
-                                class="btn  dropdown-toggle"
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                {locationFilter?.length > 0
-                                  ? locationFilter
-                                  : "Type"}
-                              </button>
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a
-                                  onClick={() => handleFilter("ADDRESS")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  Address
-                                </a>
-                                <a
-                                  onClick={() => handleFilter("CITY")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  City
-                                </a>
-                                <a
-                                  onClick={() => handleFilter("STATE")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  State
-                                </a>
-                                <a
-                                  onClick={() => handleFilter("AI_COUNTY_NAME")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  County
-                                </a>
-                              </div>
-                            </div> */}
                           </div>
                         </div>
                         <div class="form-group text-left">
