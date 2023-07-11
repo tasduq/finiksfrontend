@@ -26,6 +26,7 @@ const Teamcanvassing = (props) => {
   const [listView, setListView] = useState(false);
   const [selectedVoter, setSelectedVoter] = useState();
   const [selectedWalkbook, setSelectedWalkBook] = useState();
+  const [sortedDirection, setSortedDirection] = useState("A");
   const history = useHistory();
 
   const [searchValues, setSearchValues] = useState({
@@ -36,6 +37,37 @@ const Teamcanvassing = (props) => {
 
   const handleOpen = () => {
     setOpenVoterview(!openVoterview);
+  };
+
+  const handleSort = (direction, arrayToSort) => {
+    setSortedDirection(direction);
+
+    if (direction === "A") {
+      // console.log(arrayToSort, "i am foundddddd");
+      // Sort objects from A to Z based on LASTNAME
+      const sortedAZ = Array.from(arrayToSort).sort((a, b) => {
+        const lastNameA = a.LASTNAME.toUpperCase();
+        // console.log(lastNameA, "lastNameAAAAA");
+        const lastNameB = b.LASTNAME.toUpperCase();
+        // console.log(lastNameB, "lastNameBBBB");
+        return lastNameA.localeCompare(lastNameB);
+      });
+
+      console.log("Sorted A to Z:", sortedAZ);
+      setFoundResults(sortedAZ);
+    }
+
+    if (direction === "Z") {
+      // Sort objects from Z to A based on LASTNAME
+      const sortedZA = Array.from(arrayToSort).sort((a, b) => {
+        const lastNameA = a.LASTNAME.toUpperCase();
+        const lastNameB = b.LASTNAME.toUpperCase();
+        return lastNameB.localeCompare(lastNameA);
+      });
+
+      console.log("Sorted Z to A:", sortedZA);
+      setFoundResults(sortedZA);
+    }
   };
 
   const handleSelectedVoter = (voter, walkobookParams) => {
@@ -108,7 +140,9 @@ const Teamcanvassing = (props) => {
       console.log(res, "i am res");
       if (res.data.success === true) {
         setLoadingResults(false);
+
         setFoundResults(res?.data?.foundVoters);
+        handleSort("A", res?.data?.foundVoters);
       } else {
         setLoadingResults(false);
         setFoundResults([]);
@@ -161,7 +195,7 @@ const Teamcanvassing = (props) => {
   console.log("props");
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
-      {console.log(campaignData)}
+      {console.log(sortedDirection, foundResults)}
       <div className="mt-5 pl-xl-5 pr-4">
         <br />
         <div className="row">
@@ -322,12 +356,12 @@ const Teamcanvassing = (props) => {
                                 onChange={handleChange}
                                 name="voterLocation"
                                 placeholder="Search by Location or Address"
-                                // disabled={
-                                //   searchValues?.votersList?.length > 0 ||
-                                //   locationFilter?.length === 0
-                                //     ? true
-                                //     : false
-                                // }
+                                disabled={
+                                  searchValues?.votersList?.length > 0 ||
+                                  locationFilter?.length === 0
+                                    ? true
+                                    : false
+                                }
                               />
                               {/* <div className="input-group-append">
                                 <button
@@ -371,12 +405,12 @@ const Teamcanvassing = (props) => {
                               onChange={handleChange}
                               name="votersList"
                               placeholder="Search List Name"
-                              // disabled={
-                              //   searchValues?.voterLocation?.length > 0 ||
-                              //   searchValues?.voterName.length > 0
-                              //     ? true
-                              //     : false
-                              // }
+                              disabled={
+                                searchValues?.voterLocation?.length > 0 ||
+                                searchValues?.voterName.length > 0
+                                  ? true
+                                  : false
+                              }
                             />
                             {/* <div className="input-group-append">
                               <button
@@ -419,12 +453,26 @@ const Teamcanvassing = (props) => {
                           boxShadow: " 0px 10px 24px #00000029",
                         }}
                       >
-                        <p
-                          style={{ color: "#d12e2f" }}
-                          className="d-flex justify-content-end p-2 border-bottom"
-                        >
-                          Filter <i class="fas fa-filter m-1"></i>
-                        </p>
+                        <div className="d-flex justify-content-end p-2 border-bottom">
+                          <button
+                            style={{ color: "#d12e2f" }}
+                            className=" btn "
+                            onClick={() =>
+                              handleSort(
+                                sortedDirection === "A" ? "Z" : "A",
+                                foundResults
+                              )
+                            }
+                          >
+                            Filter{" "}
+                            {sortedDirection === "A" ? (
+                              <i class="fas fa-sort-alpha-down m-1"></i>
+                            ) : (
+                              <i class="fas fa-sort-alpha-up m-1"></i>
+                            )}
+                          </button>
+                        </div>
+
                         <div>
                           {foundResults?.length === 0 &&
                             loadingResults === false && <p>No Results Found</p>}
