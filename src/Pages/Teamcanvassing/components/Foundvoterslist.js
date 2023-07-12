@@ -3,6 +3,14 @@ import { toast } from "react-toastify";
 
 const Foundvoterlist = ({ data, handleSelectedVoter }) => {
   const [page, setPage] = useState(1);
+  const [colors, setColors] = React.useState([
+    { name: "Orange", code: "#FF914D" },
+    { name: "Yellow", code: "#FFBD59" },
+    { name: "Blue", code: "#5271FF" },
+    { name: "Green", code: "#00C2CB" },
+    { name: "Purple", code: "#8C52FF" },
+    { name: "Red", code: "#FF5757" },
+  ]);
   console.log(data?.slice(0, 5), "i am data");
   const handleLoad = () => {
     if (page * 5 !== data?.length) {
@@ -20,13 +28,20 @@ const Foundvoterlist = ({ data, handleSelectedVoter }) => {
       {data?.slice(0, 5 * page)?.map((voter) => {
         return (
           <div>
+            {/* <hr className="  " /> */}
             <div
               key={voter?._id}
-              style={{ height: "102px", borderRight: "5px red #00000029" }}
-              className="p-2 text-left m-3 border-top "
+              style={{
+                minHeight: "102px",
+                height: "auto",
+                borderRight: `12px solid ${
+                  colors[Math.floor(Math.random() * 6)].code
+                } `,
+              }}
+              className="p-3 pr-3 text-left border-top m-1 "
               onClick={() => handleSelectedVoter(voter)}
             >
-              <h5 className="text-danger">
+              <h5 className="text-danger mt-1 ">
                 {voter?.FIRSTNAME} {voter?.LASTNAME}
               </h5>
               <p className="text-muted">{voter?.ADDRESS}</p>

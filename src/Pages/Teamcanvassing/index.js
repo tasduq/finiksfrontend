@@ -243,7 +243,8 @@ const Teamcanvassing = (props) => {
                             <div className="input-group ">
                               <input
                                 style={{
-                                  width: "661px",
+                                  minWidth: "316px",
+                                  width: "100%",
                                   height: "106px",
                                   borderRadius: "5px",
                                   boxShadow: "0px 3px 26px #00000029",
@@ -341,7 +342,8 @@ const Teamcanvassing = (props) => {
                             <div className="input-group">
                               <input
                                 style={{
-                                  width: "661px",
+                                  minWidth: "316px",
+                                  width: "100%",
                                   height: "106px",
                                   borderRadius: "5px",
                                   boxShadow: "0px 3px 26px #00000029",
@@ -380,7 +382,7 @@ const Teamcanvassing = (props) => {
                             </div>
                           </div>
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-left mt-5">
                           <label
                             style={{ color: "#d12e2f" }}
                             for="exampleInputEmail1"
@@ -390,7 +392,8 @@ const Teamcanvassing = (props) => {
                           <div className="input-group">
                             <input
                               style={{
-                                width: "661px",
+                                minWidth: "316px",
+                                width: "100%",
                                 height: "106px",
                                 borderRadius: "5px",
                                 boxShadow: "0px 3px 26px #00000029",
@@ -428,9 +431,9 @@ const Teamcanvassing = (props) => {
                             </div> */}
                           </div>
                         </div>
-                        <div className="text-left">
+                        <div className=" d-flex justify-content-end text-left">
                           <button
-                            className="btn btn-danger d-none"
+                            className="btn btn-danger "
                             onClick={handleSearch}
                             disabled={
                               searchValues?.voterLocation?.length > 0 ||
