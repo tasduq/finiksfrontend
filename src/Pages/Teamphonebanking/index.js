@@ -73,8 +73,8 @@ const Teamphonebank = (props) => {
       <div className="mt-5 pl-xl-5 pr-4">
         <br />
         <div className="row">
-          <div className="col-2 col-xl-1"></div>
-          <div className="col-10 col-xl-11">
+          <div className="col-2"></div>
+          <div className="col-9 col-lg-10 col-xl-9">
             <Header name="Phone bank" purpose="" />
             <br />
             <div>
@@ -106,6 +106,7 @@ const Teamphonebank = (props) => {
               </div>
             </div>
           </div>
+          <div className="col-xl-1"></div>
         </div>
       </div>
     </div>

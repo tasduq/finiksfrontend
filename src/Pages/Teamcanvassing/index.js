@@ -12,6 +12,7 @@ import Foundvoterlist from "./components/Foundvoterslist";
 import Foundcanvassinglists from "./components/Foundcanvassinglists";
 import Voterview from "./components/Voterview";
 import { getCampaignData } from "../../Connection/Campaign";
+import { Element, animateScroll as scroll } from "react-scroll";
 // import Listspage from "./Components/Listspage";
 // import { useLocation, Link, NavLink } from "react-router-dom";
 
@@ -142,7 +143,7 @@ const Teamcanvassing = (props) => {
         setLoadingResults(false);
 
         setFoundResults(res?.data?.foundVoters);
-        handleSort("A", res?.data?.foundVoters);
+        // handleSort("A", res?.data?.foundVoters);
       } else {
         setLoadingResults(false);
         setFoundResults([]);
@@ -199,8 +200,8 @@ const Teamcanvassing = (props) => {
       <div className="mt-5 pl-xl-5 pr-4">
         <br />
         <div className="row">
-          <div className="col-2 col-xl-1"></div>
-          <div className="col-10 col-xl-11">
+          <div className="col-2 "></div>
+          <div className="col-9 col-lg-10 col-xl-9">
             <Header name="Canvassing" purpose="Lookup Voter in Your District" />
             <br />
             <div>
@@ -219,53 +220,67 @@ const Teamcanvassing = (props) => {
                     <div className="col-7 p-5">
                       <p
                         className="text-left"
-                        style={{ fontSize: "24px", color: "#D12E2F" }}
+                        style={{
+                          fontSize: "24px",
+                          color: "#D12E2F",
+                        }}
                       >
-                        <strong>Lookup Voter by Name or Address?</strong>
+                        <strong>Lookup Voter by Name or Address:</strong>
                       </p>
                       <br></br>
-                      <h3 style={{ fontSize: "66px", color: "#D12E2F" }}>
+                      <br></br>
+
+                      <h3
+                        style={{
+                          fontSize: "44px",
+                          color: "#D12E2F",
+                          fontWeight: "900",
+                          // textShadow: "1px 1px 2px rgba(0, 0, 0, 0.9);",
+                        }}
+                      >
                         Search:
                       </h3>
-
-                      <form
-                        class="form-group text-center"
-                        onSubmit={handleSearch}
-                      >
-                        <div class="form-group text-left">
-                          <label
+                      <div className="row">
+                        <div className="col-xl-1"></div>
+                        <div className="col-12 col-xl-10">
+                          <form
+                            class="form-group text-center mt-5"
+                            onSubmit={handleSearch}
+                          >
+                            <div class="form-group text-left">
+                              {/* <label
                             style={{ color: "#d12e2f" }}
                             for="exampleInputEmail1"
                           >
                             By Voter:
-                          </label>
-                          <div className="d-flex ">
-                            <div className="input-group ">
-                              <input
-                                style={{
-                                  minWidth: "316px",
-                                  width: "100%",
-                                  height: "106px",
-                                  borderRadius: "5px",
-                                  boxShadow: "0px 3px 26px #00000029",
-                                  border: "none",
-                                  padding: "50px",
-                                }}
-                                type="text"
-                                // className="form-control shadow-sm"
-                                id="exampleInputEmail1"
-                                aria-describedby="emailHelp"
-                                value={searchValues?.voterName}
-                                onChange={handleChange}
-                                name="voterName"
-                                placeholder="Name:"
-                                disabled={
-                                  searchValues?.votersList?.length > 0
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {/* <div className="input-group-append">
+                          </label> */}
+                              <div className="d-flex ">
+                                <div className="input-group ">
+                                  <input
+                                    style={{
+                                      minWidth: "316px",
+                                      width: "100%",
+                                      height: "106px",
+                                      borderRadius: "5px",
+                                      boxShadow: "0px 3px 26px #00000029",
+                                      border: "none",
+                                      padding: "50px",
+                                    }}
+                                    type="text"
+                                    // className="form-control shadow-sm"
+                                    id="exampleInputEmail1"
+                                    aria-describedby="emailHelp"
+                                    value={searchValues?.voterName}
+                                    onChange={handleChange}
+                                    name="voterName"
+                                    placeholder="Name:"
+                                    disabled={
+                                      searchValues?.votersList?.length > 0
+                                        ? true
+                                        : false
+                                    }
+                                  />
+                                  {/* <div className="input-group-append">
                               <button
                                 className="btn btn-danger border border-danger"
                                 type="button"
@@ -279,93 +294,97 @@ const Teamcanvassing = (props) => {
                                 &times;
                               </button>
                             </div> */}
-                            </div>
-                          </div>
-
-                          <br />
-                          <div className="d-flex justify-content-end mb-2">
-                            <div class="dropdown mx-1">
-                              <button
-                                style={{
-                                  color: "white",
-                                  backgroundColor: "#d12e2f",
-                                  minWidth: "88px",
-                                  width: "auto",
-                                  height: "36px",
-                                }}
-                                class="btn  dropdown-toggle"
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                {locationFilter?.length > 0
-                                  ? locationFilter
-                                  : "Filter By"}
-                              </button>
-                              <div
-                                class="dropdown-menu"
-                                aria-labelledby="dropdownMenuButton"
-                              >
-                                <a
-                                  onClick={() => handleFilter("ADDRESS")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  Address
-                                </a>
-                                <a
-                                  onClick={() => handleFilter("CITY")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  City
-                                </a>
-                                <a
-                                  onClick={() => handleFilter("STATE")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  State
-                                </a>
-                                <a
-                                  onClick={() => handleFilter("AI_COUNTY_NAME")}
-                                  class="dropdown-item"
-                                >
-                                  {" "}
-                                  County
-                                </a>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div className="d-flex justify-content-between ">
-                            <div className="input-group">
-                              <input
-                                style={{
-                                  minWidth: "316px",
-                                  width: "100%",
-                                  height: "106px",
-                                  borderRadius: "5px",
-                                  boxShadow: "0px 3px 26px #00000029",
-                                  border: "none",
-                                  padding: "50px",
-                                }}
-                                type="text"
-                                // className="form-control shadow-sm"
-                                id="exampleInputEmail1"
-                                aria-describedby="emailHelp"
-                                value={searchValues?.voterLocation}
-                                onChange={handleChange}
-                                name="voterLocation"
-                                placeholder="Search by Location or Address"
-                                disabled={
-                                  searchValues?.votersList?.length > 0 ||
-                                  locationFilter?.length === 0
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {/* <div className="input-group-append">
+
+                              <br />
+                              <div className="d-flex justify-content-end mb-2">
+                                <div class="dropdown mx-1">
+                                  <button
+                                    style={{
+                                      color: "white",
+                                      backgroundColor: "#d12e2f",
+                                      minWidth: "88px",
+                                      width: "auto",
+                                      height: "36px",
+                                    }}
+                                    class="btn  dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    aria-expanded="false"
+                                  >
+                                    {locationFilter?.length > 0
+                                      ? locationFilter === "AI_COUNTY_NAME"
+                                        ? "County"
+                                        : locationFilter
+                                      : "Filter By"}
+                                  </button>
+                                  <div
+                                    class="dropdown-menu"
+                                    aria-labelledby="dropdownMenuButton"
+                                  >
+                                    <a
+                                      onClick={() => handleFilter("ADDRESS")}
+                                      class="dropdown-item"
+                                    >
+                                      {" "}
+                                      Address
+                                    </a>
+                                    <a
+                                      onClick={() => handleFilter("CITY")}
+                                      class="dropdown-item"
+                                    >
+                                      {" "}
+                                      City
+                                    </a>
+                                    <a
+                                      onClick={() => handleFilter("STATE")}
+                                      class="dropdown-item"
+                                    >
+                                      {" "}
+                                      State
+                                    </a>
+                                    <a
+                                      onClick={() =>
+                                        handleFilter("AI_COUNTY_NAME")
+                                      }
+                                      class="dropdown-item"
+                                    >
+                                      {" "}
+                                      County
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="d-flex justify-content-between ">
+                                <div className="input-group">
+                                  <input
+                                    style={{
+                                      minWidth: "316px",
+                                      width: "100%",
+                                      height: "106px",
+                                      borderRadius: "5px",
+                                      boxShadow: "0px 3px 26px #00000029",
+                                      border: "none",
+                                      padding: "50px",
+                                    }}
+                                    type="text"
+                                    // className="form-control shadow-sm"
+                                    id="exampleInputEmail1"
+                                    aria-describedby="emailHelp"
+                                    value={searchValues?.voterLocation}
+                                    onChange={handleChange}
+                                    name="voterLocation"
+                                    placeholder="Location or Address"
+                                    disabled={
+                                      searchValues?.votersList?.length > 0 ||
+                                      locationFilter?.length === 0
+                                        ? true
+                                        : false
+                                    }
+                                  />
+                                  {/* <div className="input-group-append">
                                 <button
                                   className="btn btn-danger border border-danger"
                                   type="button"
@@ -379,10 +398,10 @@ const Teamcanvassing = (props) => {
                                   &times;
                                 </button>
                               </div> */}
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                        <div class="form-group text-left mt-5">
+                            {/* <div class="form-group text-left mt-5">
                           <label
                             style={{ color: "#d12e2f" }}
                             for="exampleInputEmail1"
@@ -415,7 +434,7 @@ const Teamcanvassing = (props) => {
                                   : false
                               }
                             />
-                            {/* <div className="input-group-append">
+                            <div className="input-group-append">
                               <button
                                 className="btn btn-danger border border-danger"
                                 type="button"
@@ -428,27 +447,30 @@ const Teamcanvassing = (props) => {
                               >
                                 &times;
                               </button>
-                            </div> */}
+                            </div>
                           </div>
+                        </div> */}
+                            <div className=" d-flex justify-content-end text-left">
+                              <button
+                                className="btn btn-danger d-none"
+                                onClick={handleSearch}
+                                disabled={
+                                  searchValues?.voterLocation?.length > 0 ||
+                                  searchValues?.voterName?.length > 0 ||
+                                  searchValues?.votersList?.length > 0
+                                    ? false
+                                    : true
+                                }
+                              >
+                                Search
+                              </button>
+                            </div>
+                          </form>
                         </div>
-                        <div className=" d-flex justify-content-end text-left">
-                          <button
-                            className="btn btn-danger "
-                            onClick={handleSearch}
-                            disabled={
-                              searchValues?.voterLocation?.length > 0 ||
-                              searchValues?.voterName?.length > 0 ||
-                              searchValues?.votersList?.length > 0
-                                ? false
-                                : true
-                            }
-                          >
-                            Search
-                          </button>
-                        </div>
-                      </form>
+                        <div className="col-xl-1"></div>
+                      </div>
                     </div>
-                    <div className="col-5">
+                    <div className="col-5 ">
                       <div
                         className="border-left "
                         style={{
@@ -456,7 +478,7 @@ const Teamcanvassing = (props) => {
                           boxShadow: " 0px 10px 24px #00000029",
                         }}
                       >
-                        <div className="d-flex justify-content-end p-2 border-bottom">
+                        <div className="d-flex justify-content-end  border-bottom">
                           <button
                             style={{ color: "#d12e2f" }}
                             className=" btn "
@@ -481,27 +503,45 @@ const Teamcanvassing = (props) => {
                             loadingResults === false && <p>No Results Found</p>}
                           {loadingResults === true && (
                             <div
-                              class="spinner-border text-danger"
+                              class="spinner-border text-danger mt-2"
                               role="status"
                             >
                               <span class="sr-only">Loading...</span>
                             </div>
                           )}
-
-                          {loadingResults === false &&
-                            foundResults?.length > 0 &&
-                            (listView ? (
-                              <Foundcanvassinglists
-                                data={foundResults}
-                                handleSelectedVoter={handleSelectedVoter}
-                                // handleSelectedWalkBook={handleSelectedWalkBook}
-                              />
-                            ) : (
-                              <Foundvoterlist
-                                data={foundResults}
-                                handleSelectedVoter={handleSelectedVoter}
-                              />
-                            ))}
+                          <Element
+                            className="element"
+                            id="scroll-container"
+                            style={{
+                              position: "relative",
+                              height: "570px",
+                              // height: "auto",
+                              overflowY: "scroll",
+                              //   marginBottom: "100px",
+                            }}
+                          >
+                            <Element
+                              //   name="scroll-container-first-element"
+                              style={{
+                                marginBottom: "200px",
+                              }}
+                            >
+                              {loadingResults === false &&
+                                foundResults?.length > 0 &&
+                                (listView ? (
+                                  <Foundcanvassinglists
+                                    data={foundResults}
+                                    handleSelectedVoter={handleSelectedVoter}
+                                    // handleSelectedWalkBook={handleSelectedWalkBook}
+                                  />
+                                ) : (
+                                  <Foundvoterlist
+                                    data={foundResults}
+                                    handleSelectedVoter={handleSelectedVoter}
+                                  />
+                                ))}
+                            </Element>
+                          </Element>
                         </div>
                         {/* <Foundvoterlist data={foundResults} /> */}
                       </div>
@@ -511,6 +551,8 @@ const Teamcanvassing = (props) => {
               </div>
             </div>
           </div>
+          <div className="col-xl-1 "></div>
+          {/* <div className="col-2 "></div> */}
         </div>
         {openVoterview && (
           <Voterview
