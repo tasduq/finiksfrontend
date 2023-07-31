@@ -36,15 +36,16 @@ const Selectcampaign = (props) => {
   };
 
   const handleGetJoinedcampaigns = async () => {
+    console.log(props, "=====> role in props");
     let res = await getJoinedCampaigns({
       id: window.localStorage.getItem("userId"),
       role: props.location.state?.role,
     });
-    console.log(res);
+    console.log(res, "i am handlegetcampaign");
     if (res.data.success === true) {
       window.localStorage.setItem(
         "campaigns",
-        JSON.stringify(res.data.joinedCampaigns)
+        JSON.stringify(res.data?.joinedCampaigns?.campaignJoined)
       );
       setCampaignsJoined(res.data.joinedCampaigns);
       // logout();
@@ -63,7 +64,7 @@ const Selectcampaign = (props) => {
         <div className="row">
           <div className="col-2"></div>
           <div className="col-10">
-            <div className="row mt-3">
+            <div className="row ">
               <div className="col-12 col-md-3"></div>
               <div className="col-12 col-md-6">
                 <div
@@ -74,7 +75,7 @@ const Selectcampaign = (props) => {
                   }}
                   className=" shadow p-3 text-center"
                 >
-                  <h5>My Account</h5>
+                  <h5 className="mt-2">My Account</h5>
                   <div className="row  ">
                     <div className="col-1"></div>
                     <div className="col-10 mt-3">

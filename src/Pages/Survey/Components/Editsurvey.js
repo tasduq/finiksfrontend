@@ -101,10 +101,10 @@ export default function Taginfo({ data, handleUpdate, open, handleOpen }) {
 
   const handleChange = (evt) => {
     let { name, value } = evt.target;
-    console.log(name, value);
+    console.log(name, value, "i am changing survey status ====>");
     setValues({
       ...values,
-      [name]: value,
+      [name]: value === "true" ? true : false,
     });
   };
 

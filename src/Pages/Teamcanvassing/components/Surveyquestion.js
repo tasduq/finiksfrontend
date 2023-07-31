@@ -55,7 +55,7 @@ export default function CustomizedDialogs({
   handleAnswer,
   takenSurveys,
 }) {
-  console.log(data, takenSurveys);
+  console.log(data, takenSurveys, " i am data ===>");
 
   const [voterAnswer, setVoterAnswer] = React.useState({
     surveyId: data?.surveyId,
@@ -109,38 +109,50 @@ export default function CustomizedDialogs({
         onClose={handleVoterAnswer}
         aria-labelledby="customized-dialog-title"
         open={open}
+        className="p-0"
       >
         <BootstrapDialogTitle
-          id="customized-dialog-title"
+          // id="customized-dialog-title"
           onClose={handleVoterAnswer}
         >
-          {`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}
+          <div className=" text-center">
+            <h3 className="">
+              {" "}
+              <strong>{`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}</strong>{" "}
+            </h3>
+            {/* <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p> */}
+            <div className="text-center">
+              <p
+                style={{ fontSize: "19px" }}
+                className="text-muted text-center m-0"
+              >
+                {data?.voter?.CITY}, {data?.voter?.STATE}
+              </p>
+              {/* <p style={{ fontSize: "19px" }} className="text-muted mr-2">
+              
+            </p> */}
+            </div>
+          </div>
         </BootstrapDialogTitle>
-        {/* <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p> */}
-        <div className="d-flex">
-          <p style={{ fontSize: "19px" }} className="text-muted ml-3 mr-1">
-            {data?.voter?.CITY},
-          </p>
-          <p style={{ fontSize: "19px" }} className="text-muted mr-2">
-            {data?.voter?.STATE}
-          </p>
-        </div>
 
-        <DialogContent dividers>
-          <p className="text-danger text-center">
-            <strong>{data?.surveyPreview}</strong>
-          </p>
+        {/* <DialogContent dividers> */}
+        <div style={{ overflow: "hidden" }}>
           <div
             style={{
               backgroundColor: "#F2F2F2",
               minHeight: "200px",
               height: "auto",
-              borderRadius: "12px",
+              // borderRadius: "12px",
+              borderRight: `8px ${data?.color?.code ?? "orange"} solid`,
+              width: "100%",
             }}
             className="p-3"
           >
             <Typography gutterBottom>{data?.surveyQuestion}</Typography>
           </div>
+          <p className="text-danger text-center mt-3">
+            <strong>{data?.surveyPreview}</strong>
+          </p>
           <br />
           <div>
             <div className="row">
@@ -176,7 +188,7 @@ export default function CustomizedDialogs({
             </div>
           </div>
           <br />
-          <div className="text-center">
+          <div className="text-center p-3">
             {" "}
             <button
               className="btn"
@@ -199,7 +211,8 @@ export default function CustomizedDialogs({
               Save Answer
             </button>
           </div>
-        </DialogContent>
+        </div>
+        {/* </DialogContent> */}
         {/* <DialogActions>
           <Button autoFocus onClick={handleOpen}>
             Save changes

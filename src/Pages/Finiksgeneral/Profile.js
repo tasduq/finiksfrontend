@@ -126,7 +126,7 @@ export default function Profile({ btn1, currentRole }) {
             src={window.localStorage.getItem("campaignLogo")}
           />
 
-          <p className="mt-2"> {window.localStorage.getItem("username")}</p>
+          <p className="mt-3"> {window.localStorage.getItem("username")}</p>
           <i
             style={{ fontSize: "30px", color: "#FF914D" }}
             className="far fa-arrow-alt-circle-right"

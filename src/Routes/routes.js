@@ -37,7 +37,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const AuthenticatedRoutes = ({ role }) => {
   return (
-    <div className="App">
+    <div style={{ backgroundColor: "#FCFCFC", margin: "0px" }} className="App">
       <Router>
         <ToastContainer
           style={{
@@ -245,7 +245,7 @@ export const AuthenticatedRoutes = ({ role }) => {
             }}
           />
 
-<Route
+          <Route
             exact
             path="/team/canvassing"
             render={(routeProps) => {

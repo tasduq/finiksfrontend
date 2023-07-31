@@ -202,7 +202,10 @@ const Teamcanvassing = (props) => {
         <div className="row">
           <div className="col-2 "></div>
           <div className="col-9 col-lg-10 col-xl-9">
-            <Header name="Canvassing" purpose="Lookup Voter in Your District" />
+            <Header
+              name="Canvassing"
+              purpose="Lookup Voters in Your District"
+            />
             <br />
             <div>
               <div
@@ -376,7 +379,7 @@ const Teamcanvassing = (props) => {
                                     value={searchValues?.voterLocation}
                                     onChange={handleChange}
                                     name="voterLocation"
-                                    placeholder="Location or Address"
+                                    placeholder="Location or Address:"
                                     disabled={
                                       searchValues?.votersList?.length > 0 ||
                                       locationFilter?.length === 0
@@ -450,9 +453,9 @@ const Teamcanvassing = (props) => {
                             </div>
                           </div>
                         </div> */}
-                            <div className=" d-flex justify-content-end text-left">
+                            <div className=" d-flex justify-content-center text-left">
                               <button
-                                className="btn btn-danger d-none"
+                                className="btn btn-danger "
                                 onClick={handleSearch}
                                 disabled={
                                   searchValues?.voterLocation?.length > 0 ||

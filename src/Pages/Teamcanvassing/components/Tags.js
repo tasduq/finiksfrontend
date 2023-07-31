@@ -291,7 +291,7 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
             Cancel
           </Button>
           <Button className="text-danger" autoFocus onClick={handleSave}>
-            Save
+            Done
           </Button>
         </DialogActions>
       </BootstrapDialog>

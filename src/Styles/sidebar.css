@@ -13,3 +13,28 @@
   color: #a6a6a6;
   text-decoration: none;
 }
+
+.sidebar{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem;
+  gap: 1rem;
+}
+
+
+.variant{
+  /* padding: 1rem; */
+  /* background-color: #6D6A89; */
+  height: 100vh;
+  /* width: 250px; */
+  /* color: #fff; */
+}
+
+
+.var4{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+

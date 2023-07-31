@@ -269,7 +269,7 @@ export default function Voterview({
       const res3 = await getSurvey({
         id: window.localStorage.getItem("id"),
       });
-      console.log(res3);
+      console.log(res3, "i am get surveys ===>");
       if (res3.data.success) {
         setSurvey(res3.data.survey);
         setView("survey");
@@ -353,6 +353,14 @@ export default function Voterview({
     }
   };
   console.log(checkedTags);
+
+  const handleSaving = () => {
+    values?.voterAnswers?.length > 0 || checkedTags?.length > 0
+      ? toast.error("Voter data have not been saved", {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+      : handleOpen();
+  };
 
   const handleTakeSurvey = async () => {
     console.log(values, currentVoter);
@@ -677,7 +685,7 @@ export default function Voterview({
         onClose={handleOpen}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -692,16 +700,14 @@ export default function Voterview({
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+            
             <Button autoFocus color="inherit" onClick={handleOpen}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header name="Canvassing" purpose=" " />
             <div
               className="shadow px-4 py-4"
@@ -714,7 +720,7 @@ export default function Voterview({
               <button
                 className="btn"
                 style={{ color: "#d12e2f", marginLeft: "-20px" }}
-                onClick={handleOpen}
+                onClick={handleSaving}
               >
                 <i class="fas fa-angle-left mx-2"></i> Back
               </button>
@@ -798,14 +804,14 @@ export default function Voterview({
                             backgroundColor: "#FF914D",
                             color: "white",
                           }}
-                          className="btn w-100 p-2 mr-1  text-center"
+                          className="btn w-100 p-2 mr-1   text-center"
                           onClick={
                             listView
                               ? () => handleNextVoterCheck("Canvassing")
                               : handleTakeSurvey
                           }
                         >
-                          Save Survey
+                          Finish
                         </button>
                       </div>
                     </div>
@@ -817,7 +823,7 @@ export default function Voterview({
                     {/* {view === "voter" && ( */}
                     <div>
                       <div
-                        className="shadow-sm p-3  d-flex justify-content-center align-items-center"
+                        className="shadow-sm px-3 pt-3  d-flex justify-content-center align-items-center"
                         style={{ minHeight: "155px", height: "auto" }}
                       >
                         {!currentVoter && (
@@ -843,7 +849,7 @@ export default function Voterview({
                                 {currentVoter?.FIRSTNAME[0]}
                               </Avatar>
                               <p
-                                className="mr-4 mt-2"
+                                className="mr-4 mt-3"
                                 style={{
                                   fontWeight: "bold",
                                   fontSize: "25px",
@@ -1201,7 +1207,10 @@ export default function Voterview({
                   </div>
                 </div>
                 <div className="col-12 col-md-3 p-3">
-                  <h5 className="my-2 text-danger ">Profiled Information</h5>
+                  <h5 className="my-2 text-danger ">
+                    {" "}
+                    <strong>Profiled Information</strong>{" "}
+                  </h5>
                   <hr />
                   <div>
                     <div>
@@ -1210,8 +1219,7 @@ export default function Voterview({
                         id="scroll-container"
                         style={{
                           position: "relative",
-                          height: "570px",
-                          // height: "auto",
+                          height: "590px",
                           overflowY: "scroll",
                           //   marginBottom: "100px",
                         }}
@@ -1219,7 +1227,8 @@ export default function Voterview({
                         <Element
                           //   name="scroll-container-first-element"
                           style={{
-                            marginBottom: "200px",
+                            // paddingBottom: "200px",
+                            height: "100%",
                           }}
                         >
                           <div>
