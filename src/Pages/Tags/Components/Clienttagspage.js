@@ -103,7 +103,7 @@ export default function Clienttagspage({
         onClose={handleOpenTags}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -118,16 +118,14 @@ export default function Clienttagspage({
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+          
             <Button autoFocus color="inherit" onClick={handleOpenTags}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header
               name={`Tags`}
               purpose="Ability to Edit , Merge , record campaign Tags"
@@ -141,9 +139,13 @@ export default function Clienttagspage({
               }}
             >
               <div className="d-flex justify-content-between">
-                <p onClick={handleOpenTags} style={{ color: "#d12e2f" }}>
+                <button
+                  onClick={handleOpenTags}
+                  className="text-left btn"
+                  style={{ color: "#d12e2f" }}
+                >
                   <i class="fas fa-angle-left mx-2"></i> Back
-                </p>
+                </button>
                 {window.localStorage.getItem("role") !== "superadmin" && (
                   <Addtag handleUpdate={handleUpdate} />
                 )}

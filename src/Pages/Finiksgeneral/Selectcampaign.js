@@ -59,7 +59,7 @@ const Selectcampaign = (props) => {
   React.useEffect(() => {}, [campaignsJoined]);
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "auto" }}>
-      <div className="mt-5 container">
+      <div className=" container">
         <br />
         <div className="row">
           <div className="col-2"></div>

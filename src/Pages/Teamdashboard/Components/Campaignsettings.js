@@ -148,7 +148,7 @@ export default function Campaignsettings({ handleGetData }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -163,16 +163,14 @@ export default function Campaignsettings({ handleGetData }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+            
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header
               name="Campaign Settings"
               purpose="Edit Your Campaign Information"
@@ -185,9 +183,13 @@ export default function Campaignsettings({ handleGetData }) {
                 borderRadius: "12px",
               }}
             >
-              <p style={{ color: "#d12e2f" }}>
-                <i class="fas fa-angle-left mx-2"></i> Back
-              </p>
+              <button
+                onClick={handleClose}
+                className="text-left btn px-0"
+                style={{ color: "#d12e2f" }}
+              >
+                <i class="fas fa-angle-left mr-2"></i> Back
+              </button>
               <div className="row">
                 <div className="col-12 col-md-6 text-center">
                   <h3 style={{ color: "#d12e2f" }}>Campaign</h3>

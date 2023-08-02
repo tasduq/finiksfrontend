@@ -58,7 +58,7 @@ const Canvassing = (props) => {
   console.log("props");
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
-      <div className="mt-5 pl-xl-5 pr-4">
+      <div className=" pl-xl-5 pr-4">
         <br />
         <div className="row">
           <div className="col-2 col-xl-1"></div>

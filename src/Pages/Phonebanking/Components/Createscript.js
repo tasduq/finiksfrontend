@@ -15,6 +15,7 @@ import Scripttable from "./Scripttable";
 import Createnewscript from "./Createnewscript";
 import { getScripts, deleteScript } from "../../../Connection/Script";
 import { ToastContainer, toast } from "react-toastify";
+import MenuItem from "@mui/material/MenuItem";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -86,14 +87,21 @@ export default function Createscript({ handleScripts, buttonName }) {
       >
         {buttonName}
       </button> */}
-      <Typography
-        style={{ color: "#d12e2f" }}
-        className={buttonName.color}
+      <MenuItem
         onClick={handleClickOpen}
-        textAlign="center"
+        className="d-flex justify-content-between px-4"
       >
-        {buttonName.name}
-      </Typography>
+        <Typography
+          style={{ color: "#d12e2f" }}
+          className={buttonName.color}
+          textAlign="center"
+        >
+          {buttonName.name}
+        </Typography>
+        {buttonName?.name !== "Create New" && (
+          <i class="fas fa-angle-right text-danger ml-5"></i>
+        )}
+      </MenuItem>
 
       <Dialog
         fullScreen
@@ -101,7 +109,7 @@ export default function Createscript({ handleScripts, buttonName }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -116,16 +124,14 @@ export default function Createscript({ handleScripts, buttonName }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+           
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header
               name="Scripts"
               purpose="Create, Edit Assign Campaign Scripts"
@@ -138,6 +144,13 @@ export default function Createscript({ handleScripts, buttonName }) {
                 borderRadius: "12px",
               }}
             >
+              <button
+                onClick={handleClose}
+                className="text-left btn px-0"
+                style={{ color: "#d12e2f" }}
+              >
+                <i class="fas fa-angle-left mr-2"></i> Back
+              </button>
               <div className="d-flex">
                 {/* <button
                   style={{ color: "#FFFFFF", backgroundColor: "#d12e2f" }}

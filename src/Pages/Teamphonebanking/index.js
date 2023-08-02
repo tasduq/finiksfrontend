@@ -70,7 +70,7 @@ const Teamphonebank = (props) => {
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
       {console.log(campaignData)}
-      <div className="mt-5 pl-xl-5 pr-4">
+      <div className=" pl-xl-5 pr-4">
         <br />
         <div className="row">
           <div className="col-2"></div>
@@ -88,17 +88,23 @@ const Teamphonebank = (props) => {
                   boxShadow: " 0px 10px 24px #00000029",
                 }}
               >
+                <Link to="/">
+                  <div className="text-left">
+                    <button
+                      // onClick={handleClose}
+                      className="text-left btn px-0"
+                      style={{ color: "#d12e2f" }}
+                    >
+                      <i class="fas fa-angle-left mr-2"></i> Back
+                    </button>
+                  </div>
+                </Link>
                 <p
                   className="text-left"
                   style={{ fontSize: "24px", color: "#D12E2F" }}
                 >
-                  <strong>How would you like to phonebank?</strong>
+                  <strong>How Would You Like To Phonebank?</strong>
                 </p>
-                <Link to="/">
-                  <p className="text-left" style={{ color: "#d12e2f" }}>
-                    <i class="fas fa-angle-left mx-2"></i> Back
-                  </p>
-                </Link>
 
                 <div className="mt-5">
                   {foundLists && <Listspage data={foundLists} />}

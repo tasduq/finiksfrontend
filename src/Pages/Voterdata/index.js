@@ -70,7 +70,7 @@ const Voterdata = () => {
 
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
-      <div className="mt-5 pl-xl-5 pr-4">
+      <div className=" pl-xl-5 pr-4">
         {console.log(voters.length)}
 
         <br />

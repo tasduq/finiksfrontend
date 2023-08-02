@@ -97,7 +97,7 @@ export default function Finiksdatapage({ data }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -112,16 +112,14 @@ export default function Finiksdatapage({ data }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+          
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header name="Voters Record" purpose="Voters Data for Finiks" />
             <div
               className="shadow p-5"
@@ -132,9 +130,13 @@ export default function Finiksdatapage({ data }) {
               }}
             >
               <div>
-                <p onClick={handleClose} style={{ color: "#d12e2f" }}>
-                  <i class="fas fa-angle-left mx-2"></i> Back
-                </p>
+                <button
+                  // onClick={handleClose}
+                  className="text-left btn px-0"
+                  style={{ color: "#d12e2f" }}
+                >
+                  <i class="fas fa-angle-left mr-2"></i> Back
+                </button>
                 <p className="text-danger ml-2">Total Voters : {totalVoters}</p>
               </div>
 

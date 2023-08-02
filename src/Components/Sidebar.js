@@ -132,8 +132,18 @@ export default function Sidebar() {
     }
   };
 
+  const linkStyle = {
+    textDecoration: "none", // Remove underline
+    color: "black", // Change this to your desired color
+  };
+
+  const linkHoverStyle = {
+    textDecoration: "none", // Remove underline on hover (you can remove this line if you want to keep the underline on hover)
+    // Add any other styles you want to apply when the link is being hovered
+  };
+
   return (
-    <Box className="mb-5" sx={{ display: "flex" }}>
+    <Box className="" sx={{ display: "flex" }}>
       <CssBaseline />
       {/* <AppBar
         style={{ backgroundColor: "#FFFFFF" }}
@@ -164,10 +174,16 @@ export default function Sidebar() {
         {console.log(role)}
         <div
           style={{
-            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
           }}
         >
-          <div>
+          <div
+            style={{
+              flexGrow: 2,
+            }}
+          >
             {role === "superadmin" && (
               <div>
                 <NavLink
@@ -192,11 +208,6 @@ export default function Sidebar() {
                       <div className="text-center  ">
                         <i class="fas fa-home "></i>
                         <p>Super Admin</p>
-
-                        {/* <ListItemText
-                primary="Dashboard"
-                // sx={{ opacity: open ? 1 : 0 }}
-              /> */}
                       </div>
                     </ListItemButton>
                   </List>
@@ -723,12 +734,12 @@ export default function Sidebar() {
 
           <div
             style={{
-              position: "absolute",
-              bottom: "0px ",
+              flexGrow: 1,
             }}
+            className="d-flex justify-content-center pt-5"
           >
             {" "}
-            <img style={{ width: "90px" }} src={Logo} />
+            <img style={{ width: "90px", height: "50px" }} src={Logo} />
           </div>
         </div>
       </Drawer>

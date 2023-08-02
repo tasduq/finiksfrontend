@@ -140,7 +140,7 @@ export default function Profile({ btn1, currentRole }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -155,16 +155,14 @@ export default function Profile({ btn1, currentRole }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+          
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div style={{ backgroundColor: "#FCFCFC", height: "auto" }}>
-          <div className="mt-3 container">
+          <div className="container">
             <br />
             <div className="row">
               <div className="col-1"></div>
@@ -180,7 +178,17 @@ export default function Profile({ btn1, currentRole }) {
                       }}
                       className=" shadow-sm p-3 text-center"
                     >
+                      <div className="text-left">
+                        <button
+                          onClick={handleClose}
+                          className="text-left btn px-0"
+                          style={{ color: "#d12e2f" }}
+                        >
+                          <i class="fas fa-angle-left mr-2"></i> Back
+                        </button>
+                      </div>
                       <h5>Profile</h5>
+
                       <div className="row  ">
                         <div className="col-1"></div>
                         <div className="col-10 mt-3">

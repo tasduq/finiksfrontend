@@ -36,6 +36,13 @@ const Teamcanvassing = (props) => {
     votersList: "",
   });
 
+  const filterMappings = {
+    CITY: "City",
+    ADDRESS: "Address",
+    STATE: "State",
+    AI_COUNTY_NAME: "County",
+  };
+
   const handleOpen = () => {
     setOpenVoterview(!openVoterview);
   };
@@ -197,7 +204,7 @@ const Teamcanvassing = (props) => {
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
       {console.log(sortedDirection, foundResults)}
-      <div className="mt-5 pl-xl-5 pr-4">
+      <div className=" pl-xl-5 pr-4">
         <br />
         <div className="row">
           <div className="col-2 "></div>
@@ -318,9 +325,7 @@ const Teamcanvassing = (props) => {
                                     aria-expanded="false"
                                   >
                                     {locationFilter?.length > 0
-                                      ? locationFilter === "AI_COUNTY_NAME"
-                                        ? "County"
-                                        : locationFilter
+                                      ? filterMappings[locationFilter]
                                       : "Filter By"}
                                   </button>
                                   <div
@@ -330,6 +335,11 @@ const Teamcanvassing = (props) => {
                                     <a
                                       onClick={() => handleFilter("ADDRESS")}
                                       class="dropdown-item"
+                                      style={{
+                                        cursor: "pointer", // Set the cursor to "pointer" on hover to indicate it's clickable
+                                        textDecoration: "none", // Remove underline (optional)
+                                        color: "black", // Change this to your desired color (optional)
+                                      }}
                                     >
                                       {" "}
                                       Address
@@ -337,6 +347,11 @@ const Teamcanvassing = (props) => {
                                     <a
                                       onClick={() => handleFilter("CITY")}
                                       class="dropdown-item"
+                                      style={{
+                                        cursor: "pointer", // Set the cursor to "pointer" on hover to indicate it's clickable
+                                        textDecoration: "none", // Remove underline (optional)
+                                        color: "black", // Change this to your desired color (optional)
+                                      }}
                                     >
                                       {" "}
                                       City
@@ -344,6 +359,11 @@ const Teamcanvassing = (props) => {
                                     <a
                                       onClick={() => handleFilter("STATE")}
                                       class="dropdown-item"
+                                      style={{
+                                        cursor: "pointer", // Set the cursor to "pointer" on hover to indicate it's clickable
+                                        textDecoration: "none", // Remove underline (optional)
+                                        color: "black", // Change this to your desired color (optional)
+                                      }}
                                     >
                                       {" "}
                                       State
@@ -353,6 +373,11 @@ const Teamcanvassing = (props) => {
                                         handleFilter("AI_COUNTY_NAME")
                                       }
                                       class="dropdown-item"
+                                      style={{
+                                        cursor: "pointer", // Set the cursor to "pointer" on hover to indicate it's clickable
+                                        textDecoration: "none", // Remove underline (optional)
+                                        color: "black", // Change this to your desired color (optional)
+                                      }}
                                     >
                                       {" "}
                                       County

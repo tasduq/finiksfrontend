@@ -9,9 +9,19 @@
   /* width: 180px; */
 }
 
+.selected:hover{
+  text-decoration: none;
+  color : #d12e2f;
+}
+
 .nonselected {
   color: #a6a6a6;
   text-decoration: none;
+}
+
+.nonselected:hover{
+  text-decoration: none;
+  color : #d12e2f;
 }
 
 .sidebar{

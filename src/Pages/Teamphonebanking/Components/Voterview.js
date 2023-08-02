@@ -534,13 +534,17 @@ export default function Voterview({ data, handleUpdateTable }) {
     <div>
       {console.log(values, answeredSurveys)}
       <button
-        style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
+        style={{
+          border: "1px solid #D9D9D9",
+          borderRadius: "5px",
+          height: "76px",
+        }}
         className="btn w-100 d-flex justify-content-between shadow-sm "
         onClick={handleClickOpen}
       >
-        <div className="text-left w-50">
+        <div className="text-left w-50 mt-2">
           {/* <Voterview handleUpdateTable={handleUpdate} data={list} /> */}
-          <p className=" btn text-danger ml-1 mt-2">{data.recordName}</p>
+          <p className=" btn text-danger ml-1 mt-1">{data.recordName}</p>
         </div>
 
         <div className="mt-4  w-50 text-center d-flex justify-content-center">
@@ -565,7 +569,7 @@ export default function Voterview({ data, handleUpdateTable }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -580,16 +584,14 @@ export default function Voterview({ data, handleUpdateTable }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+           
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header name="Phone Bank" purpose=" " />
             <div
               className="shadow px-4 py-4"

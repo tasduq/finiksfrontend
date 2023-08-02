@@ -101,7 +101,7 @@ export default function Viewteammemberspage({
         onClose={handleOpenTeammembers}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -116,16 +116,14 @@ export default function Viewteammemberspage({
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+           
             <Button autoFocus color="inherit" onClick={handleOpenTeammembers}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header
               name="Campaign Team members"
               purpose="View Campaign Team members and their performance"
@@ -138,6 +136,13 @@ export default function Viewteammemberspage({
                 borderRadius: "12px",
               }}
             >
+              <button
+                onClick={handleOpenTeammembers}
+                className="text-left btn"
+                style={{ color: "#d12e2f" }}
+              >
+                <i class="fas fa-angle-left mx-2"></i> Back
+              </button>
               <div className="d-flex justify-content-between">
                 <p onClick={handleOpenTeammembers} style={{ color: "#d12e2f" }}>
                   <i class="fas fa-angle-left mx-2"></i> Back

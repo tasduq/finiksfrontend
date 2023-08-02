@@ -181,7 +181,7 @@ export default function Editmember({ handleUpdate, data, campaignId }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -196,16 +196,14 @@ export default function Editmember({ handleUpdate, data, campaignId }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+        
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div style={{ backgroundColor: "#FCFCFC" }}>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header
               name="Organizational Chart"
               purpose="See contact information and chain of command for your team"
@@ -218,9 +216,13 @@ export default function Editmember({ handleUpdate, data, campaignId }) {
                 borderRadius: "12px",
               }}
             >
-              {/* <p style={{ color: "#d12e2f" }}>
-                <i class="fas fa-angle-left mx-2"></i> Back
-              </p> */}
+              <button
+                onClick={handleClose}
+                className="text-left btn px-0"
+                style={{ color: "#d12e2f" }}
+              >
+                <i class="fas fa-angle-left mr-2"></i> Back
+              </button>
               <div className="row">
                 {/* <div className="col-12 col-md-6 text-center"></div> */}
                 <div className="col-12 col-md-6">

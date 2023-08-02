@@ -59,7 +59,7 @@ export default function Listspage({ data }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -74,14 +74,12 @@ export default function Listspage({ data }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+           
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div
           className="container"
           style={{ backgroundColor: "#FCFCFC", height: "100vh" }}
@@ -96,9 +94,16 @@ export default function Listspage({ data }) {
                 height: "auto",
                 backgroundColor: "#FFFFFF",
                 borderRadius: "12px",
-                // boxShadow: " 0px 10px 24px #00000029",
+                boxShadow: " 0px 10px 24px #00000029",
               }}
             >
+              <button
+                onClick={handleClose}
+                className="text-left btn px-0"
+                style={{ color: "#d12e2f" }}
+              >
+                <i class="fas fa-angle-left mr-2"></i> Back
+              </button>
               <Listtable data={data} />
             </div>
           </div>

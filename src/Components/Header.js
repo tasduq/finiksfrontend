@@ -39,6 +39,17 @@ const Header = ({ name, purpose }) => {
   const handleDSelect = () => {
     setDSelect(false);
   };
+
+  const linkStyle = {
+    textDecoration: "none", // Remove underline
+    color: "black", // Change this to your desired color
+  };
+
+  const linkHoverStyle = {
+    textDecoration: "none", // Remove underline on hover (you can remove this line if you want to keep the underline on hover)
+    // Add any other styles you want to apply when the link is being hovered
+  };
+
   return (
     <div>
       <div className="d-flex justify-content-between">
@@ -98,7 +109,13 @@ const Header = ({ name, purpose }) => {
                 <i class="fas fa-angle-right text-danger ml-5"></i>
               </MenuItem>
               {window.localStorage.getItem("teamLogin") === "true" && (
-                <Link to="/selectcampaign">
+                <Link
+                  to="/selectcampaign"
+                  style={linkStyle}
+                  onMouseOver={(e) =>
+                    Object.assign(e.target.style, linkHoverStyle)
+                  }
+                >
                   <MenuItem
                     className="d-flex justify-content-between px-4"
                     // key={setting}
@@ -113,17 +130,16 @@ const Header = ({ name, purpose }) => {
               )}
 
               {role !== "superadmin" && role !== "team" && (
-                <MenuItem
-                  className="d-flex justify-content-between px-4"
-                  // key={setting}
-                  // onClick={handleCloseUserMenu}
-                >
-                  <Createscript
-                    // handleScripts={(scripts) => setScripts(scripts)}
-                    buttonName={{ name: "Scripts", color: "text-dark" }}
-                  />
-                  <i class="fas fa-angle-right text-danger ml-5"></i>
-                </MenuItem>
+                // <MenuItem
+
+                // // key={setting}
+                // // onClick={handleCloseUserMenu}
+                // >
+                <Createscript
+                  // handleScripts={(scripts) => setScripts(scripts)}
+                  buttonName={{ name: "Scripts", color: "text-dark" }}
+                />
+                // </MenuItem>
               )}
 
               <MenuItem
@@ -138,7 +154,13 @@ const Header = ({ name, purpose }) => {
               </MenuItem>
 
               {role !== "team" && (
-                <Link to="/surveys">
+                <Link
+                  to="/surveys"
+                  style={linkStyle}
+                  onMouseOver={(e) =>
+                    Object.assign(e.target.style, linkHoverStyle)
+                  }
+                >
                   <MenuItem
                     className="d-flex justify-content-between px-4"
                     // key={setting}
@@ -170,7 +192,13 @@ const Header = ({ name, purpose }) => {
                   // key={setting}
                   // onClick={handleCloseUserMenu}
                 >
-                  <Link to="/upload">
+                  <Link
+                    to="/upload"
+                    style={linkStyle}
+                    onMouseOver={(e) =>
+                      Object.assign(e.target.style, linkHoverStyle)
+                    }
+                  >
                     <Typography className="text-dark" textAlign="center">
                       Upload Data
                     </Typography>

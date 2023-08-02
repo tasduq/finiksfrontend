@@ -428,7 +428,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -443,16 +443,14 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+           
             <Button autoFocus color="inherit" onClick={handleClose}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
-          <div className="mt-5 container">
+          <div className=" container">
             <Header
               name="Canvassing"
               purpose="Create, Edit Assign Canvassing Lists"
@@ -466,6 +464,13 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
               }}
             >
               <div>
+                <button
+                  className="text-left btn"
+                  style={{ color: "#d12e2f" }}
+                  onClick={handleClose}
+                >
+                  <i class="fas fa-angle-left mx-2"></i> Back
+                </button>
                 <div className="row">
                   <div className="col-12 col-lg-7">
                     <div

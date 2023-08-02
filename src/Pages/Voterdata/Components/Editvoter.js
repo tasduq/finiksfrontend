@@ -65,7 +65,7 @@ export default function Editvoter({ data, buttonName, open, handleClickOpen }) {
         onClose={handleClickOpen}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -80,14 +80,12 @@ export default function Editvoter({ data, buttonName, open, handleClickOpen }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+           
             <Button autoFocus color="inherit" onClick={handleClickOpen}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
           <div className="mt-5 container">
             <Header

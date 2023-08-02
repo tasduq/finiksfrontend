@@ -228,7 +228,7 @@ export default function Taginfo({ data, handleUpdate, open, handleOpen }) {
         onClose={handleOpen}
         TransitionComponent={Transition}
       >
-        <AppBar
+        {/* <AppBar
           style={{ backgroundColor: "#FFFFFF" }}
           sx={{ position: "relative" }}
         >
@@ -243,14 +243,12 @@ export default function Taginfo({ data, handleUpdate, open, handleOpen }) {
               <CloseIcon />
             </IconButton>
             <img style={{ width: "90px" }} src={Logo} />
-            {/* <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
-            </Typography> */}
+            
             <Button autoFocus color="inherit" onClick={handleOpen}>
               Close
             </Button>
           </Toolbar>
-        </AppBar>
+        </AppBar> */}
         <div>
           <div className="mt-5 container">
             <Header
@@ -270,9 +268,13 @@ export default function Taginfo({ data, handleUpdate, open, handleOpen }) {
                   <div className="d-flex justify-content-between ">
                     <div>
                       {" "}
-                      <p onClick={handleOpen} style={{ color: "#d12e2f" }}>
-                        <i class="fas fa-angle-left mx-2 mt-2"></i> Back
-                      </p>
+                      <button
+                        onClick={handleOpen}
+                        className="text-left btn px-0"
+                        style={{ color: "#d12e2f" }}
+                      >
+                        <i class="fas fa-angle-left mr-2"></i> Back
+                      </button>
                     </div>
 
                     <div>
