@@ -146,7 +146,7 @@ export default function CustomizedDialogs({
               borderRight: `8px ${data?.color?.code ?? "orange"} solid`,
               width: "100%",
             }}
-            className="p-3"
+            className="p-3 text-center"
           >
             <Typography gutterBottom>{data?.surveyQuestion}</Typography>
           </div>
@@ -208,7 +208,7 @@ export default function CustomizedDialogs({
               // onClick={voterAnswer.answer?.length > 0 && handleVoterAnswer}
               onClick={handleVoterAnswer}
             >
-              Save Answer
+              Done
             </button>
           </div>
         </div>

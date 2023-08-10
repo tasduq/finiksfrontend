@@ -824,7 +824,12 @@ export default function Voterview({
                     <div>
                       <div
                         className="shadow-sm px-3 pt-3  d-flex justify-content-center align-items-center"
-                        style={{ minHeight: "155px", height: "auto" }}
+                        style={{
+                          minHeight: "155px",
+                          height: "auto",
+                          borderBottom: "1px solid #C1C1C1",
+                          // boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+                        }}
                       >
                         {!currentVoter && (
                           <div
@@ -935,6 +940,7 @@ export default function Voterview({
                           </div>
                         )}
                       </div>
+
                       <div
                         style={{ height: "auto", backgroundColor: "#F6F6F6" }}
                         className="p-3"
@@ -1180,8 +1186,8 @@ export default function Voterview({
                         </p>
                       </div>
                       <div className="d-flex justify-content-between">
-                        <h5>Occupation</h5>
-                        <p className="text-muted text-right">
+                        <h5 className="mb-3">Occupation</h5>
+                        <p className="text-muted text-right ">
                           {currentVoter?.OCCDETAIL_DESC}
                         </p>
                       </div>
@@ -1211,9 +1217,9 @@ export default function Voterview({
                     {" "}
                     <strong>Profiled Information</strong>{" "}
                   </h5>
-                  <hr />
+                  {/* <hr /> */}
                   <div>
-                    <div>
+                    <div className="border-bottom">
                       <Element
                         className="element"
                         id="scroll-container"
@@ -1233,7 +1239,7 @@ export default function Voterview({
                         >
                           <div>
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right   ${
                                 currentVoter?.PRFL_2NDAMEND &&
                                 currentVoter?.PRFL_2NDAMEND === "Y"
                                   ? ""
@@ -1245,10 +1251,10 @@ export default function Voterview({
                                   ? "2nd Amendment Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_ACTIVE &&
                                 currentVoter?.PRFL_ACTIVE === "Y"
                                   ? ""
@@ -1260,11 +1266,11 @@ export default function Voterview({
                                   ? "Active Military"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_AMZN_PRIME &&
                                 currentVoter?.PRFL_AMZN_PRIME === "Y"
                                   ? ""
@@ -1276,11 +1282,11 @@ export default function Voterview({
                                   ? "Amazon Prime Subscriber"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_ANML_RIGHTS &&
                                 currentVoter?.PRFL_ANML_RIGHTS === "Y"
                                   ? ""
@@ -1292,11 +1298,11 @@ export default function Voterview({
                                   ? "Animal Rights Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={` p-2 border-left border-top border-right ${
                                 currentVoter?.PRFL_BIDEN_SUPPORT &&
                                 currentVoter?.PRFL_BIDEN_SUPPORT === "Y"
                                   ? ""
@@ -1308,11 +1314,11 @@ export default function Voterview({
                                   ? "Likely Biden Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right ${
                                 currentVoter?.PRFL_BLM_SUPPORT &&
                                 currentVoter?.PRFL_BLM_SUPPORT === "Y"
                                   ? ""
@@ -1324,11 +1330,11 @@ export default function Voterview({
                                   ? "Likely Black Lives Matter Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_BORDER_SECURITY &&
                                 currentVoter?.PRFL_BORDER_SECURITY === "Y"
                                   ? ""
@@ -1340,11 +1346,11 @@ export default function Voterview({
                                   ? " Interest in Border Security"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_CHOICELIFE &&
                                 currentVoter?.PRFL_CHOICELIFE === "Y"
                                   ? ""
@@ -1356,11 +1362,11 @@ export default function Voterview({
                                   ? " Pro Life"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_CLINTON_SUPPORT &&
                                 currentVoter?.PRFL_CLINTON_SUPPORT === "Y"
                                   ? ""
@@ -1372,11 +1378,11 @@ export default function Voterview({
                                   ? " Likely Hillary Clinton Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_CONSERVATIVE_NEWS &&
                                 currentVoter?.PRFL_CONSERVATIVE_NEWS === "Y"
                                   ? ""
@@ -1388,11 +1394,11 @@ export default function Voterview({
                                   ? " Likely to watch Conservative News Outlets"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_EDUCATION &&
                                 currentVoter?.PRFL_EDUCATION === "Y"
                                   ? ""
@@ -1404,11 +1410,11 @@ export default function Voterview({
                                   ? "Interest in Education Issues"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_ENVIRONMENT &&
                                 currentVoter?.PRFL_ENVIRONMENT === "Y"
                                   ? ""
@@ -1420,11 +1426,11 @@ export default function Voterview({
                                   ? "Environmentalist"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_EVANGELICAL &&
                                 currentVoter?.PRFL_EVANGELICAL === "Y"
                                   ? ""
@@ -1436,11 +1442,11 @@ export default function Voterview({
                                   ? " Evangelical"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_FENCE_SITTER &&
                                 currentVoter?.PRFL_FENCE_SITTER === "Y"
                                   ? ""
@@ -1452,11 +1458,11 @@ export default function Voterview({
                                   ? "Likely Fence Sitter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_GUN_CONTROL &&
                                 currentVoter?.PRFL_GUN_CONTROL === "Y"
                                   ? ""
@@ -1468,11 +1474,11 @@ export default function Voterview({
                                   ? "Gun Control Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_HEALTHCARE_REFORM &&
                                 currentVoter?.PRFL_HEALTHCARE_REFORM.length > 0
                                   ? ""
@@ -1487,11 +1493,11 @@ export default function Voterview({
                                   ? "Against Healthcare Reform"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_HEALTHCARE &&
                                 currentVoter?.PRFL_HEALTHCARE === "Y"
                                   ? ""
@@ -1503,11 +1509,11 @@ export default function Voterview({
                                   ? "Healthcare Professional"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_IMMIGRATION_REFORM &&
                                 currentVoter?.PRFL_IMMIGRATION_REFORM === "Y"
                                   ? ""
@@ -1519,11 +1525,11 @@ export default function Voterview({
                                   ? "Interested in Immigration Reform"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_INFLUENCER &&
                                 currentVoter?.PRFL_INFLUENCER === "Y"
                                   ? ""
@@ -1535,11 +1541,11 @@ export default function Voterview({
                                   ? "Voter Is An Influencer"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_INSURANCE &&
                                 currentVoter?.PRFL_INSURANCE === "Y"
                                   ? ""
@@ -1551,11 +1557,11 @@ export default function Voterview({
                                   ? "Likely To Have Workplace Insurance"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_LABOR &&
                                 currentVoter?.PRFL_LABOR === "Y"
                                   ? ""
@@ -1567,11 +1573,11 @@ export default function Voterview({
                                   ? "Organized Labor Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_LGBT_SUPPORT &&
                                 currentVoter?.PRFL_LGBT_SUPPORT > 0
                                   ? ""
@@ -1586,11 +1592,11 @@ export default function Voterview({
                                   ? "LGBT Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_LIBERAL_NEWS &&
                                 currentVoter?.PRFL_LIBERAL_NEWS === "Y"
                                   ? ""
@@ -1602,11 +1608,11 @@ export default function Voterview({
                                   ? "Likely to Watch Liberal News Outlets"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_MARIJUANA_REFORM &&
                                 currentVoter?.PRFL_MARIJUANA_REFORM === "Y"
                                   ? ""
@@ -1618,11 +1624,11 @@ export default function Voterview({
                                   ? "Marijuana Policy Reform Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_MARRIAGE_EQUALITY &&
                                 currentVoter?.PRFL_MARRIAGE_EQUALITY > 0
                                   ? ""
@@ -1637,11 +1643,11 @@ export default function Voterview({
                                   ? "Opposes Marriage Equality"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_METOO_SUPPORT &&
                                 currentVoter?.PRFL_METOO_SUPPORT === "Y"
                                   ? ""
@@ -1653,11 +1659,11 @@ export default function Voterview({
                                   ? "Likely to Support the MeToo Movement"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_MIL_SUPPORT &&
                                 currentVoter?.PRFL_MIL_SUPPORT === "Y"
                                   ? ""
@@ -1669,11 +1675,11 @@ export default function Voterview({
                                   ? " Military Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_MINWAGE &&
                                 currentVoter?.PRFL_MINWAGE > 0
                                   ? ""
@@ -1688,11 +1694,11 @@ export default function Voterview({
                                   ? "Likely to Oppose Minimum Wage Increase"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_OBAMA &&
                                 currentVoter?.PRFL_OBAMA === "Y"
                                   ? ""
@@ -1704,11 +1710,11 @@ export default function Voterview({
                                   ? " Likely Obama"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_PERSUADABLE_VOTER &&
                                 currentVoter?.PRFL_PERSUADABLE_VOTER === "Y"
                                   ? ""
@@ -1720,11 +1726,11 @@ export default function Voterview({
                                   ? "Persuadable/Swing Voter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_POLITICAL_IDEOLOGY &&
                                 currentVoter?.PRFL_POLITICAL_IDEOLOGY.length > 0
                                   ? ""
@@ -1742,11 +1748,11 @@ export default function Voterview({
                                   ? " Liberal"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_SANDERS_SUPPORT &&
                                 currentVoter?.PRFL_SANDERS_SUPPORT === "Y"
                                   ? ""
@@ -1758,11 +1764,11 @@ export default function Voterview({
                                   ? "Likely Sanders Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_TAXES &&
                                 currentVoter?.PRFL_TAXES === "Y"
                                   ? ""
@@ -1774,11 +1780,11 @@ export default function Voterview({
                                   ? "Interested in Taxes and Tax Reform"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_TEACHERS_UNION &&
                                 currentVoter?.PRFL_TEACHERS_UNION === "Y"
                                   ? ""
@@ -1790,11 +1796,11 @@ export default function Voterview({
                                   ? "Likely Teachers Union Member"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_TEAPARTY &&
                                 currentVoter?.PRFL_TEAPARTY > 0
                                   ? ""
@@ -1809,11 +1815,11 @@ export default function Voterview({
                                   ? "Likely Tea Party Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_TRUMP_SUPPORT &&
                                 currentVoter?.PRFL_TRUMP_SUPPORT === "Y"
                                   ? ""
@@ -1825,11 +1831,11 @@ export default function Voterview({
                                   ? "Likely Trump Supporter"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
 
                             <div
-                              className={`my-2 ${
+                              className={`p-2 border-left border-top border-right  ${
                                 currentVoter?.PRFL_VETERAN &&
                                 currentVoter?.PRFL_VETERAN === "Y"
                                   ? ""
@@ -1841,7 +1847,7 @@ export default function Voterview({
                                   ? "Veteran"
                                   : ""}
                               </p>
-                              <hr />
+                              {/* <hr /> */}
                             </div>
                           </div>
                         </Element>
@@ -1851,7 +1857,7 @@ export default function Voterview({
                 </div>
                 {/* <div className="col-12 col-md-3">
                   <div className="text-center">
-                    <h5 className="my-2 text-danger ">Campaign Tags</h5>
+                    <h5 className="p-2 border-left border-top border-right  text-danger ">Campaign Tags</h5>
 
                     <Addnewtag
                       handleUpdate={handleUpdate}

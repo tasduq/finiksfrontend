@@ -196,7 +196,7 @@ export default function CustomizedDialogs({
               // onClick={voterAnswer.answer?.length > 0 && handleVoterAnswer}
               onClick={handleVoterAnswer}
             >
-              Save Answer
+              Done
             </button>
           </div>
         </DialogContent>

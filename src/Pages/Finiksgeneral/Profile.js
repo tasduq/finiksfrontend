@@ -16,6 +16,7 @@ import Imagepicker from "../../Components/Imagepicker";
 import { updateProfile } from "../../Connection/Finiksgeneral";
 import { useAuth } from "../../Context/Auth-Context";
 import Updatepassword from "./Updatepassword";
+import MenuItem from "@mui/material/MenuItem";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -107,9 +108,13 @@ export default function Profile({ btn1, currentRole }) {
   return (
     <div>
       {btn1 ? (
-        <button onClick={handleClickOpen} className="btn p-0">
-          Profile
-        </button>
+        <MenuItem
+          onClick={handleClickOpen}
+          className="d-flex justify-content-between px-4"
+        >
+          <button className="btn p-0">Profile</button>
+          <i class="fas fa-angle-right text-danger ml-5"></i>
+        </MenuItem>
       ) : (
         <button
           className="btn shadow-sm d-flex justify-content-between align-items-center p-3"

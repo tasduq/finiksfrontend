@@ -62,19 +62,29 @@ const Header = ({ name, purpose }) => {
               : `Welcome Back, ${window.localStorage.getItem("username")}`}
           </p>
         </div>
+        <Box sx={{ flexGrow: 0 }}>
+          <div className="mt-4 d-flex">
+            <div className="d-flex">
+              <Tooltip title="Open settings">
+                <IconButton sx={{ p: 0 }}>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={window.localStorage.getItem("campaignLogo")}
+                  />
+                </IconButton>
+              </Tooltip>
 
-        <div className="mt-4 d-flex">
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={window.localStorage.getItem("campaignLogo")}
-                />
-              </IconButton>
-            </Tooltip>
+              <div className="mx-2 mt-2">
+                <p>{window.localStorage.getItem("username")}</p>
+              </div>
+              <i
+                onClick={handleOpenUserMenu}
+                class="fas fa-chevron-down mt-2 pt-1"
+              ></i>
+            </div>
+
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ ml: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -100,14 +110,38 @@ const Header = ({ name, purpose }) => {
                 </MenuItem>
               ))} */}
 
-              <MenuItem
+              {/* <MenuItem
                 className="d-flex justify-content-between px-4"
                 // key={setting}
                 // onClick={handleCloseUserMenu}
+              > */}
+              <MenuItem
+                className="d-flex justify-content-around mx-2"
+                // key={setting}
+                // onClick={handleCloseUserMenu}
               >
-                <Profilepage btn1={true} />
-                <i class="fas fa-angle-right text-danger ml-5"></i>
+                <Tooltip title="Open settings">
+                  <IconButton sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={window.localStorage.getItem("campaignLogo")}
+                    />
+                  </IconButton>
+                </Tooltip>
+
+                <div className=" mt-3">
+                  <p>{window.localStorage.getItem("username")}</p>
+                </div>
+                <div>
+                  <i
+                    onClick={handleCloseUserMenu}
+                    class="fas fa-chevron-up  mb-2"
+                  ></i>
+                </div>
               </MenuItem>
+
+              <Profilepage btn1={true} />
+              {/* </MenuItem> */}
               {window.localStorage.getItem("teamLogin") === "true" && (
                 <Link
                   to="/selectcampaign"
@@ -219,11 +253,8 @@ const Header = ({ name, purpose }) => {
                 <i class="fas fa-sign-out-alt text-danger ml-5"></i>
               </MenuItem>
             </Menu>
-          </Box>
-          <div className="mx-2 mt-2">
-            <p>{window.localStorage.getItem("username")}</p>
           </div>
-        </div>
+        </Box>
       </div>
       {openTags && (
         <Clienttagspage
