@@ -363,9 +363,10 @@ export default function Voterview({
   };
 
   const handleTakeSurvey = async () => {
-    console.log(values, currentVoter);
+    console.log(values, currentVoter, "savingggggg");
 
     setSaving(true);
+
     if (listView) {
       const res = await takeSurvey({
         ...values,
@@ -449,7 +450,7 @@ export default function Voterview({
           position: toast.POSITION.TOP_RIGHT,
         });
         // setChecked([]);
-        // setCheckedTags([]);
+        setCheckedTags([]);
         // setView("voter");
         // setValues({
         //   campaignId: window.localStorage.getItem("id"),
@@ -476,7 +477,12 @@ export default function Voterview({
         //   recordId: data?._id,
         //   totalNumbers: data?.totalNumbers,
         // });
+        setValues({
+          ...values,
+          voterAnswers: [],
+        });
         setSaving(false);
+        handleOpen();
         // setAnsweredSurveys([]);
         // if (currentVoterIndex < voters?.length - 1) {
         //   //   handleNextVoter();
@@ -491,6 +497,12 @@ export default function Voterview({
       } else {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+        });
+        setSaving(false);
+        setCheckedTags([]);
+        setValues({
+          ...values,
+          voterAnswers: [],
         });
       }
     }
@@ -795,24 +807,36 @@ export default function Voterview({
                           })}
                         </div>
                       </div>
+                      <div className="text-center">
+                        {saving === true && (
+                          <div
+                            class="spinner-border text-danger text-center"
+                            role="status"
+                          >
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        )}
+                      </div>
 
                       <div>
                         {" "}
-                        <button
-                          style={{
-                            borderRadius: "8px",
-                            backgroundColor: "#FF914D",
-                            color: "white",
-                          }}
-                          className="btn w-100 p-2 mr-1   text-center"
-                          onClick={
-                            listView
-                              ? () => handleNextVoterCheck("Canvassing")
-                              : handleTakeSurvey
-                          }
-                        >
-                          Finish
-                        </button>
+                        {saving === false && (
+                          <button
+                            style={{
+                              borderRadius: "8px",
+                              backgroundColor: "#FF914D",
+                              color: "white",
+                            }}
+                            className="btn w-100 p-2 mr-1   text-center"
+                            onClick={
+                              listView
+                                ? () => handleNextVoterCheck("Canvassing")
+                                : handleTakeSurvey
+                            }
+                          >
+                            Save Updated Voter Information
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

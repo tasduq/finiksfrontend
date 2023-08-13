@@ -106,14 +106,14 @@ export default function CustomizedDialogs({
         Open dialog
       </Button> */}
       <BootstrapDialog
-        onClose={handleVoterAnswer}
+        onClose={handleOpen}
         aria-labelledby="customized-dialog-title"
         open={open}
         className="p-0"
       >
         <BootstrapDialogTitle
           // id="customized-dialog-title"
-          onClose={handleVoterAnswer}
+          onClose={handleOpen}
         >
           <div className=" text-center">
             <h3 className="">

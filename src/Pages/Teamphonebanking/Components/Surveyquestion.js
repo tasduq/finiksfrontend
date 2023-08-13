@@ -106,14 +106,11 @@ export default function CustomizedDialogs({
         Open dialog
       </Button> */}
       <BootstrapDialog
-        onClose={handleVoterAnswer}
+        onClose={handleOpen}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle
-          id="customized-dialog-title"
-          onClose={handleVoterAnswer}
-        >
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleOpen}>
           {`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}
         </BootstrapDialogTitle>
         {/* <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p> */}
