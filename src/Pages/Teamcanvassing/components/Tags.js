@@ -55,10 +55,23 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
+export default function Tags({
+  adminTags,
+  tags,
+  handleTags,
+  handleUpdate,
+  checkedTagsFromPreviousSurvey,
+}) {
+  console.log(checkedTagsFromPreviousSurvey, "checkedTagsFromPreviousSurvey");
   const [open, setOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState([]);
-  const [checkedTags, setCheckedTags] = React.useState([]);
+  const [checked, setChecked] = React.useState(
+    checkedTagsFromPreviousSurvey
+      ? checkedTagsFromPreviousSurvey?.map((tagData) => tagData?.tagId)
+      : []
+  );
+  const [checkedTags, setCheckedTags] = React.useState(
+    checkedTagsFromPreviousSurvey ? checkedTagsFromPreviousSurvey : []
+  );
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -92,6 +105,7 @@ export default function Tags({ adminTags, tags, handleTags, handleUpdate }) {
 
   return (
     <div>
+      {console.log(checked, checkedTags, "yoooooo")}
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
       </Button> */}

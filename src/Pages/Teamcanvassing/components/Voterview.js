@@ -72,12 +72,16 @@ export default function Voterview({
   const [voters, setVoters] = React.useState([]);
   const [script, setScript] = React.useState();
   const [checked, setChecked] = React.useState([]);
-  const [checkedTags, setCheckedTags] = React.useState([]);
+  const [checkedTags, setCheckedTags] = React.useState(
+    data?.tags ? data?.tags : []
+  );
   const [currentVoter, setCurrentVoter] = React.useState();
   const [currentVoterIndex, setCurrentVoterIndex] = React.useState();
   const [survey, setSurvey] = React.useState();
   const [surveyQuestion, setSurveyQuestion] = React.useState();
-  const [answeredSurveys, setAnsweredSurveys] = React.useState([]);
+  const [answeredSurveys, setAnsweredSurveys] = React.useState(
+    data?.answeredSurveys ? data?.answeredSurveys : []
+  );
   const [openSurveyQuestion, setOpenSurveyQuestion] = React.useState(false);
   const [openWrongNumber, setOpenWrongNumber] = React.useState(false);
   const [view, setView] = React.useState("voter");
@@ -86,8 +90,8 @@ export default function Voterview({
     campaignName: undefined,
     voterId: currentVoter?._id,
     voterName: currentVoter?.FIRSTNAME,
-    surveyData: [],
-    voterAnswers: [],
+    surveyData: data?.surveyData ? data?.surveyData : [],
+    voterAnswers: data?.voterAnswers ? data?.voterAnswers : [],
     recordType: "canvassing",
     geoLocation: "",
     date: new Date(),
@@ -149,7 +153,7 @@ export default function Voterview({
   // };
 
   const handleTags = (data) => {
-    console.log(data);
+    console.log(data, "i am handle tags");
     setChecked(data);
     setCheckedTags(data);
   };
@@ -297,22 +301,29 @@ export default function Voterview({
     let isAnsweredBefore = values.voterAnswers.some(
       (ans) => ans.surveyId === surveyId
     );
-    console.log(isAnsweredBefore);
+    console.log(isAnsweredBefore, "isAnsweredBefore");
     let surveyIdExist = answeredSurveys.some(
       (surveyid) => surveyid === surveyId
+    );
+    console.log(
+      surveyIdExist,
+      answeredSurveys,
+      "answeredSurveys",
+      "surveyIdExist"
     );
     if (isAnsweredBefore) {
       let oldAns = values.voterAnswers.filter(
         (ans) => ans.surveyId !== surveyId
       );
+      console.log(oldAns, "oldAns");
       let isSurveyDataExist = values.surveyData.some(
         (subSurvey) => subSurvey.surveyId === surveyId
       );
-      console.log(isSurveyDataExist, "i am");
+      console.log(isSurveyDataExist, "i am isSurveyDataExist");
       let oldSurveyData = values.surveyData.filter(
         (subSurvey) => subSurvey.surveyId !== surveyId
       );
-      console.log(oldSurveyData, "i am");
+      console.log(oldSurveyData, "i am oldSurveyData");
 
       if (data.answer.length === 0) {
         setValues({
@@ -323,6 +334,20 @@ export default function Voterview({
           voterId: currentVoter?._id,
           voterName: currentVoter?.FIRSTNAME,
         });
+        console.log(
+          {
+            ...values,
+            voterAnswers: [
+              ...oldAns,
+              ...(data.answer?.length > 0 ? [data] : []),
+            ],
+            surveyData: [...oldSurveyData],
+            tags: checkedTags,
+            voterId: currentVoter?._id,
+            voterName: currentVoter?.FIRSTNAME,
+          },
+          "i am if data.answers === 0"
+        );
       } else {
         setValues({
           ...values,
@@ -332,6 +357,20 @@ export default function Voterview({
           voterId: currentVoter?._id,
           voterName: currentVoter?.FIRSTNAME,
         });
+        console.log(
+          {
+            ...values,
+            voterAnswers: [
+              ...oldAns,
+              ...(data.answer?.length > 0 ? [data] : []),
+            ],
+            surveyData: [...values.surveyData],
+            tags: checkedTags,
+            voterId: currentVoter?._id,
+            voterName: currentVoter?.FIRSTNAME,
+          },
+          "i am else condition"
+        );
       }
     } else {
       setValues({
@@ -342,6 +381,17 @@ export default function Voterview({
         voterId: currentVoter?._id,
         voterName: currentVoter?.FIRSTNAME,
       });
+      console.log(
+        {
+          ...values,
+          voterAnswers: [...values.voterAnswers, data],
+          surveyData: [...values.surveyData, { surveyId: surveyId }],
+          tags: checkedTags,
+          voterId: currentVoter?._id,
+          voterName: currentVoter?.FIRSTNAME,
+        },
+        "i am final else condition"
+      );
     }
 
     if (surveyIdExist === false) {
@@ -664,7 +714,7 @@ export default function Voterview({
 
   return (
     <div>
-      {console.log(values, answeredSurveys)}
+      {console.log(values, answeredSurveys, checked, checkedTags)}
       <button
         style={{ border: "1px solid #D9D9D9", borderRadius: "5px" }}
         className="btn w-100 d-flex justify-content-between shadow-sm "
@@ -1186,6 +1236,7 @@ export default function Voterview({
                                 handleTags={handleTags}
                                 tags={tags}
                                 adminTags={adminTags}
+                                checkedTagsFromPreviousSurvey={checkedTags}
                               />
                             )}
                           </div>
