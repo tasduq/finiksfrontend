@@ -406,7 +406,7 @@ export default function Voterview({
 
   const handleSaving = () => {
     values?.voterAnswers?.length > 0 || checkedTags?.length > 0
-      ? toast.error("Voter data have not been saved", {
+      ? toast.error("The Voter Data Has Not Been Saved", {
           position: toast.POSITION.TOP_RIGHT,
         })
       : handleOpen();

@@ -216,7 +216,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
       ...regisDateFilters,
       ...partyAffiliationFilters,
     });
-    console.log(res);
+    console.log(res?.data?.foundVoters, "=====>>> i am original voters");
     if (res.data.success === true) {
       let filterVoters = res.data?.foundVoters.filter((voter) => {
         return (
@@ -224,7 +224,11 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
           (voter.PHONE_NUM && Number(voter.PHONE_NUM) > 0)
         );
       });
-      console.log(filterVoters?.length);
+      console.log(
+        filterVoters?.length,
+        filterVoters,
+        "=====>>> I am mobile filtered"
+      );
       setFoundVoters(filterVoters?.length);
       setSearching(false);
       setList({

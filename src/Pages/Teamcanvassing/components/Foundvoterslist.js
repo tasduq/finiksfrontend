@@ -29,7 +29,7 @@ const Foundvoterlist = ({ data, handleSelectedVoter }) => {
         return (
           <div>
             {/* <hr className="  " /> */}
-            <div
+            <button
               key={voter?._id}
               style={{
                 minHeight: "102px",
@@ -38,7 +38,7 @@ const Foundvoterlist = ({ data, handleSelectedVoter }) => {
                   colors[Math.floor(Math.random() * 6)].code
                 } `,
               }}
-              className="pt-2 pl-3 pr-3  text-left border-top  "
+              className="  text-left border-top  btn w-100"
               onClick={() => handleSelectedVoter(voter)}
             >
               <button className="text-danger mt-1 btn btn-lg p-0">
@@ -66,7 +66,7 @@ const Foundvoterlist = ({ data, handleSelectedVoter }) => {
                       {voter?.SEX === "M" ? "Male" : "Female"}
                     </p>
 
-                    <p>|</p>
+                    <p className="mx-2">|</p>
                     <p
                       style={{
                         // borderRight: "1px solid #707070",
@@ -76,7 +76,7 @@ const Foundvoterlist = ({ data, handleSelectedVoter }) => {
                     >
                       {voter?.AGE} Years Old
                     </p>
-                    <p>|</p>
+                    <p className="mx-2">|</p>
                     {voter?.PARTY_CODE === "A" && (
                       <p style={{ fontSize: "12px" }} align="">
                         American Independent
@@ -213,7 +213,7 @@ const Foundvoterlist = ({ data, handleSelectedVoter }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         );
       })}

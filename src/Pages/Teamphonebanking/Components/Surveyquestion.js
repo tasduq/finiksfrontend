@@ -101,7 +101,7 @@ export default function CustomizedDialogs({
     });
   }, [takenSurveys]);
   return (
-    <div>
+    <div className="p-0">
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
       </Button> */}
@@ -109,35 +109,47 @@ export default function CustomizedDialogs({
         onClose={handleOpen}
         aria-labelledby="customized-dialog-title"
         open={open}
+        className="p-0"
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleOpen}>
-          {`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}
-        </BootstrapDialogTitle>
-        {/* <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p> */}
-        <div className="d-flex">
-          <p style={{ fontSize: "19px" }} className="text-muted ml-3 mr-1">
-            {data?.voter?.CITY},
-          </p>
-          <p style={{ fontSize: "19px" }} className="text-muted mr-2">
-            {data?.voter?.STATE}
-          </p>
-        </div>
+        <BootstrapDialogTitle onClose={handleOpen}>
+          <div className=" text-center">
+            <h3 className="">
+              {" "}
+              <strong>{`${data?.voter.FIRSTNAME} ${data.voter.LASTNAME}`}</strong>{" "}
+            </h3>
 
-        <DialogContent dividers>
-          <p className="text-danger text-center">
-            <strong>{data?.surveyPreview}</strong>
-          </p>
+            {/* <p className="text-muted mx-3">{`${data?.voter.ADDRESS} `}</p> */}
+            <div className="text-center">
+              <p
+                style={{ fontSize: "19px" }}
+                className="text-muted text-center m-0"
+              >
+                {data?.voter?.CITY}, {data?.voter?.STATE}
+              </p>
+              {/* <p style={{ fontSize: "19px" }} className="text-muted mr-2">
+              
+            </p> */}
+            </div>
+          </div>
+        </BootstrapDialogTitle>
+
+        <div style={{ overflow: "hidden" }}>
           <div
             style={{
               backgroundColor: "#F2F2F2",
               minHeight: "200px",
               height: "auto",
-              borderRadius: "12px",
+              // borderRadius: "12px",
+              borderRight: `8px ${data?.color?.code ?? "orange"} solid`,
+              width: "100%",
             }}
-            className="p-3"
+            className="p-3 text-center"
           >
             <Typography gutterBottom>{data?.surveyQuestion}</Typography>
           </div>
+          <p className="text-danger text-center">
+            <strong>{data?.surveyPreview}</strong>
+          </p>
           <br />
           <div>
             <div className="row">
@@ -173,10 +185,10 @@ export default function CustomizedDialogs({
             </div>
           </div>
           <br />
-          <div className="text-center">
+          <div className="text-center p-3">
             {" "}
             <button
-              className="btn"
+              className="btn "
               style={{
                 // backgroundColor: "#D12E2F",
                 // backgroundColor: `${
@@ -196,7 +208,7 @@ export default function CustomizedDialogs({
               Done
             </button>
           </div>
-        </DialogContent>
+        </div>
         {/* <DialogActions>
           <Button autoFocus onClick={handleOpen}>
             Save changes

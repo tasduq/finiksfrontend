@@ -19,14 +19,17 @@ const Header = ({ name, purpose }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openTags, setOpenTags] = React.useState(false);
   const [dSelect, setDSelect] = React.useState(false);
+  const [openMenu, setOpenMenu] = React.useState(false);
 
   const { logout, role } = useAuth();
   console.log("props");
   const handleOpenUserMenu = (event) => {
+    setOpenMenu(true);
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseUserMenu = () => {
+    setOpenMenu(false);
     setAnchorElUser(null);
   };
 
@@ -64,8 +67,11 @@ const Header = ({ name, purpose }) => {
         </div>
         <Box sx={{ flexGrow: 0 }}>
           <div className="mt-4 d-flex">
-            <div className="d-flex">
-              <Tooltip title="Open settings">
+            <div onClick={handleOpenUserMenu} className="d-flex">
+              <Tooltip
+                className={`${openMenu === true && "d-none"}`}
+                title="Open settings"
+              >
                 <IconButton sx={{ p: 0 }}>
                   <Avatar
                     alt="Remy Sharp"
@@ -74,12 +80,14 @@ const Header = ({ name, purpose }) => {
                 </IconButton>
               </Tooltip>
 
-              <div className="mx-2 mt-2">
-                <p>{window.localStorage.getItem("username")}</p>
+              <div className=" mt-1">
+                <button className="btn">
+                  {window.localStorage.getItem("username")}
+                </button>
               </div>
               <i
                 onClick={handleOpenUserMenu}
-                class="fas fa-chevron-down mt-2 pt-1"
+                class="fas fa-chevron-down mt-2 pt-2"
               ></i>
             </div>
 
@@ -116,9 +124,10 @@ const Header = ({ name, purpose }) => {
                 // onClick={handleCloseUserMenu}
               > */}
               <MenuItem
-                className="d-flex justify-content-around mx-2"
+                className="d-flex justify-content-around "
                 // key={setting}
                 // onClick={handleCloseUserMenu}
+                onClick={handleCloseUserMenu}
               >
                 <Tooltip title="Open settings">
                   <IconButton sx={{ p: 0 }}>
@@ -129,17 +138,19 @@ const Header = ({ name, purpose }) => {
                   </IconButton>
                 </Tooltip>
 
-                <div className=" mt-3">
-                  <p>{window.localStorage.getItem("username")}</p>
+                <div onClick={handleCloseUserMenu} className="">
+                  <button className="btn">
+                    {window.localStorage.getItem("username")}
+                  </button>
                 </div>
-                <div>
+                <div className="mx-1">
                   <i
                     onClick={handleCloseUserMenu}
                     class="fas fa-chevron-up  mb-2"
                   ></i>
                 </div>
               </MenuItem>
-
+              <hr className="m-0 mb-1" />
               <Profilepage btn1={true} />
               {/* </MenuItem> */}
               {window.localStorage.getItem("teamLogin") === "true" && (
