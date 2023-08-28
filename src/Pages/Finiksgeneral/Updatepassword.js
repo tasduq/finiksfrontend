@@ -77,7 +77,7 @@ export default function Updatepassword({ role }) {
             margin="dense"
             id="name"
             label="Old Password"
-            type="text"
+            type="password"
             fullWidth
             variant="standard"
             value={values.passwordUpdate.oldPassword}
@@ -96,7 +96,7 @@ export default function Updatepassword({ role }) {
             margin="dense"
             id="name"
             label="New Password"
-            type="text"
+            type="password"
             fullWidth
             variant="standard"
             value={values.passwordUpdate.newPassword}

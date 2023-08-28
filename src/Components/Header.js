@@ -82,7 +82,7 @@ const Header = ({ name, purpose }) => {
 
               <div className=" mt-1">
                 <button className="btn">
-                  {window.localStorage.getItem("username")}
+                  {window.localStorage.getItem("firstName")}
                 </button>
               </div>
               <i

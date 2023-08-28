@@ -419,7 +419,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
         className="btn px-3 py-2"
         onClick={handleClickOpen}
       >
-        Start a new Canvassing Campaign
+        Start a New Canvassing Campaign
       </button>
 
       <Dialog
@@ -453,7 +453,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
           <div className=" container">
             <Header
               name="Canvassing"
-              purpose="Create, Edit Assign Canvassing Lists"
+              purpose="Create, Edit, Assign Canvassing Lists"
             />
             <div
               className="shadow px-4 py-4"

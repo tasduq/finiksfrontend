@@ -62,6 +62,7 @@ export default function Voterview({
   campaignData,
   listView,
   selectedWalkbook,
+  handleResetCanvassingPage,
 }) {
   console.log(data, "i am voterdata");
   // const [open, setOpen] = React.useState(false);
@@ -115,6 +116,7 @@ export default function Voterview({
   const [doNotCallSelected, setDoNotCallSelected] = React.useState(false);
   const [contactLaterSelected, setContactLaterSelected] = React.useState(false);
   const [update, setUpdate] = React.useState(false);
+  const [voterDataUpdated, setVoterDataUpdated] = React.useState(false);
 
   console.log(values, answeredSurveys);
 
@@ -156,6 +158,7 @@ export default function Voterview({
     console.log(data, "i am handle tags");
     setChecked(data);
     setCheckedTags(data);
+    setVoterDataUpdated(true);
   };
 
   const handleArrayDivider = (votersList, walkbookParams) => {
@@ -298,6 +301,7 @@ export default function Voterview({
 
   const handleAnswer = (data, surveyId) => {
     console.log(data, surveyId);
+    setVoterDataUpdated(true);
     let isAnsweredBefore = values.voterAnswers.some(
       (ans) => ans.surveyId === surveyId
     );
@@ -404,8 +408,9 @@ export default function Voterview({
   };
   console.log(checkedTags);
 
-  const handleSaving = () => {
-    values?.voterAnswers?.length > 0 || checkedTags?.length > 0
+  const handleSavingBeforeBack = () => {
+    voterDataUpdated === true &&
+    (values?.voterAnswers?.length > 0 || checkedTags?.length > 0)
       ? toast.error("The Voter Data Has Not Been Saved", {
           position: toast.POSITION.TOP_RIGHT,
         })
@@ -532,6 +537,7 @@ export default function Voterview({
           voterAnswers: [],
         });
         setSaving(false);
+        handleResetCanvassingPage();
         handleOpen();
         // setAnsweredSurveys([]);
         // if (currentVoterIndex < voters?.length - 1) {
@@ -549,6 +555,7 @@ export default function Voterview({
           position: toast.POSITION.TOP_RIGHT,
         });
         setSaving(false);
+        handleResetCanvassingPage();
         setCheckedTags([]);
         setValues({
           ...values,
@@ -782,7 +789,7 @@ export default function Voterview({
               <button
                 className="btn"
                 style={{ color: "#d12e2f", marginLeft: "-20px" }}
-                onClick={handleSaving}
+                onClick={handleSavingBeforeBack}
               >
                 <i class="fas fa-angle-left mx-2"></i> Back
               </button>

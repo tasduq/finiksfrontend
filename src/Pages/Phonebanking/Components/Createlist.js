@@ -447,7 +447,7 @@ export default function Createlist({ handleUpdateData, campaignFilterData }) {
           <div className=" container">
             <Header
               name="Phonebanking"
-              purpose="Create, Edit Assign Phone banking Lists"
+              purpose="Create, Edit, Assign Phone Banking Lists"
             />
             <div
               className="shadow px-4 py-4"

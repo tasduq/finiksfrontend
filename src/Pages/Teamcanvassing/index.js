@@ -43,6 +43,15 @@ const Teamcanvassing = (props) => {
     AI_COUNTY_NAME: "County",
   };
 
+  const handleResetCanvassingPage = () => {
+    setFoundResults([]);
+    setSearchValues({
+      voterName: "",
+      voterLocation: "",
+      votersList: "",
+    });
+  };
+
   const handleOpen = () => {
     setOpenVoterview(!openVoterview);
   };
@@ -590,6 +599,7 @@ const Teamcanvassing = (props) => {
             handleOpen={handleOpen}
             listView={listView}
             selectedWalkbook={selectedWalkbook}
+            handleResetCanvassingPage={handleResetCanvassingPage}
           />
         )}
       </div>

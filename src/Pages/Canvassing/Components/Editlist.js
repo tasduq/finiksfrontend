@@ -480,7 +480,7 @@ export default function Createlist({
           <div className=" container">
             <Header
               name="Canvassing"
-              purpose="Create, Edit Assign Canvassing Lists"
+              purpose="Create, Edit, Assign Canvassing Lists"
             />
             <div
               className="shadow px-4 py-4"

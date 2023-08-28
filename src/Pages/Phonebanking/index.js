@@ -64,7 +64,7 @@ const Phonebank = (props) => {
           <div className="col-10 col-xl-11">
             <Header
               name="Phonebanking"
-              purpose="Create, Edit Assign Phone banking Lists"
+              purpose="Create, Edit, Assign Phone Banking Lists"
             />
             <br />
             <div>

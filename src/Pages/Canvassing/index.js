@@ -65,7 +65,7 @@ const Canvassing = (props) => {
           <div className="col-10 col-xl-11">
             <Header
               name="Canvassing"
-              purpose="Create, Edit Assign Canvassing Lists"
+              purpose="Create, Edit, Assign Canvassing Lists"
             />
             <br />
             <div>
