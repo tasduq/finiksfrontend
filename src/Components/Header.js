@@ -69,7 +69,7 @@ const Header = ({ name, purpose }) => {
           <div className="mt-4 d-flex">
             <div onClick={handleOpenUserMenu} className="d-flex">
               <Tooltip
-                className={`${openMenu === true && "d-none"}`}
+                className={`${openMenu === true && "d-none"} mr-3`}
                 title="Open settings"
               >
                 <IconButton sx={{ p: 0 }}>
@@ -80,19 +80,19 @@ const Header = ({ name, purpose }) => {
                 </IconButton>
               </Tooltip>
 
-              <div className=" mt-1">
+              <div className=" mt-1 mr-3">
                 <button className="btn">
                   {window.localStorage.getItem("firstName")}
                 </button>
               </div>
               <i
                 onClick={handleOpenUserMenu}
-                class="fas fa-chevron-down mt-2 pt-2"
+                class="fas fa-chevron-down text-danger mt-2 pt-2"
               ></i>
             </div>
 
             <Menu
-              sx={{ ml: "45px" }}
+              sx={{ ml: "20px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -124,7 +124,7 @@ const Header = ({ name, purpose }) => {
                 // onClick={handleCloseUserMenu}
               > */}
               <MenuItem
-                className="d-flex justify-content-around "
+                className="d-flex justify-content-around mb-1"
                 // key={setting}
                 // onClick={handleCloseUserMenu}
                 onClick={handleCloseUserMenu}
@@ -137,20 +137,24 @@ const Header = ({ name, purpose }) => {
                     />
                   </IconButton>
                 </Tooltip>
-
-                <div onClick={handleCloseUserMenu} className="">
-                  <button className="btn">
-                    {window.localStorage.getItem("username")}
-                  </button>
-                </div>
-                <div className="mx-1">
-                  <i
-                    onClick={handleCloseUserMenu}
-                    class="fas fa-chevron-up  mb-2"
-                  ></i>
+                <div className="">
+                  <div onClick={handleCloseUserMenu} className="d-flex mt-1">
+                    <button className="btn">
+                      {window.localStorage.getItem("firstName")}
+                    </button>
+                    <div className="mx-1 mt-2">
+                      <i
+                        onClick={handleCloseUserMenu}
+                        class="fas fa-chevron-up text-danger "
+                      ></i>
+                    </div>
+                  </div>
+                  <div className=" ">
+                    <hr className="m-0 mb-2" />
+                  </div>
                 </div>
               </MenuItem>
-              <hr className="m-0 mb-1" />
+
               <Profilepage btn1={true} />
               {/* </MenuItem> */}
               {window.localStorage.getItem("teamLogin") === "true" && (

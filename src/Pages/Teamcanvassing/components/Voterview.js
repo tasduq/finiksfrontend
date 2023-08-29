@@ -538,7 +538,7 @@ export default function Voterview({
         });
         setSaving(false);
         handleResetCanvassingPage();
-        handleOpen();
+        // handleOpen();
         // setAnsweredSurveys([]);
         // if (currentVoterIndex < voters?.length - 1) {
         //   //   handleNextVoter();
