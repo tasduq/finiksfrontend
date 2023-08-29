@@ -676,7 +676,7 @@ export default function Sidebar() {
               })}
               to="/team/teammembers"
             > */}
-                <List
+                {/* <List
                 // className={clsx({ selected: checkRoute("/team"), "m-2": true })}
                 >
                   <ListItemButton
@@ -699,7 +699,7 @@ export default function Sidebar() {
                       />
                     </div>
                   </ListItemButton>
-                </List>
+                </List> */}
                 {/* </Link> */}
 
                 <List
