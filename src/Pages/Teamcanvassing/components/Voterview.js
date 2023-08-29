@@ -409,9 +409,9 @@ export default function Voterview({
   console.log(checkedTags);
 
   const handleSavingBeforeBack = () => {
-    voterDataUpdated === true &&
-    (values?.voterAnswers?.length > 0 || checkedTags?.length > 0)
-      ? toast.error("The Voter Data Has Not Been Saved", {
+    voterDataUpdated === true
+      ? // (values?.voterAnswers?.length > 0 || checkedTags?.length > 0)
+        toast.error("The Voter Data Has Not Been Saved", {
           position: toast.POSITION.TOP_RIGHT,
         })
       : handleOpen();
@@ -505,7 +505,7 @@ export default function Voterview({
           position: toast.POSITION.TOP_RIGHT,
         });
         // setChecked([]);
-        setCheckedTags([]);
+        // setCheckedTags([]);
         // setView("voter");
         // setValues({
         //   campaignId: window.localStorage.getItem("id"),
@@ -532,12 +532,13 @@ export default function Voterview({
         //   recordId: data?._id,
         //   totalNumbers: data?.totalNumbers,
         // });
-        setValues({
-          ...values,
-          voterAnswers: [],
-        });
+        // setValues({
+        //   ...values,
+        //   voterAnswers: [],
+        // });
         setSaving(false);
         handleResetCanvassingPage();
+        setVoterDataUpdated(false);
         // handleOpen();
         // setAnsweredSurveys([]);
         // if (currentVoterIndex < voters?.length - 1) {
@@ -556,11 +557,13 @@ export default function Voterview({
         });
         setSaving(false);
         handleResetCanvassingPage();
-        setCheckedTags([]);
-        setValues({
-          ...values,
-          voterAnswers: [],
-        });
+        setVoterDataUpdated(false);
+
+        // setCheckedTags([]);
+        // setValues({
+        //   ...values,
+        //   voterAnswers: [],
+        // });
       }
     }
   };
