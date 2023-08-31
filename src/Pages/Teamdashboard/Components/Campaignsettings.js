@@ -213,7 +213,7 @@ export default function Campaignsettings({ handleGetData }) {
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
                     >
-                      When is your Election Day
+                      When Is Your Election Day:
                     </label>
                     <input
                       type="date"
@@ -230,7 +230,7 @@ export default function Campaignsettings({ handleGetData }) {
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
                     >
-                      What are your Campaign Filling Dates
+                      WWhat Is The First Day You Can File For The Campaign:
                     </label>
                     <input
                       type="date"
@@ -247,7 +247,7 @@ export default function Campaignsettings({ handleGetData }) {
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
                     >
-                      What are the last date for voter VBM Signup
+                      What Is The Last Day For Voter “Vote By Mail” Signup:
                     </label>
                     <input
                       type="date"
@@ -264,7 +264,7 @@ export default function Campaignsettings({ handleGetData }) {
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
                     >
-                      What is the last day for voter to register and vote
+                      What Is The Last Day To Register Voters To Vote:
                     </label>
                     <input
                       type="date"
@@ -281,7 +281,7 @@ export default function Campaignsettings({ handleGetData }) {
                       style={{ color: "#d12e2f" }}
                       for="exampleInputEmail1"
                     >
-                      What are the dates that you are allowed to vote early
+                      What Is The First Day Of Early Voting:
                     </label>
 
                     <input

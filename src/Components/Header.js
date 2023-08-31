@@ -82,7 +82,8 @@ const Header = ({ name, purpose }) => {
 
               <div className=" mt-1 mr-3">
                 <button className="btn">
-                  {window.localStorage.getItem("firstName")}
+                  {window.localStorage.getItem("firstName") ||
+                    window.localStorage.getItem("username").split(" ")[0]}
                 </button>
               </div>
               <i
@@ -140,7 +141,8 @@ const Header = ({ name, purpose }) => {
                 <div className="">
                   <div onClick={handleCloseUserMenu} className="d-flex mt-1">
                     <button className="btn">
-                      {window.localStorage.getItem("firstName")}
+                      {window.localStorage.getItem("firstName") ||
+                        window.localStorage.getItem("username").split(" ")[0]}
                     </button>
                     <div className="mx-1 mt-2">
                       <i

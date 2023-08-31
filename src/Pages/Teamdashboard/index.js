@@ -50,6 +50,19 @@ const Dashboardteam = (props) => {
     return TotalDays;
   };
 
+  const handleDateFormat = (dateToBeFormatted) => {
+    const date = new Date(dateToBeFormatted);
+
+    // Get the month, day, and year from the Date object
+    const month = date.getMonth() + 1; // January is 0, so we need to add 1
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    // Format the date in the desired format
+    const formattedDate = `${month}/${day}/${year}`;
+    return formattedDate;
+  };
+
   const handleSetData = (data) => {
     console.log(data);
     if (data && data?.campaignDates?.electionDay?.length > 0) {
@@ -113,7 +126,7 @@ const Dashboardteam = (props) => {
             return {
               firstName: member.firstName,
               lastName: member.lastName,
-              permission: campaign.permission,
+              campaignPosition: campaign.campaignPosition,
               image: member.image,
             };
           });
@@ -136,11 +149,11 @@ const Dashboardteam = (props) => {
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100%" }}>
       {console.log(campaignData)}{" "}
-      <div className=" container">
+      <div className="pl-xl-5 pr-4">
         <br />
         <div className="row">
           <div className="col-2"></div>
-          <div className="col-10">
+          <div className="col-9 col-lg-10 col-xl-9">
             <Header name="Dashboard" />
 
             <div className="row">
@@ -195,108 +208,42 @@ const Dashboardteam = (props) => {
             <br />
             <br />
             <div className="row">
-              {/* <div className="col-12 col-md-6">
-                
-                <div className="d-flex justify-content-between">
-                  <h4 className="">Campaigns Joined</h4>
-                  <p className="mt-1">
-                    {campaignsJoined?.length} Campaigns Joined
-                  </p>
-                  <Link
-                  >
-                    {" "}
-                    <p
-                      className=" mt-1"
-                      style={{ color: "#D12E2F", fontSize: "15px" }}
-                    >
-                      View All
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  {campaignsJoined?.map((member) => {
-                    return (
-                      <div
-                        className="shadow p-2 d-flex justify-content-between my-2"
-                        style={{
-                          height: "60px",
-                          backgroundColor: "#FFFFFF",
-                          borderRadius: "5px",
-                        }}
-                        onClick={() => handleSelectCampaign(member.campaignId)}
-                      >
-                        <div className="d-flex">
-                          <Avatar alt="Remy Sharp" src={member?.campaignLogo} />
-                          <p className="mt-2 ml-2 text-muted">
-                            {member?.campaignName}
-                          </p>
-                        </div>
-                        <p
-                          style={{ fontSize: "12px" }}
-                          className="text-warning mt-2"
-                        >
-                          {member?.permission?.toUpperCase()}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div> */}
               <div className="col-12 col-md-6">
-                {/* <div className="d-flex justify-content-between">
-                  <h5 className="">Team Memebers</h5>
-                  <p className="">51 Team Members</p>
-                  <p
-                    className=" mt-1"
-                    style={{ color: "#D12E2F", fontSize: "10px" }}
-                  >
-                    View All
-                  </p>
-                </div> */}
                 <div className="d-flex justify-content-between">
                   <h4 className="">Team Members</h4>
                   <p className="mt-1">
                     {campaignTeammembers?.length} Team Members
                   </p>
-                  {/* <Link
-                  // className={clsx({
-                  //   selected: checkRoute("/surveys"),
-                  //   "m-2": true,
-                  //   nonselected: checkRoute("/surveys") === false,
-                  // })}
-                  to="/team"
-                  >
-                    {" "}
-                    <p
-                      className=" mt-1"
-                      style={{ color: "#D12E2F", fontSize: "15px" }}
-                    >
-                      View All
-                    </p>
-                  </Link> */}
                 </div>
                 <div>
-                  {campaignTeammembers?.map((member) => {
+                  {campaignTeammembers?.slice(0, 4).map((member, idx) => {
+                    console.log(member, "=====>");
                     return (
                       <div
-                        className="shadow p-2 d-flex justify-content-between my-2"
+                        className="shadow pt-3 p-2 d-flex justify-content-between my-2"
                         style={{
-                          height: "60px",
+                          height: "70px",
                           backgroundColor: "#FFFFFF",
                           borderRadius: "5px",
                         }}
                       >
                         <div className="d-flex">
-                          <Avatar alt="Remy Sharp" src={member?.campaignLogo} />
+                          <div className="">
+                            <Avatar alt="Remy Sharp" src={member?.image} />
+                          </div>
+
                           <p className="mt-2 ml-2 text-muted">
                             {member?.firstName} {member?.lastName}
                           </p>
                         </div>
                         <p
-                          style={{ fontSize: "12px" }}
-                          className="text-warning mt-2"
+                          style={{
+                            fontSize: "12px",
+                            color: `${idx % 2 === 0 ? "#FF914D" : "#583689"}`,
+                          }}
+                          className="font-weight-bold mt-3"
                         >
-                          {member?.permission?.toUpperCase()}
+                          {member?.campaignPosition?.toUpperCase()}
                         </p>
                       </div>
                     );
@@ -305,17 +252,7 @@ const Dashboardteam = (props) => {
               </div>
               <div className="col-12 col-md-6 ">
                 <div className="d-flex justify-content-between ">
-                  <h5 className="">Selected Campaign</h5>
-                  {/* <Joincampaign
-                    handleGetJoinedcampaigns={handleGetJoinedcampaigns}
-                  /> */}
-                  {/* <p
-                    className=" mt-1"
-                    style={{ color: "#D12E2F", fontSize: "15px" }}
-                  >
-                    Join Campaign
-                  </p> */}
-                  {/* <Campaignsettings handleGetData={handleGetCampaignData} /> */}
+                  <h4 className="mb-3">Selected Campaign</h4>
                 </div>
                 <div
                   style={{
@@ -323,40 +260,66 @@ const Dashboardteam = (props) => {
                     backgroundColor: "#FFFFFF",
                     borderRadius: "5px",
                   }}
-                  className="shadow   p-3"
+                  className="shadow   p-3  pt-1 mt-2"
                 >
                   <h5 style={{ fontWeight: "bold" }} className="px-1 text-left">
                     {campaignData?.campaignName}
                   </h5>
-                  <div className=" row">
+                  <div className=" row mt-3">
                     <div className="col-7 pb-1">
                       <div className="d-flex justify-content-between">
-                        <p className="text-left">Election Day</p>
+                        <p className="text-left font-weight-bold">
+                          Election Day
+                        </p>
                         <p className="text-right" style={{ color: "#D12E2F" }}>
-                          {campaignData?.campaignDates?.electionDay}
+                          {handleDateFormat(
+                            campaignData?.campaignDates?.electionDay
+                          )}
                         </p>
                       </div>
                       <div className="d-flex justify-content-between">
-                        <p className="text-left">Campaign Filling Date</p>
+                        <p className="text-left font-weight-bold">
+                          Campaign Filling Date
+                        </p>
                         <p className="text-right" style={{ color: "#D12E2F" }}>
-                          {campaignData?.campaignDates?.campaignFilingDates}
+                          {}
+                          {handleDateFormat(
+                            campaignData?.campaignDates?.campaignFilingDates
+                          )}
                         </p>
                       </div>
                       <div className="d-flex justify-content-between ">
-                        <p className="text-left">Last Day VBM Signup</p>
+                        <p className="text-left font-weight-bold">
+                          Last Day VBM Signup
+                        </p>
                         <p className="text-right" style={{ color: "#D12E2F" }}>
-                          {campaignData?.campaignDates?.lastDateSignup}
+                          {}
+                          {handleDateFormat(
+                            campaignData?.campaignDates?.lastDateSignup
+                          )}
                         </p>
                       </div>
                       <div className="d-flex justify-content-between">
-                        <p className="text-left">Last Date to register</p>
+                        <p className="text-left font-weight-bold">
+                          Last Day Of Voter Registration
+                        </p>
                         <p className="text-right" style={{ color: "#D12E2F" }}>
-                          {campaignData?.campaignDates?.lastDateRegister}
+                          {}
+                          {handleDateFormat(
+                            campaignData?.campaignDates?.lastDateRegister
+                          )}
                         </p>
                       </div>
                       <div className="d-flex justify-content-between">
-                        <p className="text-left">Early Voting Days</p>
-                        <p>{campaignData?.campaignDates?.voteEarlyDate}</p>
+                        <p className="text-left font-weight-bold">
+                          Early Voting Begins
+                        </p>
+                        <p>
+                          {}
+                          {handleDateFormat(
+                            campaignData?.campaignDates?.voteEarlyDate
+                          )}
+                        </p>
                       </div>
                     </div>
                     <div className="col-5 pb-3">
@@ -375,7 +338,7 @@ const Dashboardteam = (props) => {
                           {campaignData &&
                             campaignData?.daysLeft &&
                             campaignData.daysLeft > 0 &&
-                            `${campaignData?.daysLeft} Days Until the Elections!`}
+                            `${campaignData?.daysLeft} Days Until The Election`}
                           {campaignData === undefined &&
                             `Campaign Not Selected`}
                         </h4>
@@ -389,6 +352,7 @@ const Dashboardteam = (props) => {
             <br />
             <br />
           </div>
+          <div className="col-xl-1"></div>
         </div>
       </div>
     </div>
