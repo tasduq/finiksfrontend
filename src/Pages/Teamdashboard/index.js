@@ -31,9 +31,7 @@ const Dashboardteam = (props) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [campaignTeammembers, setCampaignTeammembers] = React.useState();
   const [campaignData, setCampaignData] = React.useState();
-  // const [campaignsJoined, setCampaignsJoined] = React.useState(
-  //   window.localStorage.getItem("campaignsJoined")
-  // );
+  const [dashboardStatsValues, setDashboardStatsValues] = React.useState();
   const { campaignsJoined, setCampaignsJoined } = useAuth();
 
   console.log("props");
@@ -123,6 +121,15 @@ const Dashboardteam = (props) => {
               (campaign) =>
                 campaign.campaignId === window.localStorage.getItem("id")
             );
+
+            if (member?._id === window.localStorage.getItem("userId")) {
+              console.log(campaign, "campaign ===> yooo");
+              setDashboardStatsValues({
+                votersInfluenced: campaign?.votersInfluenced,
+                phonesCalled: campaign?.phonesCalled,
+                doorsKnocked: campaign?.doorsKnocked,
+              });
+            }
             return {
               firstName: member.firstName,
               lastName: member.lastName,
@@ -159,48 +166,65 @@ const Dashboardteam = (props) => {
             <div className="row">
               <div className="col-12 col-md-12">
                 <div
-                  // style={{ height: "200px", backgroundColor: "#FFFFFF" }}
                   style={{
                     borderRadius: "12px",
-                    height: "auto",
+                    height: "180px",
                     backgroundColor: "#FFFFFF",
                   }}
-                  className="row shadow p-2"
+                  className=" shadow "
+                  // style={{ height: "200px", backgroundColor: "#FFFFFF" }}
                 >
-                  <div className="col-4 p-2">
-                    <h5 className="text-muted mt-2">Voters Influnced</h5>
-                    <h1 style={{ textDecoration: "line-through" }}>
-                      0{" "}
-                      <i
-                        style={{ color: "#00E38C" }}
-                        class="fas fa-caret-up "
-                      ></i>
-                    </h1>
+                  {!dashboardStatsValues ? (
+                    <div className="text-center pt-5">
+                      <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        borderRadius: "12px",
+                        height: "auto",
+                        backgroundColor: "#FFFFFF",
+                      }}
+                      className="row shadow p-2"
+                    >
+                      <div className="col-4 p-2">
+                        <h5 className="text-muted mt-2">Voters Influnced</h5>
+                        <h1>
+                          {dashboardStatsValues?.votersInfluenced}{" "}
+                          <i
+                            style={{ color: "#00E38C" }}
+                            class="fas fa-caret-up "
+                          ></i>
+                        </h1>
 
-                    <img src={Greenline} />
-                  </div>
-                  <div className="col-4 p-2">
-                    <h5 className="text-muted mt-2">Phone Calls Made</h5>
-                    <h1 style={{ textDecoration: "line-through" }}>
-                      0{" "}
-                      <i
-                        style={{ color: "#00E38C" }}
-                        class="fas fa-caret-up "
-                      ></i>
-                    </h1>
-                    <img src={Greenline} />
-                  </div>
-                  <div className="col-4 p-2">
-                    <h5 className="text-muted mt-2">Doors Knocked</h5>
-                    <h1 style={{ textDecoration: "line-through" }}>
-                      0{" "}
-                      <i
-                        style={{ color: "#D12E2F" }}
-                        class="fas fa-caret-down "
-                      ></i>
-                    </h1>
-                    <img src={Redline} />
-                  </div>
+                        <img src={Greenline} />
+                      </div>
+                      <div className="col-4 p-2">
+                        <h5 className="text-muted mt-2">Phone Calls Made</h5>
+                        <h1>
+                          {dashboardStatsValues?.phonesCalled}{" "}
+                          <i
+                            style={{ color: "#00E38C" }}
+                            class="fas fa-caret-up "
+                          ></i>
+                        </h1>
+                        <img src={Greenline} />
+                      </div>
+                      <div className="col-4 p-2">
+                        <h5 className="text-muted mt-2">Doors Knocked</h5>
+                        <h1>
+                          {dashboardStatsValues?.doorsKnocked}{" "}
+                          <i
+                            style={{ color: "#D12E2F" }}
+                            class="fas fa-caret-down "
+                          ></i>
+                        </h1>
+                        <img src={Redline} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

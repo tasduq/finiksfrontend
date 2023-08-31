@@ -28,6 +28,7 @@ const Dashboard = (props) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [campaignTeammembers, setCampaignTeammembers] = React.useState();
   const [campaignData, setCampaignData] = React.useState();
+  const [dashboardStatsValues, setDashboardStatsValues] = React.useState();
 
   // console.log("props");
   const handleOpenUserMenu = (event) => {
@@ -78,11 +79,25 @@ const Dashboard = (props) => {
       console.log(res);
       if (res.data.success === true) {
         if (res?.data?.teamMembers.length > 0) {
+          let dashboardStats = {
+            votersInfluenced: 0,
+            phonesCalled: 0,
+            doorsKnocked: 0,
+          };
           let yoo = res.data.teamMembers.map((member) => {
             let campaign = member.campaignJoined.find(
               (campaign) =>
                 campaign.campaignId === window.localStorage.getItem("id")
             );
+            console.log(campaign, "campaign =====> yoooo ");
+            dashboardStats = {
+              votersInfluenced:
+                dashboardStats?.votersInfluenced + campaign?.votersInfluenced,
+              phonesCalled:
+                dashboardStats?.phonesCalled + campaign?.phonesCalled,
+              doorsKnocked:
+                dashboardStats?.doorsKnocked + campaign?.doorsKnocked,
+            };
             return {
               firstName: member.firstName,
               lastName: member.lastName,
@@ -90,6 +105,8 @@ const Dashboard = (props) => {
               image: member.image,
             };
           });
+          console.log(dashboardStats, "stats =====> yoooo ");
+          setDashboardStatsValues(dashboardStats);
           setCampaignTeammembers(yoo);
         } else {
           setCampaignTeammembers(res.data.teamMembers);
@@ -117,48 +134,65 @@ const Dashboard = (props) => {
             <div className="row">
               <div className="col-12 col-md-12">
                 <div
-                  // style={{ height: "200px", backgroundColor: "#FFFFFF" }}
                   style={{
                     borderRadius: "12px",
-                    height: "auto",
+                    height: "180px",
                     backgroundColor: "#FFFFFF",
                   }}
-                  className="row shadow p-2"
+                  className=" shadow "
+                  // style={{ height: "200px", backgroundColor: "#FFFFFF" }}
                 >
-                  <div className="col-4 p-2">
-                    <h5 className="text-muted mt-2">Voters Influnced</h5>
-                    <h1 style={{ textDecoration: "line-through" }}>
-                      0{" "}
-                      <i
-                        style={{ color: "#00E38C" }}
-                        class="fas fa-caret-up "
-                      ></i>
-                    </h1>
+                  {!dashboardStatsValues ? (
+                    <div className="text-center pt-5">
+                      <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        borderRadius: "12px",
+                        height: "auto",
+                        backgroundColor: "#FFFFFF",
+                      }}
+                      className="row shadow p-2"
+                    >
+                      <div className="col-4 p-2">
+                        <h5 className="text-muted mt-2">Voters Influnced</h5>
+                        <h1>
+                          {dashboardStatsValues?.votersInfluenced}{" "}
+                          <i
+                            style={{ color: "#00E38C" }}
+                            class="fas fa-caret-up "
+                          ></i>
+                        </h1>
 
-                    <img src={Greenline} />
-                  </div>
-                  <div className="col-4 p-2">
-                    <h5 className="text-muted mt-2">Phone Calls Made</h5>
-                    <h1 style={{ textDecoration: "line-through" }}>
-                      0{" "}
-                      <i
-                        style={{ color: "#00E38C" }}
-                        class="fas fa-caret-up "
-                      ></i>
-                    </h1>
-                    <img src={Greenline} />
-                  </div>
-                  <div className="col-4 p-2">
-                    <h5 className="text-muted mt-2">Doors Knocked</h5>
-                    <h1 style={{ textDecoration: "line-through" }}>
-                      0{" "}
-                      <i
-                        style={{ color: "#D12E2F" }}
-                        class="fas fa-caret-down "
-                      ></i>
-                    </h1>
-                    <img src={Redline} />
-                  </div>
+                        <img src={Greenline} />
+                      </div>
+                      <div className="col-4 p-2">
+                        <h5 className="text-muted mt-2">Phone Calls Made</h5>
+                        <h1>
+                          {dashboardStatsValues?.phonesCalled}{" "}
+                          <i
+                            style={{ color: "#00E38C" }}
+                            class="fas fa-caret-up "
+                          ></i>
+                        </h1>
+                        <img src={Greenline} />
+                      </div>
+                      <div className="col-4 p-2">
+                        <h5 className="text-muted mt-2">Doors Knocked</h5>
+                        <h1>
+                          {dashboardStatsValues?.doorsKnocked}{" "}
+                          <i
+                            style={{ color: "#D12E2F" }}
+                            class="fas fa-caret-down "
+                          ></i>
+                        </h1>
+                        <img src={Redline} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
