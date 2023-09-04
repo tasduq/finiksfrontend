@@ -97,7 +97,7 @@ const Superadmindashboard = (props) => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#FCFCFC", height: "100%" }}>
+    <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
       {" "}
       <div className="pl-xl-5 pr-4">
         <br />
