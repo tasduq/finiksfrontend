@@ -220,6 +220,7 @@ const Dashboard = (props) => {
                   {campaignTeammembers?.slice(0, 4).map((member, idx) => {
                     return (
                       <div
+                        key={idx}
                         className="shadow pt-3 p-2 d-flex justify-content-between my-2"
                         style={{
                           height: "70px",
