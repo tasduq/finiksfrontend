@@ -32,6 +32,7 @@ const Superadmindashboard = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [foundClients, setFoundClients] = useState();
+  const [dashboardStatsValues, setDashboardStatsValues] = React.useState();
 
   const { role } = useAuth();
   let history = useHistory();
@@ -54,6 +55,31 @@ const Superadmindashboard = (props) => {
       const res = await getClients();
       console.log(res);
       if (res.data.success === true) {
+        let dashboardStats = {
+          votersInfluenced: 0,
+          phonesCalled: 0,
+          doorsKnocked: 0,
+        };
+        res?.data?.clients?.map((client) => {
+          console.log("outerMAp map ===> ", client);
+          if (client?.teamMembers?.length > 0) {
+            client?.teamMembers?.map((teamMember) => {
+              console.log("inside map ===> ", teamMember);
+              dashboardStats = {
+                votersInfluenced:
+                  dashboardStats?.votersInfluenced +
+                  teamMember?.votersInfluenced,
+                phonesCalled:
+                  dashboardStats?.phonesCalled + teamMember?.phonesCalled,
+                doorsKnocked:
+                  dashboardStats?.doorsKnocked + teamMember?.doorsKnocked,
+              };
+            });
+          }
+        });
+        console.log(dashboardStats, "====>dashboardStats");
+        setDashboardStatsValues(dashboardStats);
+
         setFoundClients(res.data.clients);
       } else {
         toast.error(res.data.message, {
@@ -71,18 +97,18 @@ const Superadmindashboard = (props) => {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#FCFCFC", height: "100%" }}>
+    <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
       {" "}
-      <div className="mt-5 container">
+      <div className="pl-xl-5 pr-4">
         <br />
         <div className="row">
           <div className="col-2"></div>
-          <div className="col-10">
+          <div className="col-9 col-lg-10 col-xl-9">
             <Header name="Admin Dashboard" />
 
             <div className="row">
               <div className="col-12 col-md-12">
-                <div className="text-right">
+                {/* <div className="text-right">
                   {" "}
                   <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label">
@@ -100,84 +126,78 @@ const Superadmindashboard = (props) => {
                       <MenuItem value={30}>3 Months</MenuItem>
                     </Select>
                   </FormControl>
-                </div>
+                </div> */}
+                {!dashboardStatsValues ? (
+                  <div className="text-center pt-5">
+                    <div class="spinner-border text-danger" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      borderRadius: "12px",
+                      height: "auto",
+                      backgroundColor: "#FFFFFF",
+                    }}
+                    className=" shadow "
+                  >
+                    <div
+                      style={{
+                        borderRadius: "12px",
+                        height: "auto",
+                        backgroundColor: "#FFFFFF",
+                      }}
+                      className="row shadow p-2"
+                    >
+                      <div className=" col-3 p-2">
+                        <h5 className="box1heading mt-2">Clients</h5>
+                        <p className="box1value">
+                          {foundClients ? foundClients?.length - 2 : 0}{" "}
+                          <i
+                            style={{ color: "#00E38C" }}
+                            class="fas fa-caret-up "
+                          ></i>
+                        </p>
 
-                <div
-                  style={{
-                    borderRadius: "12px",
-                    height: "auto",
-                    backgroundColor: "#FFFFFF",
-                  }}
-                  className="row shadow p-2"
-                >
-                  <div className=" p-2">
-                    <h5 className="box1heading mt-2">Clients</h5>
-                    <p className="box1value">
-                      {foundClients ? foundClients?.length - 1 : 0}{" "}
-                      <i
-                        style={{ color: "#00E38C" }}
-                        class="fas fa-caret-up "
-                      ></i>
-                    </p>
+                        {/* <img src={Greenline} /> */}
+                      </div>
+                      <div className=" col-3 p-2">
+                        <h5 className="box1heading mt-2">Texts Sent</h5>
+                        <p className="box1value">
+                          0{" "}
+                          <i
+                            style={{ color: "#00E38C" }}
+                            class="fas fa-caret-up "
+                          ></i>
+                        </p>
+                      </div>
 
-                    {/* <img src={Greenline} /> */}
+                      <div className=" col-3 p-2">
+                        <h5 className="box1heading mt-2">Phones Called</h5>
+                        <p className="box1value">
+                          0{" "}
+                          <i
+                            style={{ color: "#D12E2F" }}
+                            class="fas fa-caret-down "
+                          ></i>
+                        </p>
+                        {/* <img src={Redline} /> */}
+                      </div>
+                      <div className=" col-3 p-2">
+                        <h5 className="box1heading mt-2">Doors Knocked</h5>
+                        <p className="box1value">
+                          0
+                          <i
+                            style={{ color: "#D12E2F" }}
+                            class="fas fa-caret-down "
+                          ></i>
+                        </p>
+                        {/* <img src={Redline} /> */}
+                      </div>
+                    </div>
                   </div>
-                  <div className=" p-2">
-                    <h5 className="box1heading mt-2">Texts Sent</h5>
-                    <p className="box1value">
-                      0{" "}
-                      <i
-                        style={{ color: "#00E38C" }}
-                        class="fas fa-caret-up "
-                      ></i>
-                    </p>
-                    {/* <img src={Greenline} /> */}
-                  </div>
-                  {/* <div className=" p-2">
-                    <h5 className="box1heading mt-2">Emails Sent</h5>
-                    <p className="box1value">
-                      124,234{" "}
-                      <i
-                        style={{ color: "#D12E2F" }}
-                        class="fas fa-caret-down "
-                      ></i>
-                    </p>
-                    <img src={Redline} />
-                  </div> */}
-                  {/* <div className=" p-2">
-                    <h5 className="box1heading mt-2">Donations Colleted</h5>
-                    <p className="box1value">
-                      439{" "}
-                      <i
-                        style={{ color: "#D12E2F" }}
-                        class="fas fa-caret-down "
-                      ></i>
-                    </p>
-                    <img src={Redline} />
-                  </div> */}
-                  <div className=" p-2">
-                    <h5 className="box1heading mt-2">Phones Called</h5>
-                    <p className="box1value">
-                      0{" "}
-                      <i
-                        style={{ color: "#D12E2F" }}
-                        class="fas fa-caret-down "
-                      ></i>
-                    </p>
-                    <img src={Redline} />
-                  </div>
-                  <div className=" p-2">
-                    <h5 className="box1heading mt-2">Doors Knocked</h5>
-                    <p className="box1value">
-                      0
-                      <i
-                        style={{ color: "#D12E2F" }}
-                        class="fas fa-caret-down "
-                      ></i>
-                    </p>
-                    <img src={Redline} />
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             <br />
@@ -186,28 +206,21 @@ const Superadmindashboard = (props) => {
             <div className="row">
               <div className="col-12 col-md-6">
                 <div className="d-flex justify-content-between">
-                  <h3 className="">Clients</h3>
+                  <h4 className="">Clients</h4>
                   <p className="mt-1">
                     {foundClients?.length > 0
-                      ? foundClients?.length - 1
+                      ? foundClients?.length - 2
                       : foundClients?.length}{" "}
                     Active Members
                   </p>
-                  <Link
-                    // className={clsx({
-                    //   selected: checkRoute("/surveys"),
-                    //   "m-2": true,
-                    //   nonselected: checkRoute("/surveys") === false,
-                    // })}
-                    to="/clients"
-                  >
+                  <Link to="/clients">
                     {" "}
-                    <p
-                      className=" mt-1"
+                    <button
+                      className="btn "
                       style={{ color: "#D12E2F", fontSize: "15px" }}
                     >
                       View All
-                    </p>
+                    </button>
                   </Link>
                 </div>
                 <div>
@@ -219,14 +232,16 @@ const Superadmindashboard = (props) => {
 
                   {foundClients && (
                     <div>
-                      {foundClients?.map((client) => {
+                      {foundClients?.map((client, idx) => {
                         return (
                           client.active === true &&
                           client.role !== "superadmin" && (
                             <div
-                              className="shadow p-2 px-3 d-flex justify-content-between my-2 "
+                              key={idx}
+                              className="shadow pt-3 p-2 d-flex justify-content-between my-2 "
                               style={{
-                                height: "60px",
+                                minHeight: "70px",
+                                height: "auto",
                                 backgroundColor: "#FFFFFF",
                                 borderRadius: "5px",
                               }}
@@ -241,8 +256,13 @@ const Superadmindashboard = (props) => {
                                 </p>
                               </div>
                               <p
-                                style={{ fontSize: "12px" }}
-                                className="text-warning mt-2"
+                                style={{
+                                  fontSize: "12px",
+                                  color: `${
+                                    idx % 2 === 0 ? "#FF914D" : "#583689"
+                                  }`,
+                                }}
+                                className="font-weight-bold mt-2"
                               >
                                 {client.level}
                               </p>
@@ -263,6 +283,7 @@ const Superadmindashboard = (props) => {
             <br />
             <br />
           </div>
+          <div className="col-xl-1"></div>
         </div>
       </div>
     </div>
