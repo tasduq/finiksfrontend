@@ -59,6 +59,7 @@ const Superadmindashboard = (props) => {
           votersInfluenced: 0,
           phonesCalled: 0,
           doorsKnocked: 0,
+          votersMessaged: 0,
         };
         res?.data?.clients?.map((client) => {
           console.log("outerMAp map ===> ", client);
@@ -73,6 +74,8 @@ const Superadmindashboard = (props) => {
                   dashboardStats?.phonesCalled + teamMember?.phonesCalled,
                 doorsKnocked:
                   dashboardStats?.doorsKnocked + teamMember?.doorsKnocked,
+                votersMessaged:
+                  dashboardStats?.votersMessaged + teamMember?.votersMessaged,
               };
             });
           }
@@ -165,7 +168,7 @@ const Superadmindashboard = (props) => {
                       <div className=" col-3 p-2">
                         <h5 className="box1heading mt-2">Texts Sent</h5>
                         <p className="box1value">
-                          0{" "}
+                          {dashboardStatsValues?.votersMessaged}
                           <i
                             style={{ color: "#00E38C" }}
                             class="fas fa-caret-up "
@@ -176,7 +179,7 @@ const Superadmindashboard = (props) => {
                       <div className=" col-3 p-2">
                         <h5 className="box1heading mt-2">Phones Called</h5>
                         <p className="box1value">
-                          0{" "}
+                          {dashboardStatsValues?.phonesCalled}
                           <i
                             style={{ color: "#D12E2F" }}
                             class="fas fa-caret-down "
@@ -187,7 +190,7 @@ const Superadmindashboard = (props) => {
                       <div className=" col-3 p-2">
                         <h5 className="box1heading mt-2">Doors Knocked</h5>
                         <p className="box1value">
-                          0
+                          {dashboardStatsValues?.doorsKnocked}
                           <i
                             style={{ color: "#D12E2F" }}
                             class="fas fa-caret-down "
