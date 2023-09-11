@@ -1,54 +1,57 @@
-import axios from "axios";
-import url from "./API/api";
+// import instance from "instance";
+import { instance, url } from "./API/api";
 // let url = "http://localhost:3001";
 // let url = "https://finiksbackend.herokuapp.com";
 
 const register = async (data) => {
   console.log(data);
   let res;
-  res = await axios.post(`${url}/api/teammember/registerteammember`, data);
+  res = await instance.post(`${url}/api/teammember/registerteammember`, data);
   console.log(res);
   return res;
 };
 
 const loginTeam = async (data) => {
   console.log(data, "i am team login");
-  let res = await axios.post(`${url}/api/teammember/loginteammember`, data);
+  let res = await instance.post(`${url}/api/teammember/loginteammember`, data);
   console.log(res);
   return res;
 };
 
 const otpTeam = async (data) => {
   console.log(data, "i am team login");
-  let res = await axios.post(`${url}/api/teammember/emailverify`, data);
+  let res = await instance.post(`${url}/api/teammember/emailverify`, data);
   console.log(res);
   return res;
 };
 
 const newOtp = async (data) => {
   console.log(data, "i am team login");
-  let res = await axios.post(`${url}/api/teammember/newotp`, data);
+  let res = await instance.post(`${url}/api/teammember/newotp`, data);
   console.log(res);
   return res;
 };
 
 const joinCampaign = async (data) => {
   console.log(data, "i am team login");
-  let res = await axios.post(`${url}/api/teammember/joincampaign`, data);
+  let res = await instance.post(`${url}/api/teammember/joincampaign`, data);
   console.log(res);
   return res;
 };
 
 const getJoinedCampaigns = async (data) => {
   console.log(data, "i am team login");
-  let res = await axios.post(`${url}/api/teammember/getjoinedcampaigns`, data);
+  let res = await instance.post(
+    `${url}/api/teammember/getjoinedcampaigns`,
+    data
+  );
   console.log(res);
   return res;
 };
 
 const getTeamPhonebankRecords = async (data) => {
-  console.log(data);
-  let res = await axios.post(
+  console.log(data, url, "checkme =====>");
+  let res = await instance.post(
     `${url}/api/teammember/getteamphonebankrecords`,
     data
   );
@@ -59,7 +62,7 @@ const getTeamPhonebankRecords = async (data) => {
 
 const getList = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/getlist`, data);
+  let res = await instance.post(`${url}/api/teammember/getlist`, data);
 
   console.log(res);
   return res;
@@ -67,7 +70,7 @@ const getList = async (data) => {
 
 const getScript = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/getscript`, data);
+  let res = await instance.post(`${url}/api/teammember/getscript`, data);
 
   console.log(res);
   return res;
@@ -75,7 +78,7 @@ const getScript = async (data) => {
 
 const getTags = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/gettags`, data);
+  let res = await instance.post(`${url}/api/teammember/gettags`, data);
 
   console.log(res);
   return res;
@@ -83,7 +86,7 @@ const getTags = async (data) => {
 
 const getAdminTags = async (data) => {
   console.log(data);
-  let res = await axios.get(`${url}/api/teammember/getadmintags`);
+  let res = await instance.get(`${url}/api/teammember/getadmintags`);
 
   console.log(res);
   return res;
@@ -91,7 +94,7 @@ const getAdminTags = async (data) => {
 
 const getSurvey = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/getsurvey`, data);
+  let res = await instance.post(`${url}/api/teammember/getsurvey`, data);
 
   console.log(res);
   return res;
@@ -99,41 +102,41 @@ const getSurvey = async (data) => {
 
 const newPassword = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/newpassword`, data);
+  let res = await instance.post(`${url}/api/teammember/newpassword`, data);
   console.log(res);
   return res;
 };
 
 const updatePassword = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/updatepassword`, data);
+  let res = await instance.post(`${url}/api/teammember/updatepassword`, data);
   console.log(res);
   return res;
 };
 const addToTeam = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/addtoteam`, data);
+  let res = await instance.post(`${url}/api/teammember/addtoteam`, data);
   console.log(res);
   return res;
 };
 
 const updateVoterInfo = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/updatevoterinfo`, data);
+  let res = await instance.post(`${url}/api/teammember/updatevoterinfo`, data);
   console.log(res);
   return res;
 };
 
 const getInvitedVoters = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/getinvitedvoters`, data);
+  let res = await instance.post(`${url}/api/teammember/getinvitedvoters`, data);
   console.log(res);
   return res;
 };
 
 const getInvitedTeamMembers = async (data) => {
   console.log(data);
-  let res = await axios.post(
+  let res = await instance.post(
     `${url}/api/teammember/getinvitedteammembers`,
     data
   );
@@ -143,7 +146,7 @@ const getInvitedTeamMembers = async (data) => {
 
 const cancelInvite = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/teammember/cancelinvite`, data);
+  let res = await instance.post(`${url}/api/teammember/cancelinvite`, data);
   console.log(res);
   return res;
 };

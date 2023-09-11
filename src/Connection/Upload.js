@@ -1,12 +1,12 @@
 import axios from "axios";
-import url from "./API/api";
+import { instance, url } from "./API/api";
 // let url = "http://localhost:3001";
 // let url = "https://finiksbackend.herokuapp.com";
 
 const uploadData = async (data, callBack) => {
   console.log(data);
   let res;
-  axios({
+  instance({
     method: "post",
     url: `${url}/api/aristotle/addaristotledata`,
     data: data,
@@ -26,7 +26,7 @@ const uploadData = async (data, callBack) => {
       callBack(response);
       // return response;
     });
-  //   let res = await axios.post(`${url}/api/aristotle/addaristotledata`, data);
+  //   let res = await instance.post(`${url}/api/aristotle/addaristotledata`, data);
 
   console.log(res);
   return res;
