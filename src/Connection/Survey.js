@@ -1,18 +1,18 @@
 import axios from "axios";
-import url from "./API/api";
+import { instance, url } from "./API/api";
 // let url = "http://localhost:3001";
 // let url = "https://finiksbackend.herokuapp.com";
 
 const addSurvey = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/addsurvey`, data);
+  let res = await instance.post(`${url}/api/survey/addsurvey`, data);
 
   console.log(res);
   return res;
 };
 const editSurvey = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/editsurvey`, data);
+  let res = await instance.post(`${url}/api/survey/editsurvey`, data);
 
   console.log(res);
   return res;
@@ -20,7 +20,7 @@ const editSurvey = async (data) => {
 
 const deleteSurvey = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/deletesurvey`, data);
+  let res = await instance.post(`${url}/api/survey/deletesurvey`, data);
 
   console.log(res);
   return res;
@@ -28,7 +28,7 @@ const deleteSurvey = async (data) => {
 
 const getClientSurvey = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/getclientsurvey`, data);
+  let res = await instance.post(`${url}/api/survey/getclientsurvey`, data);
 
   console.log(res);
   return res;
@@ -36,7 +36,7 @@ const getClientSurvey = async (data) => {
 
 const getClientSurveyResponses = async (data) => {
   console.log(data);
-  let res = await axios.post(
+  let res = await instance.post(
     `${url}/api/survey/getcampaignsurveyresponses`,
     data
   );
@@ -47,7 +47,7 @@ const getClientSurveyResponses = async (data) => {
 
 const getCampaigns = async (data) => {
   // console.log(data);
-  let res = await axios.get(`${url}/api/survey/getcampaigns`);
+  let res = await instance.get(`${url}/api/survey/getcampaigns`);
 
   console.log(res);
   return res;
@@ -55,7 +55,7 @@ const getCampaigns = async (data) => {
 
 const getCampaignSurveys = async (data) => {
   // console.log(data);
-  let res = await axios.post(`${url}/api/survey/getcampaignsurveys`, data);
+  let res = await instance.post(`${url}/api/survey/getcampaignsurveys`, data);
 
   console.log(res);
   return res;
@@ -64,7 +64,7 @@ const getCampaignSurveys = async (data) => {
 const takeSurvey = async (data) => {
   console.log(data);
   // return;
-  let res = await axios.post(`${url}/api/survey/takesurvey`, data);
+  let res = await instance.post(`${url}/api/survey/takesurvey`, data);
 
   console.log(res);
   return res;
@@ -73,7 +73,7 @@ const takeSurvey = async (data) => {
 const takeSurveyCanvassingSinglePerson = async (data) => {
   console.log(data);
   // return;
-  let res = await axios.post(
+  let res = await instance.post(
     `${url}/api/survey/takeSurveyCanvassingSinglePerson`,
     data
   );
@@ -84,7 +84,7 @@ const takeSurveyCanvassingSinglePerson = async (data) => {
 
 const doNotCall = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/donotcall`, data);
+  let res = await instance.post(`${url}/api/survey/donotcall`, data);
 
   console.log(res);
   return res;
@@ -92,7 +92,7 @@ const doNotCall = async (data) => {
 
 const saveInteraction = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/saveinteraction`, data);
+  let res = await instance.post(`${url}/api/survey/saveinteraction`, data);
 
   console.log(res);
   return res;
@@ -100,7 +100,7 @@ const saveInteraction = async (data) => {
 
 const wrongNumber = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/survey/wrongnumber`, data);
+  let res = await instance.post(`${url}/api/survey/wrongnumber`, data);
 
   console.log(res);
   return res;

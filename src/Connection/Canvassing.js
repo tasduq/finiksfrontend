@@ -1,11 +1,11 @@
 import axios from "axios";
-import url from "./API/api";
+import { instance, url } from "./API/api";
 // let url = "http://localhost:3001";
 // let url = "https://finiksbackend.herokuapp.com";
 
 const getLists = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/list/getlists`, data);
+  let res = await instance.post(`${url}/api/list/getlists`, data);
 
   console.log(res);
   return res;
@@ -13,7 +13,7 @@ const getLists = async (data) => {
 
 const getRecords = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/getrecords`, data);
+  let res = await instance.post(`${url}/api/canvassing/getrecords`, data);
 
   console.log(res);
   return res;
@@ -21,7 +21,7 @@ const getRecords = async (data) => {
 
 const searchVoters = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/list/querydata`, data);
+  let res = await instance.post(`${url}/api/list/querydata`, data);
 
   console.log(res);
   return res;
@@ -29,7 +29,7 @@ const searchVoters = async (data) => {
 
 const saveList = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/list/savelist`, data);
+  let res = await instance.post(`${url}/api/list/savelist`, data);
 
   console.log(res);
   return res;
@@ -37,7 +37,7 @@ const saveList = async (data) => {
 
 const saveRecord = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/saverecord`, data);
+  let res = await instance.post(`${url}/api/canvassing/saverecord`, data);
 
   console.log(res);
   return res;
@@ -45,7 +45,7 @@ const saveRecord = async (data) => {
 
 // const searchVoters = async (data) => {
 //   console.log(data);
-//   let res = await axios.post(`${url}/api/canvassing/querycanvassing`, data);
+//   let res = await instance.post(`${url}/api/canvassing/querycanvassing`, data);
 
 //   console.log(res);
 //   return res;
@@ -53,7 +53,7 @@ const saveRecord = async (data) => {
 
 // const saveList = async (data) => {
 //   console.log(data);
-//   let res = await axios.post(`${url}/api/canvassing/savelist`, data);
+//   let res = await instance.post(`${url}/api/canvassing/savelist`, data);
 
 //   console.log(res);
 //   return res;
@@ -61,7 +61,7 @@ const saveRecord = async (data) => {
 
 const updateRecord = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/updaterecord`, data);
+  let res = await instance.post(`${url}/api/canvassing/updaterecord`, data);
 
   console.log(res);
   return res;
@@ -69,7 +69,7 @@ const updateRecord = async (data) => {
 
 const updateList = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/updatelist`, data);
+  let res = await instance.post(`${url}/api/canvassing/updatelist`, data);
 
   console.log(res);
   return res;
@@ -77,7 +77,7 @@ const updateList = async (data) => {
 
 const deleteList = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/deletelist`, data);
+  let res = await instance.post(`${url}/api/canvassing/deletelist`, data);
 
   console.log(res);
   return res;
@@ -85,7 +85,7 @@ const deleteList = async (data) => {
 
 const editList = async (data) => {
   console.log(data);
-  let res = await axios.post(`${url}/api/canvassing/editlist`, data);
+  let res = await instance.post(`${url}/api/canvassing/editlist`, data);
 
   console.log(res);
   return res;
@@ -93,7 +93,7 @@ const editList = async (data) => {
 
 const searchVotersForcanvassing = async (data) => {
   console.log(data);
-  let res = await axios.post(
+  let res = await instance.post(
     `${url}/api/canvassing/searchvotersforcanvassing`,
     data
   );
@@ -104,7 +104,7 @@ const searchVotersForcanvassing = async (data) => {
 
 const searchCanvassingList = async (data) => {
   console.log(data);
-  let res = await axios.post(
+  let res = await instance.post(
     `${url}/api/canvassing/searchcanvassinglists`,
     data
   );
