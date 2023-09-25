@@ -57,6 +57,11 @@ export default function Tableclients({ data, handleUpdate }) {
       });
     }
   };
+  const handleDistrictsFormatting = (distincts) => {
+    const separator = ", ";
+    const resultString = distincts.join(separator);
+    return resultString;
+  };
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -78,6 +83,7 @@ export default function Tableclients({ data, handleUpdate }) {
         </TableHead>
         <TableBody>
           {data.map((client) => {
+            console.log(client.district, "i am districts");
             return (
               client.role !== "superadmin" && (
                 <TableRow
@@ -100,17 +106,21 @@ export default function Tableclients({ data, handleUpdate }) {
                     </div>
                   </TableCell>
                   <TableCell component="th" scope="row">
-                    {client.campaignName}
+                    {client?.campaignName}
                   </TableCell>
-                  <TableCell align="">{client.district}</TableCell>
-                  <TableCell align="">{`${client.election[0].toUpperCase()}${client.election
+                  <TableCell align="">
+                    {client?.district
+                      ? handleDistrictsFormatting(client?.district)
+                      : []}
+                  </TableCell>
+                  <TableCell align="">{`${client?.election[0].toUpperCase()}${client?.election
                     .toString()
                     .substring(1)}`}</TableCell>
                   <TableCell align="">Dem</TableCell>
                   <TableCell className="text-danger" align="">
                     <button
                       className="text-danger btn"
-                      onClick={() => handleOpenSurvey(client._id)}
+                      onClick={() => handleOpenSurvey(client?._id)}
                     >
                       View
                     </button>
@@ -118,7 +128,7 @@ export default function Tableclients({ data, handleUpdate }) {
                   <TableCell className="text-danger" align="">
                     <button
                       className="text-danger btn"
-                      onClick={() => handleOpenTags(client._id)}
+                      onClick={() => handleOpenTags(client?._id)}
                     >
                       View
                     </button>
@@ -129,8 +139,8 @@ export default function Tableclients({ data, handleUpdate }) {
                       className="text-danger btn"
                       onClick={() =>
                         handleOpenTeammembers({
-                          emails: client.teamMembers,
-                          campaignId: client._id,
+                          emails: client?.teamMembers,
+                          campaignId: client?._id,
                         })
                       }
                     >
@@ -167,7 +177,7 @@ export default function Tableclients({ data, handleUpdate }) {
                   </button> */}
                     <Confirmdelete
                       handleDelete={handleDelete}
-                      data={client._id}
+                      data={client?._id}
                     />
                   </TableCell>
                 </TableRow>

@@ -61,7 +61,7 @@ const Loginteam = () => {
       window.localStorage.setItem("email", res.data.email);
       // window.localStorage.setItem("id", res.data.id);
       window.localStorage.setItem("userId", res.data.userId);
-      window.localStorage.setItem("role", "");
+      window.localStorage.setItem("role", res.data.role);
       window.localStorage.setItem("firstName", res.data.firstName);
       window.localStorage.setItem("lastName", res.data.lastName);
       window.localStorage.setItem("address", res.data.address);
