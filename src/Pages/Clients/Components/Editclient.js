@@ -23,7 +23,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { getDistricts } from "../../../Connection/Clients";
 
-export default function FormDialog({ data, handleUpdate }) {
+export default function FormDialog({ foundStates, data, handleUpdate }) {
   console.log(data);
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
@@ -529,7 +529,14 @@ export default function FormDialog({ data, handleUpdate }) {
               <MenuItem value="Arkansas">Arkansas</MenuItem>
               <MenuItem value="California">California</MenuItem>
               <MenuItem value="Colorada">Colorada</MenuItem> */}
-              <MenuItem value="FL">Florida</MenuItem>
+              {/* <MenuItem value="FL">Florida</MenuItem> */}
+              {foundStates?.map((stateObj) => {
+                return (
+                  <MenuItem value={stateObj?.stateKey}>
+                    {stateObj?.stateName}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
           <br />

@@ -14,7 +14,7 @@ import Clientssurveyspage from "../../Survey/Components/Clientssurveyspage";
 import ClientsTagsspage from "../../Tags/Components/Clienttagspage";
 import Viewteammembers from "./Viewteammembers";
 
-export default function Tableclients({ data, handleUpdate }) {
+export default function Tableclients({ foundStates, data, handleUpdate }) {
   const [openSurvey, setOpenSurvey] = React.useState(false);
   const [clientSurveyId, setClientSurveyId] = React.useState();
 
@@ -161,7 +161,11 @@ export default function Tableclients({ data, handleUpdate }) {
                   >
                     Edit
                   </button> */}
-                    <Editclient data={client} handleUpdate={handleUpdate} />
+                    <Editclient
+                      foundStates={foundStates}
+                      data={client}
+                      handleUpdate={handleUpdate}
+                    />
                   </TableCell>
                   <TableCell align="">
                     {/* <button

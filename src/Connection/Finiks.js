@@ -10,4 +10,11 @@ const getFiniksData = async (data) => {
   return res;
 };
 
-export { getFiniksData };
+const getFiniksDataCount = async (data) => {
+  let res = await instance.get(`${url}/api/finiks/getfinikstotalcount`);
+
+  console.log(res);
+  return res;
+};
+
+export { getFiniksData, getFiniksDataCount };

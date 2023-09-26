@@ -4,7 +4,7 @@ import Tablevoters from "./Components/Table";
 import Newcampaign from "./Components/Newcampaign";
 import { Link } from "react-router-dom";
 import { getAristotleData } from "../../Connection/Aristotle";
-import { getFiniksData } from "../../Connection/Finiks";
+import { getFiniksData, getFiniksDataCount } from "../../Connection/Finiks";
 import { ToastContainer, toast } from "react-toastify";
 import Aristotledatapage from "./Components/Aristotledatapage";
 import Finikstable from "./Components/Finikstable";
@@ -28,12 +28,16 @@ const Voterdata = () => {
   };
 
   const fetchVoters = async (value) => {
-    let res = await getFiniksData({ bottomHit: value });
-    console.log(res);
+    const [res, resTotalCount] = await Promise.all([
+      getFiniksData({ bottomHit: value }),
+      getFiniksDataCount(),
+    ]);
+
+    console.log(res, resTotalCount, "i am response");
     if (res.data.success) {
       setVoters([...voters, ...res.data.finiksData]);
       setLoadingMore(false);
-      setTotalVoters(res.data.totalVoters);
+      setTotalVoters(resTotalCount.data.finiksDataTotal);
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -139,7 +143,7 @@ const Voterdata = () => {
                 )}
                 <div>{voters.length > 0 && <Finikstable data={voters} />}</div>
                 <br />
-                <div className="text-right">
+                <div className="text-center">
                   {loadingMore && (
                     <button class="btn btn-danger" type="button" disabled>
                       <span
