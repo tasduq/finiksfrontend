@@ -17,7 +17,10 @@ import Avatar from "@mui/material/Avatar";
 import Imagepicker from "../../../Components/Imagepicker";
 import Table from "./Table";
 import Logo from "../../../Assets/logoword.png";
-import { getAristotleData } from "../../../Connection/Aristotle";
+import {
+  getAristotleData,
+  getAristotleDataCount,
+} from "../../../Connection/Aristotle";
 import { ToastContainer, toast } from "react-toastify";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -54,8 +57,12 @@ export default function Finiksdatapage({ data }) {
     console.log(image);
   };
   const fetchVoters = async (value) => {
-    let finiksDataRes = await getAristotleData({ bottomHit: value });
-    console.log(finiksDataRes);
+    // let finiksDataRes = await getAristotleData({ bottomHit: value });
+    const [finiksDataRes, resTotalCount] = await Promise.all([
+      getAristotleData({ bottomHit: value }),
+      getAristotleDataCount(),
+    ]);
+    console.log(finiksDataRes, resTotalCount, "i am response");
     if (finiksDataRes.data.success === true) {
       console.log("see message");
       setFiniksVotersData([
@@ -64,7 +71,7 @@ export default function Finiksdatapage({ data }) {
       ]);
 
       setLoadingMore(false);
-      setTotalVoters(finiksDataRes.data.totalVoters);
+      setTotalVoters(resTotalCount.data?.aristotleDataTotal);
     } else {
       toast.error(finiksDataRes.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -131,7 +138,7 @@ export default function Finiksdatapage({ data }) {
             >
               <div>
                 <button
-                  // onClick={handleClose}
+                  onClick={handleClose}
                   className="text-left btn px-0"
                   style={{ color: "#d12e2f" }}
                 >

@@ -10,4 +10,11 @@ const getAristotleData = async (data) => {
   return res;
 };
 
-export { getAristotleData };
+const getAristotleDataCount = async (data) => {
+  let res = await instance.get(`${url}/api/aristotle/getaristotletotalcount`);
+
+  console.log(res);
+  return res;
+};
+
+export { getAristotleData, getAristotleDataCount };

@@ -30,7 +30,7 @@ const Upload = () => {
   };
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100%" }}>
-      <div className="container mt-5">
+      <div className="container">
         <br />
         <div className="mt-4">
           <div className="row">

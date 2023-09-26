@@ -23,7 +23,7 @@ import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import { getDistricts } from "../../../Connection/Clients";
 
-export default function FormDialog({ data, handleUpdate }) {
+export default function FormDialog({ foundStates, data, handleUpdate }) {
   console.log(data);
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
@@ -46,6 +46,7 @@ export default function FormDialog({ data, handleUpdate }) {
     county: data.county,
     countyCommission: data.countyCommission,
   });
+  const [dataBucketUpated, setDataBucketUpdated] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,6 +59,9 @@ export default function FormDialog({ data, handleUpdate }) {
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     console.log(name, value);
+    if (name === "state" && value !== data.state) {
+      setDataBucketUpdated(true);
+    }
     setValues({
       ...values,
       [name]: value,
@@ -69,6 +73,9 @@ export default function FormDialog({ data, handleUpdate }) {
     //   ...values,
     //   level: evt.target.value,
     // });
+    if (evt.target.name === "level" && evt.target.value !== data.level) {
+      setDataBucketUpdated(true);
+    }
 
     if (evt.target.value === "Federal - Senate") {
       setValues({
@@ -246,6 +253,7 @@ export default function FormDialog({ data, handleUpdate }) {
     const {
       target: { value },
     } = event;
+    setDataBucketUpdated(true);
 
     // if(values.district.indexOf(value) > -1){
     //   let yoo = values.district
@@ -265,6 +273,7 @@ export default function FormDialog({ data, handleUpdate }) {
     const {
       target: { value },
     } = event;
+    setDataBucketUpdated(true);
 
     // if(values.district.indexOf(value) > -1){
     //   let yoo = values.district
@@ -310,6 +319,7 @@ export default function FormDialog({ data, handleUpdate }) {
     const {
       target: { value },
     } = event;
+    setDataBucketUpdated(true);
 
     // if(values.district.indexOf(value) > -1){
     //   let yoo = values.district
@@ -329,6 +339,7 @@ export default function FormDialog({ data, handleUpdate }) {
     const {
       target: { value },
     } = event;
+    setDataBucketUpdated(true);
 
     // if(values.district.indexOf(value) > -1){
     //   let yoo = values.district
@@ -359,16 +370,17 @@ export default function FormDialog({ data, handleUpdate }) {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
 
-    const testStatus = handleValidate(values.email);
+    // const testStatus = handleValidate(values.email);
 
-    if (testStatus === false) {
-      alert("Email is not valid");
-      return;
-    }
-    console.log("I am called");
+    // if (testStatus === false) {
+    //   alert("Email is not valid");
+    //   return;
+    // }
+    // console.log("I am called");
 
     let res = await editClient({
       ...values,
+      dataBucketUpdated: dataBucketUpated,
     });
     console.log(res);
     if (res.data.success === true) {
@@ -377,10 +389,12 @@ export default function FormDialog({ data, handleUpdate }) {
       });
       handleClose();
       handleUpdate();
+      setDataBucketUpdated(false);
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setDataBucketUpdated(false);
     }
   };
 
@@ -425,7 +439,7 @@ export default function FormDialog({ data, handleUpdate }) {
             Here you can update the Campaign Details of your client
           </DialogContentText>
           <br />
-          <div class="form-group">
+          {/* <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input
               type="email"
@@ -436,7 +450,7 @@ export default function FormDialog({ data, handleUpdate }) {
               onChange={handleChange}
               name="email"
             />
-          </div>
+          </div> */}
           <div class="form-group">
             <label for="exampleInputEmail1">Name</label>
             <input
@@ -515,7 +529,14 @@ export default function FormDialog({ data, handleUpdate }) {
               <MenuItem value="Arkansas">Arkansas</MenuItem>
               <MenuItem value="California">California</MenuItem>
               <MenuItem value="Colorada">Colorada</MenuItem> */}
-              <MenuItem value="FL">Florida</MenuItem>
+              {/* <MenuItem value="FL">Florida</MenuItem> */}
+              {foundStates?.map((stateObj) => {
+                return (
+                  <MenuItem value={stateObj?.stateKey}>
+                    {stateObj?.stateName}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
           <br />

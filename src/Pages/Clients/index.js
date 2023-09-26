@@ -4,6 +4,8 @@ import Tableclients from "./Components/Table";
 import Newcampaign from "./Components/Newcampaign";
 import { getClients } from "../../Connection/Clients";
 import { ToastContainer, toast } from "react-toastify";
+import Addnewstate from "./Components/Addnewstate";
+import { manageState } from "../../Connection/Settings";
 
 const Clients = () => {
   const [clients, setClients] = useState();
@@ -11,6 +13,7 @@ const Clients = () => {
   const [searching, setSearching] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searched, setSearched] = useState();
+  const [foundStates, setFoundStates] = useState([]);
 
   const handleUpdate = () => {
     setUpdate(true);
@@ -45,12 +48,24 @@ const Clients = () => {
         });
       }
     };
+    const fetchStates = async () => {
+      let res = await manageState.getStates();
+      console.log("states", res);
+      if (res.data.success) {
+        setFoundStates(res?.data?.foundStates);
+      } else {
+        toast.error(res.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    };
     fetchClients();
+    fetchStates();
     setUpdate(false);
   }, [update === true]);
   return (
     <div style={{ backgroundColor: "#FCFCFC", height: "100vh" }}>
-      <div className="mt-5 pl-xl-5 pr-4">
+      <div className=" pl-xl-5 pr-4">
         <br />
         <div className="row">
           <div className="col-2 col-xl-1"></div>
@@ -75,7 +90,11 @@ const Clients = () => {
                 {clients ? (
                   <div>
                     <div className="d-flex justify-content-end">
-                      <Newcampaign handleUpdate={handleUpdate} />
+                      <Addnewstate handleUpdate={handleUpdate} />
+                      <Newcampaign
+                        foundStates={foundStates}
+                        handleUpdate={handleUpdate}
+                      />
                       <input
                         type="text"
                         className="form-control shadow-sm"
@@ -94,6 +113,7 @@ const Clients = () => {
                     <br />
                     <div>
                       <Tableclients
+                        foundStates={foundStates}
                         data={searching === true ? searched : clients}
                         handleUpdate={handleUpdate}
                       />

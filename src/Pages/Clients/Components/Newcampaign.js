@@ -19,7 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 
-export default function FormDialog({ handleUpdate }) {
+export default function FormDialog({ foundStates, handleUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = React.useState(null);
   const [districtsCount, setDistrictsCount] = React.useState([]);
@@ -433,17 +433,6 @@ export default function FormDialog({ handleUpdate }) {
             />
           </div>
 
-          {/* <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-            />
-          </div> */}
           <br />
           <div className="d-flex">
             <div class="form-group ">
@@ -509,7 +498,13 @@ export default function FormDialog({ handleUpdate }) {
               <MenuItem value="Arkansas">Arkansas</MenuItem>
               <MenuItem value="California">California</MenuItem>
               <MenuItem value="Colorada">Colorada</MenuItem> */}
-              <MenuItem value="FL">Florida</MenuItem>
+              {foundStates?.map((stateObj) => {
+                return (
+                  <MenuItem value={stateObj?.stateKey}>
+                    {stateObj?.stateName}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
           <br />
