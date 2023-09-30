@@ -16,6 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { getDistricts } from "../../../../Connection/Clients";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
+import { manageState } from "../../../../Connection/Settings";
 
 export default function Location({
   handleFilterData,
@@ -28,6 +29,8 @@ export default function Location({
   const [zips, setZips] = React.useState([]);
   const [city, setCity] = React.useState([]);
   const [county, setCounty] = React.useState([]);
+  const [allStates, setAllStates] = React.useState([]);
+  const [campaignState, setCampaignState] = React.useState([]);
   const [applied, setApplied] = React.useState(false);
   const [values, setValues] = React.useState({
     STATE: "",
@@ -36,6 +39,7 @@ export default function Location({
     PREC_NO1: { from: "", to: "" },
     ZIP: { from: "", to: "" },
   });
+  const [allowFilters, setAllowFilters] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -85,16 +89,16 @@ export default function Location({
   };
 
   const handleSubmit = () => {
-    if (
-      values.PREC_NO1.from.length > 0 ||
-      (values.PREC_NO1.to > 0 &&
-        (values.PREC_NO1.from.length === 0 || values.PREC_NO1.to.length === 0))
-    ) {
-      toast.error("Please select both From and to range for Zip code", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+    // if (
+    //   values.PREC_NO1.from.length > 0 ||
+    //   (values.PREC_NO1.to > 0 &&
+    //     (values.PREC_NO1.from.length === 0 || values.PREC_NO1.to.length === 0))
+    // ) {
+    //   toast.error("Please select both From and to range for Zip code", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
 
     if (
       values.ZIP.from.length > 0 ||
@@ -112,12 +116,12 @@ export default function Location({
       });
       return;
     }
-    if (values.PREC_NO1.from > values.PREC_NO1.to) {
-      toast.error("Precinct From cannot be  greater than Precinct To", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return;
-    }
+    // if (values.PREC_NO1.from > values.PREC_NO1.to) {
+    //   toast.error("Precinct From cannot be  greater than Precinct To", {
+    //     position: toast.POSITION.TOP_RIGHT,
+    //   });
+    //   return;
+    // }
 
     handleFilterData(
       {
@@ -127,8 +131,7 @@ export default function Location({
           AI_COUNTY_NAME: values.AI_COUNTY_NAME,
         }),
         ...(values.ZIP.from && values.ZIP.to && { ZIP: values.ZIP }),
-        ...(values.PREC_NO1.from &&
-          values.PREC_NO1.to && { PREC_NO1: values.PREC_NO1 }),
+        ...(values.PREC_NO1.from && { PREC_NO1: values.PREC_NO1 }),
       },
       "location"
     );
@@ -160,6 +163,20 @@ export default function Location({
   };
 
   const handleGetLocationFilterData = async () => {
+    let res0 = await manageState.getStates();
+    console.log(res0, "i am all states ===>");
+    if (res0.data.success) {
+      setAllStates(res0?.data?.foundStates);
+      let campaignState = res0?.data?.foundStates?.filter(
+        (stateObj) => stateObj?.stateKey === campaignFilterData?.state
+      );
+      setCampaignState(campaignState);
+    } else {
+      toast.error(res0?.data?.message, {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+
     let res = await getDistricts({
       field: "PREC_NO1",
       state: campaignFilterData?.state,
@@ -197,7 +214,7 @@ export default function Location({
     if (res3.data.success === true) {
       setCity(res3.data.districts);
     } else {
-      toast.error("Error getting Zip Codes Values", {
+      toast.error("Error getting City Values", {
         position: toast.POSITION.TOP_RIGHT,
       });
     }
@@ -276,7 +293,14 @@ export default function Location({
               onChange={handleChange}
               disabled
             >
-              <MenuItem value="FL">Florida</MenuItem>
+              {/* <MenuItem value="FL">Florida</MenuItem> */}
+              {campaignState?.map((stateObj) => {
+                return (
+                  <MenuItem value={stateObj?.stateKey}>
+                    {stateObj?.stateName}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
           <br />
@@ -338,7 +362,7 @@ export default function Location({
             </button>
           </div> */}
           <FormControl fullWidth size="small">
-            <InputLabel id="demo-simple-select-label">Precinct From</InputLabel>
+            <InputLabel id="demo-simple-select-label">Precinct</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -354,7 +378,7 @@ export default function Location({
               })}
             </Select>
           </FormControl>
-          <br />
+          {/* <br />
           <br />
           <FormControl fullWidth size="small">
             <InputLabel id="demo-simple-select-label">Precinct To</InputLabel>
@@ -372,7 +396,7 @@ export default function Location({
                 return <MenuItem value={subPrec}>{subPrec}</MenuItem>;
               })}
             </Select>
-          </FormControl>
+          </FormControl> */}
           <br />
           <br />
           <FormControl fullWidth size="small">
