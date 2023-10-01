@@ -49,16 +49,20 @@ const Dashboardteam = (props) => {
   };
 
   const handleDateFormat = (dateToBeFormatted) => {
-    const date = new Date(dateToBeFormatted);
+    if (dateToBeFormatted?.length > 0) {
+      const date = new Date(dateToBeFormatted);
 
-    // Get the month, day, and year from the Date object
-    const month = date.getMonth() + 1; // January is 0, so we need to add 1
-    const day = date.getDate();
-    const year = date.getFullYear();
+      // Get the month, day, and year from the Date object
+      const month = date.getMonth() + 1; // January is 0, so we need to add 1
+      const day = date.getDate();
+      const year = date.getFullYear();
 
-    // Format the date in the desired format
-    const formattedDate = `${month}/${day}/${year}`;
-    return formattedDate;
+      // Format the date in the desired format
+      const formattedDate = `${month}/${day}/${year}`;
+      return formattedDate;
+    } else {
+      return "";
+    }
   };
 
   const handleSetData = (data) => {
@@ -265,7 +269,7 @@ const Dashboardteam = (props) => {
                             fontSize: "12px",
                             color: `${idx % 2 === 0 ? "#FF914D" : "#583689"}`,
                           }}
-                          className="font-weight-bold mt-3"
+                          className="font-weight-bold mt-2"
                         >
                           {member?.campaignPosition?.toUpperCase()}
                         </p>

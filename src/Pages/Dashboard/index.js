@@ -45,16 +45,20 @@ const Dashboard = (props) => {
   };
 
   const handleDateFormat = (dateToBeFormatted) => {
-    const date = new Date(dateToBeFormatted);
+    if (dateToBeFormatted?.length > 0) {
+      const date = new Date(dateToBeFormatted);
 
-    // Get the month, day, and year from the Date object
-    const month = date.getMonth() + 1; // January is 0, so we need to add 1
-    const day = date.getDate();
-    const year = date.getFullYear();
+      // Get the month, day, and year from the Date object
+      const month = date.getMonth() + 1; // January is 0, so we need to add 1
+      const day = date.getDate();
+      const year = date.getFullYear();
 
-    // Format the date in the desired format
-    const formattedDate = `${month}/${day}/${year}`;
-    return formattedDate;
+      // Format the date in the desired format
+      const formattedDate = `${month}/${day}/${year}`;
+      return formattedDate;
+    } else {
+      return "";
+    }
   };
 
   const handleGetCampaignData = (data) => {

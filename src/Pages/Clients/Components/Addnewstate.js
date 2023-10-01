@@ -59,7 +59,8 @@ export default function Addnewstate({ handleUpdate }) {
         style={{
           backgroundColor: "#d12e2f",
           color: "#FFFFFF",
-          width: "304px",
+          minWidth: "250px",
+          width: "auto",
           heigth: "36px",
         }}
         className="btn "

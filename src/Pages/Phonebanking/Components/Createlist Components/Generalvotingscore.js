@@ -130,9 +130,9 @@ export default function Generalvotingscore({
         General voting score
       </button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle className="text-danger">
+        {/* <DialogTitle className="text-danger">
           General voting score Filter
-        </DialogTitle>
+        </DialogTitle> */}
         <div className="d-flex justify-content-between">
           {" "}
           <DialogTitle className="text-danger">

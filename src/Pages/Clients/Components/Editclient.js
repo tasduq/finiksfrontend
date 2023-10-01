@@ -522,6 +522,7 @@ export default function FormDialog({ foundStates, data, handleUpdate }) {
               onChange={handleChange}
               name="state"
               //   onChange={handleChange}
+              disabled
             >
               {/* <MenuItem value="Alabama">Alabama</MenuItem>
               <MenuItem value="Alaska">Alaska</MenuItem>

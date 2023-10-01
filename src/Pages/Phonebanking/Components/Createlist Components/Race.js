@@ -336,9 +336,9 @@ export default function Race({ handleFilterData }) {
         Race/Ethnicity/Religion
       </button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle className="text-danger">
+        {/* <DialogTitle className="text-danger">
           Race/Ethnicity/Religion Filter
-        </DialogTitle>
+        </DialogTitle> */}
         <div className="d-flex justify-content-between">
           {" "}
           <DialogTitle className="text-danger">

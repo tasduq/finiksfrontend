@@ -50,11 +50,28 @@ export default function FormDialog({ foundStates, handleUpdate }) {
     setOpen(false);
   };
 
+  const resetFields = () => {
+    setValues({
+      ...values,
+      level: "",
+      district: [],
+      county: [],
+      city: [],
+      countyCommission: [],
+    });
+  };
+
   const handleChange = (evt) => {
     const { name, value } = evt.target;
+
     setValues({
       ...values,
       [name]: value,
+      level: "",
+      district: [],
+      county: [],
+      city: [],
+      countyCommission: [],
     });
   };
 
@@ -255,14 +272,10 @@ export default function FormDialog({ foundStates, handleUpdate }) {
   };
 
   const handleChangeCounty = async (event) => {
-    console.log(event.target.value);
+    console.log(event, "i am target ====> county");
     const {
       target: { value },
     } = event;
-
-    // if(values.district.indexOf(value) > -1){
-    //   let yoo = values.district
-    // }
 
     setValues(
       // On autofill we get a stringified value.
@@ -272,17 +285,9 @@ export default function FormDialog({ foundStates, handleUpdate }) {
         countyCommission: value.length === 0 ? [] : values.countyCommission,
       }
     );
+  };
 
-    // if (value?.length === 0) {
-    //   setValues(
-    //     // On autofill we get a stringified value.
-    //     {
-    //       ...values,
-    //       countyCommission: [],
-    //     }
-    //   );
-    // }
-
+  const handleCountyClose = async () => {
     let res = await getDistricts({
       field: "CNTY_COMM",
       state: values.county,
@@ -546,31 +551,20 @@ export default function FormDialog({ foundStates, handleUpdate }) {
               <br />
               <br />
 
-              <FormControl
-                fullWidth
-                size="small"
-                // disabled={
-                //   values.level.length < 1 ||
-                //   values.level === "Federal - Senate" ||
-                //   values.level === "State - Statewide" ||
-                //   values.level === "County - County Wide" ||
-                //   values.level === "City - City Wide" < 0
-                //     ? true
-                //     : false
-                // }
-              >
+              <FormControl fullWidth size="small">
                 <InputLabel id="demo-simple-select-label">County</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   multiple
                   //   value={age}
-                  label="District"
+                  label="County"
                   //   onChange={handleChange}
                   value={values.county}
                   onChange={handleChangeCounty}
                   name="County"
                   renderValue={(selected) => selected.join(", ")}
+                  onClose={handleCountyClose}
                 >
                   {counties.map((val) => {
                     return (
@@ -691,6 +685,7 @@ export default function FormDialog({ foundStates, handleUpdate }) {
               values.level === "Federal - Senate" ||
               values.level === "State - Statewide" ||
               values.level === "County - County Wide" ||
+              values.level === "County - County Commision" ||
               values.level === "City - City Wide"
                 ? true
                 : false
