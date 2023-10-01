@@ -45,7 +45,7 @@ const Selectcampaign = (props) => {
     if (res.data.success === true) {
       window.localStorage.setItem(
         "campaigns",
-        JSON.stringify(res.data?.joinedCampaigns?.campaignJoined)
+        JSON.stringify(res.data?.joinedCampaigns)
       );
       setCampaignsJoined(res.data.joinedCampaigns);
       // logout();
