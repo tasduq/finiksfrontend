@@ -323,7 +323,7 @@ const Dashboard = (props) => {
                         <p className="text-left font-weight-bold">
                           Early Voting Begins
                         </p>
-                        <p>
+                        <p className="text-right" style={{ color: "#D12E2F" }}>
                           {}
                           {handleDateFormat(
                             campaignData?.campaignDates?.voteEarlyDate
