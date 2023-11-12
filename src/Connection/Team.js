@@ -126,6 +126,15 @@ const updateVoterInfo = async (data) => {
   console.log(res);
   return res;
 };
+const updateVoterInfoFromCanvassingSinglePerson = async (data) => {
+  console.log(data);
+  let res = await instance.post(
+    `${url}/api/teammember/updatevoterinfofromcanvassingsingleperson`,
+    data
+  );
+  console.log(res);
+  return res;
+};
 
 const getInvitedVoters = async (data) => {
   console.log(data);
@@ -171,4 +180,5 @@ export {
   getAdminTags,
   getInvitedTeamMembers,
   cancelInvite,
+  updateVoterInfoFromCanvassingSinglePerson,
 };

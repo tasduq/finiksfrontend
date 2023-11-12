@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { updateVoterInfo } from "../../../../Connection/Team";
+import { updateVoterInfoFromCanvassingSinglePerson } from "../../../../Connection/Team";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Addtoteam({ data, listId, handleUpdate }) {
@@ -37,7 +37,7 @@ export default function Addtoteam({ data, listId, handleUpdate }) {
 
   const handleSubmit = async () => {
     console.log(values);
-    let res = await updateVoterInfo({
+    let res = await updateVoterInfoFromCanvassingSinglePerson({
       ...values,
       voterId: data?._id,
       listId: listId,
