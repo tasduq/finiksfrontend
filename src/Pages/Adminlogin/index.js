@@ -48,7 +48,7 @@ const Loginadmin = () => {
     let res = await loginCampaign({
       ...values,
     });
-    console.log(res);
+    console.log(res, "i am res loginCampaign ===>>>>");
     if (res.data.success === true) {
       if (res.data.role === "superadmin") {
         toast.success(res.data.message, {

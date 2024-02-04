@@ -1,13 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Logo from "../../Assets/logoword.png";
 import { ToastContainer, toast } from "react-toastify";

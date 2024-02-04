@@ -148,14 +148,14 @@ export default function Voterview({ data, handleUpdateTable }) {
 
   const handleGetData = async () => {
     const res = await getList({ id: data?.list });
-    console.log(res);
+    console.log(res, "i am list Res ===????");
     if (res.data.success) {
       let unSurveyedVoters = res.data.list?.voters.filter((voter) => {
         // return !voter.surveyed || voter.surveyed === false;
         return !voter.voterDone;
       });
       console.log(unSurveyedVoters.length);
-      if (unSurveyedVoters.length > 0) {
+      if (!res?.data?.listDone) {
         setVoters(unSurveyedVoters);
         setCurrentVoter(unSurveyedVoters[0]);
         setCurrentVoterIndex(0);
@@ -204,6 +204,7 @@ export default function Voterview({ data, handleUpdateTable }) {
     }
 
     setUpdate(false);
+    return;
   };
 
   const handleUpdate = async () => {
@@ -311,7 +312,7 @@ export default function Voterview({ data, handleUpdateTable }) {
   };
   console.log(checkedTags);
 
-  const handleTakeSurvey = async () => {
+  const handleTakeSurvey = async (isLastVoter = false) => {
     console.log(values, currentVoter);
     // if (checkedTags.length === 0) {
     //   toast.error("Check Atleast one Tag", {
@@ -378,8 +379,12 @@ export default function Voterview({ data, handleUpdateTable }) {
       //     position: toast.POSITION.TOP_RIGHT,
       //   });
       // }
-      setCurrentVoterIndex(currentVoterIndex + 1);
-      setCurrentVoter(voters[currentVoterIndex + 1]);
+      if (isLastVoter) {
+        return;
+      } else {
+        setCurrentVoterIndex(currentVoterIndex + 1);
+        setCurrentVoter(voters[currentVoterIndex + 1]);
+      }
     } else {
       toast.error(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
@@ -422,7 +427,7 @@ export default function Voterview({ data, handleUpdateTable }) {
         // }
 
         if (values.voterAnswers?.length > 0) {
-          handleTakeSurvey();
+          handleTakeSurvey(false);
         } else {
           setCurrentVoterIndex(currentVoterIndex + 1);
           setCurrentVoter(voters[currentVoterIndex + 1]);
@@ -434,22 +439,54 @@ export default function Voterview({ data, handleUpdateTable }) {
         });
       }
     } else {
-      let res = await saveInteraction({ interaction: interaction });
+      let res = await saveInteraction({
+        interaction: interaction,
+        listId: data?.list,
+        voterId: currentVoter?._id,
+      });
       if (res.data.success === true) {
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
         });
 
-        // if (interaction === "doNotCall") {
-        //   handleDoNotCall();
-        // }
         if (values.voterAnswers?.length > 0) {
-          handleTakeSurvey();
+          // Assuming handleTakeSurvey is already an async function
+          await handleTakeSurvey(true)
+            .then(() => {
+              // Once handleTakeSurvey is complete, call handleGetData
+              handleGetData();
+            })
+            .catch((error) => {
+              console.error("Error in handleTakeSurvey:", error);
+              toast.error("Error in handleTakeSurvey:", {
+                position: toast.POSITION.TOP_RIGHT,
+              });
+              // Handle any errors that occur during handleTakeSurvey
+            });
+        } else {
+          // If there are no voterAnswers or the condition for handleTakeSurvey is not met,
+          // call handleGetData directly
+          setSaving(true);
+          await handleGetData()
+            .then(() => {
+              // setCurrentVoterIndex(currentVoterIndex + 1);
+              // setCurrentVoter(voters[currentVoterIndex + 1]);
+              setCheckedTags([]);
+              setSaving(false);
+            })
+            .catch((error) => {
+              console.error("Error fetching new page", error);
+              toast.error("Error fetching new page", {
+                position: toast.POSITION.TOP_RIGHT,
+              });
+              setSaving(false);
+              handleClose();
+            });
         }
-        handleClose();
-        toast.success("This was the last voter", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        setSaving(false);
+        // toast.success("This was the last voter", {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
       } else {
         toast.error(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
